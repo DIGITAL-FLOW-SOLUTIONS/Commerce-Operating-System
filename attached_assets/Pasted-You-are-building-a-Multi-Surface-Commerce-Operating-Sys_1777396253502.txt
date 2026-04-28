@@ -1,0 +1,255 @@
+You are building a:
+
+Multi-Surface Commerce Operating System
+
+A platform that combines the strengths of:
+
+Shopify (full e-commerce infrastructure)
+Link-in-bio tools (instant lightweight stores)
+TikTok Shop (live selling commerce)
+M-Pesa-native payments (localized African payments)
+🧩 CORE PRINCIPLE
+
+This is NOT one product.
+
+This is a system with multiple entry points, each optimized for a different type of seller:
+
+Entry Point	User Type	Goal
+/ Marketing Site	New users	Conversion
+/build	Facebook/Instagram sellers	Import & create store
+/tiktok	Live sellers	Instant store
+/boutique	Serious merchants	Manage business
+⚙️ FOUNDATIONAL RULES FOR ALL ARTIFACTS
+
+The AI agent must ensure:
+
+Single Identity System
+One user identity across all surfaces
+Tenant-Based Architecture
+Every merchant = one tenant/store
+Progressive Onboarding
+Users should not be blocked early (especially TikTok flow)
+Mobile-First Always
+Majority of Kenyan users are mobile
+Speed is a Feature
+Every flow must feel instant
+🚨 CRITICAL SYSTEM BEHAVIOR
+Users can enter from ANY surface and still reach:
+Store creation
+Payments
+Dashboard
+Marketing site is not just UI — it must:
+Trigger backend flows
+Capture intent
+Route users intelligently
+🟡 ARTIFACT 1 — MARKETING SITE (/)
+“The Growth Engine”
+🎯 PRIMARY PURPOSE
+
+The Marketing Site is:
+
+A high-conversion acquisition engine that instantly demonstrates value and routes users into store creation flows.
+
+It must:
+
+Convert visitors → merchants
+Educate quickly
+Remove friction
+Trigger immediate action
+🧠 CORE VALUE PROPOSITIONS (MUST BE CLEAR)
+1.
+
+“Turn Your Facebook Page into an Online Store in 2 Minutes”
+
+2.
+
+“Sell Live on TikTok and Get Paid Instantly”
+
+3.
+
+“Get Paid Directly to Your Till, Paybill, or Bank — No Middlemen”
+
+🧩 MARKETING SITE STRUCTURE (FULL SYSTEM)
+📄 Core Pages
+1. Homepage (/)
+2. How It Works
+3. Features
+4. Pricing
+5. TikTok Live Selling Page (/tiktok-preview)
+6. Facebook/Instagram Store Builder Page (/build-preview)
+7. Templates / Demo Stores
+8. Help / FAQ
+9. Contact / Support
+10. Authentication Entry (Login/Signup)
+🧱 HOMEPAGE — SYSTEM DESIGN
+🎯 Goal:
+
+Convert in < 10 seconds
+
+🧩 Sections
+🔴 HERO SECTION (MOST IMPORTANT)
+Content:
+
+Headline:
+
+Turn Your Facebook Page into an Online Store in 2 Minutes
+
+Subheadline:
+
+Sell on TikTok Live. Get paid directly to your Till, Paybill or Bank Account.
+
+⚙️ INTERACTIVE INPUT (CORE FEATURE)
+
+This is not just UI — it is a functional system entry point.
+
+Input Field:
+Accept:
+Facebook page link
+Instagram link
+Business name
+⚙️ Behavior:
+
+When user submits:
+
+Flow:
+Validate input
+Send to scraping service
+Create temporary session
+Redirect to /build artifact
+Show loading + “Building your store…”
+🤖 AI PROMPT — HERO SYSTEM
+Design a high-conversion hero section that includes:
+- Strong headline and subheadline
+- Input field for Facebook/Instagram link
+- CTA button: "Create My Store"
+
+Implement behavior:
+- Validate input
+- Send request to backend scraping endpoint
+- Store session data
+- Redirect user to build flow
+
+Make it mobile-first and extremely fast.
+🧠 USER INTENT CAPTURE SYSTEM (IMPORTANT)
+📦 Model: Lead
+Fields:
+id
+input_value (facebook/instagram link)
+source (homepage, tiktok page, etc.)
+intent_type (scrape, tiktok, explore)
+created_at
+⚙️ Behavior:
+Capture EVERY input (even if user abandons)
+Used for:
+Retargeting
+Analytics
+Growth
+🤖 AI PROMPT
+Create a lead capture system:
+- Store every user input from homepage
+- Track source and intent
+- Save even if user does not complete signup
+Ensure performance and non-blocking behavior.
+🟣 TIKTOK LIVE SECTION (HOMEPAGE)
+🎯 Goal:
+
+Push high-conversion feature
+
+Content:
+“Selling on TikTok Live?”
+“Create a store in seconds and drop your link while streaming.”
+CTA:
+
+👉 “Start Live Store”
+
+→ routes to /tiktok
+
+🔵 FEATURES SECTION
+
+Explain clearly:
+
+Import from Facebook
+Instant store creation
+M-Pesa payments
+Custom domain
+Mobile-first checkout
+🟢 SOCIAL PROOF SECTION
+Testimonials (placeholder initially)
+Example boutique stores
+🟡 PRICING PREVIEW
+Show simple plans
+Highlight TikTok hourly model
+🧱 NAVIGATION SYSTEM
+Must Include:
+Home
+Features
+Pricing
+TikTok Live
+Login
+Get Started
+🧠 AUTH FLOW ENTRY
+
+Users can:
+
+Option 1:
+Start with scraping → auth later
+Option 2:
+Sign up directly
+🤖 AI PROMPT
+Design authentication entry logic:
+- Allow users to start store creation before signup
+- Require authentication before saving store
+- Preserve session data across auth
+🔐 SESSION HANDLING (CRITICAL)
+
+When user inputs Facebook link:
+
+Store in temporary session
+Attach to user after signup
+🧠 PERFORMANCE REQUIREMENTS
+Load time < 2 seconds
+Input response instant
+No blocking API calls on UI
+🎨 DESIGN SYSTEM DIRECTION
+
+The design must feel:
+
+Premium (like Shopify)
+Simple (like Linktree)
+Fast (like TikTok)
+🎯 CONVERSION OPTIMIZATION RULES
+One primary CTA per section
+Minimal text
+Visual proof (stores)
+Always mobile-first
+🧪 EDGE CASES
+
+AI must handle:
+
+Invalid Facebook link
+No data scraped
+Slow scraping response
+User abandons flow
+Duplicate sessions
+🤖 FINAL MASTER PROMPT FOR THIS ARTIFACT
+You are building the Marketing Site artifact for a Multi-Surface Commerce Operating System.
+
+This is not just a website — it is a conversion engine and entry point into multiple commerce flows.
+
+Implement:
+
+- Full marketing website with all pages
+- High-conversion homepage with scraping input
+- Lead capture system
+- Session-based onboarding flow
+- Routing to build and tiktok artifacts
+- Mobile-first, high-performance UI
+- Authentication entry with session preservation
+
+Ensure:
+- Fast load times
+- Clean UX
+- Clear value proposition
+- Strong CTAs
+
+This system must feel like Shopify-level quality but optimized for African social commerce users.

@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Sokoa Marketing API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: leads
+    description: Lead capture and intent tracking
+  - name: stats
+    description: Public marketing stats and social proof
 paths:
   /healthz:
     get:
@@ -24,6 +28,98 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /leads:
+    post:
+      operationId: createLead
+      tags: [leads]
+      summary: Capture a lead from any marketing surface
+      description: Stores user intent (e.g. Facebook/Instagram link, business name, TikTok handle) before authentication. Used by the homepage hero, TikTok page, and build flow.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewLead"
+      responses:
+        "201":
+          description: Lead captured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+  /leads/recent:
+    get:
+      operationId: listRecentLeads
+      tags: [leads]
+      summary: Recent merchant signups (anonymized)
+      description: Live activity feed of newly created stores for social proof on the homepage.
+      responses:
+        "200":
+          description: Recent leads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecentLead"
+  /stats/platform:
+    get:
+      operationId: getPlatformStats
+      tags: [stats]
+      summary: Platform-wide aggregate stats
+      description: Headline numbers shown on homepage (active merchants, GMV, countries, payouts).
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+  /stats/showcase:
+    get:
+      operationId: listShowcaseStores
+      tags: [stats]
+      summary: Featured demo stores
+      description: Curated boutique showcase for the homepage social proof grid.
+      responses:
+        "200":
+          description: Showcase stores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ShowcaseStore"
+  /stats/testimonials:
+    get:
+      operationId: listTestimonials
+      tags: [stats]
+      summary: Merchant testimonials
+      description: Real merchant quotes for the homepage.
+      responses:
+        "200":
+          description: Testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+  /stats/pricing:
+    get:
+      operationId: listPricingPlans
+      tags: [stats]
+      summary: Pricing plans
+      description: Public pricing tiers including the TikTok hourly model.
+      responses:
+        "200":
+          description: Pricing plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PricingPlan"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +129,182 @@ components:
           type: string
       required:
         - status
-
+    NewLead:
+      type: object
+      properties:
+        inputValue:
+          type: string
+          description: The actual user input (FB/IG link, business name, TikTok handle, email).
+          minLength: 1
+          maxLength: 500
+        source:
+          type: string
+          description: Where the lead was captured.
+          enum: [homepage_hero, tiktok_page, build_page, boutique_page, pricing_page, footer, navbar]
+        intentType:
+          type: string
+          description: What the user wants to do.
+          enum: [scrape_facebook, scrape_instagram, tiktok_live, explore, signup, contact]
+        country:
+          type: string
+          description: ISO country code (optional).
+          maxLength: 2
+      required:
+        - inputValue
+        - source
+        - intentType
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+        inputValue:
+          type: string
+        source:
+          type: string
+        intentType:
+          type: string
+        country:
+          type: string
+          nullable: true
+        nextStep:
+          type: string
+          description: Suggested next route in the funnel.
+        sessionToken:
+          type: string
+          description: Opaque session token to attach this lead to a future signup.
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - inputValue
+        - source
+        - intentType
+        - nextStep
+        - sessionToken
+        - createdAt
+    RecentLead:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+          description: Anonymized merchant name (e.g. "Aisha M.").
+        city:
+          type: string
+        intentType:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, displayName, city, intentType, createdAt]
+    PlatformStats:
+      type: object
+      properties:
+        activeMerchants:
+          type: integer
+        storesCreatedToday:
+          type: integer
+        countriesServed:
+          type: integer
+        gmvProcessedKes:
+          type: number
+          description: Gross merchandise value processed (KES).
+        averageStoreSetupSeconds:
+          type: integer
+        payoutsToday:
+          type: integer
+      required:
+        - activeMerchants
+        - storesCreatedToday
+        - countriesServed
+        - gmvProcessedKes
+        - averageStoreSetupSeconds
+        - payoutsToday
+    ShowcaseStore:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        handle:
+          type: string
+          description: URL handle (e.g. "amani-boutique").
+        category:
+          type: string
+        city:
+          type: string
+        tagline:
+          type: string
+        coverEmoji:
+          type: string
+          description: A single emoji used as a visual marker (NOT for UI, used as a data hint).
+        productCount:
+          type: integer
+        monthlyRevenueKes:
+          type: integer
+      required:
+        - id
+        - name
+        - handle
+        - category
+        - city
+        - tagline
+        - coverEmoji
+        - productCount
+        - monthlyRevenueKes
+    Testimonial:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          description: Merchant role/title (e.g. "Boutique owner, Nairobi").
+        quote:
+          type: string
+        platform:
+          type: string
+          enum: [facebook, instagram, tiktok, whatsapp]
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+      required: [id, name, role, quote, platform, rating]
+    PricingPlan:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        priceKes:
+          type: integer
+          description: Price in KES (Kenyan Shillings). 0 means free.
+        cadence:
+          type: string
+          enum: [hour, month, year, free]
+        tagline:
+          type: string
+        features:
+          type: array
+          items:
+            type: string
+        popular:
+          type: boolean
+        ctaLabel:
+          type: string
+      required:
+        - id
+        - name
+        - priceKes
+        - cadence
+        - tagline
+        - features
+        - popular
+        - ctaLabel

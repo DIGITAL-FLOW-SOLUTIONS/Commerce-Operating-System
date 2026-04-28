@@ -1,0 +1,44 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "KeFqhP-ebepqigmAWPKW5"
+uri = "file://artifacts/marketing/public/images/hero.png"
+type = "image"
+title = "Kenyan boutique owner hero"
+
+[[generated]]
+id = "UibDpd_SpmfZwCxqCVIv_"
+uri = "file://artifacts/marketing/public/images/tiktok-live.png"
+type = "image"
+title = "African TikTok live seller"
+
+[[generated]]
+id = "7rxPrH439GMVuMlmPhmM-"
+uri = "file://artifacts/marketing/public/images/boutique.png"
+type = "image"
+title = "Premium merchant dashboard"
+
+[[generated]]
+id = "Y8iwc7qqXOfhFaPh_nSjW"
+uri = "file://artifacts/marketing/public/images/checkout.png"
+type = "image"
+title = "Mobile checkout M-Pesa"
+
+[[generated]]
+id = "hW3yUeY3PwA1NvHCnBFGz"
+uri = "file://artifacts/marketing/public/images/store-1.png"
+type = "image"
+title = "Showcase store 1"
+
+[[generated]]
+id = "8Ggdznv9ncaIlyU7vUkSM"
+uri = "file://artifacts/marketing/public/images/store-2.png"
+type = "image"
+title = "Showcase store 2"
+
+[[generated]]
+id = "t7halJzlWAvEdueHr1NSi"
+uri = "file://artifacts/marketing/public/images/store-3.png"
+type = "image"
+title = "Showcase store 3"
