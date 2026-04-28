@@ -7,7 +7,7 @@ import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useCreateLead, useListRecentLeads, useGetPlatformStats, useListShowcaseStores, useListTestimonials, getGetPlatformStatsQueryKey } from "@workspace/api-client-react";
-import { ArrowRight, Store, ShoppingBag, CreditCard, Play, CheckCircle2, TrendingUp } from "lucide-react";
+import { ArrowRight, Store, ShoppingBag, CreditCard, Play, CheckCircle2, TrendingUp, Facebook, Instagram, MessageCircle } from "lucide-react";
 import { formatKES } from "@/lib/format";
 import { toast } from "@/hooks/use-toast";
 
@@ -213,6 +213,117 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-foreground mb-3 font-display">Inventory Sync</h3>
               <p className="text-muted-foreground leading-relaxed">Sell on TikTok, Facebook, and your site simultaneously without overselling. Stock updates in real-time.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Facebook & Instagram Section */}
+      <section className="py-24 bg-white overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary/5 to-transparent pointer-events-none" />
+
+        <div className="container mx-auto px-4 md:px-6 relative">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-bold text-sm mb-6 border border-primary/20">
+                <span className="flex items-center -space-x-1">
+                  <Instagram className="w-4 h-4" />
+                  <Facebook className="w-4 h-4" />
+                </span>
+                Built for Facebook & Instagram sellers
+              </div>
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-6 tracking-tight">
+                Your DMs are not a checkout.
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Sokoa reads your existing posts, captions, and prices on Facebook and Instagram and turns them into a real online store — with M-Pesa checkout, real inventory, and zero "How much sis?" replies.
+              </p>
+
+              <ul className="space-y-4 mb-10">
+                {[
+                  { icon: ShoppingBag, text: "Auto-import posts, carousels, Highlights and Page Albums" },
+                  { icon: MessageCircle, text: "Smart DM replies that drop a one-tap M-Pesa checkout link" },
+                  { icon: CreditCard, text: "Funds land in your Till instantly — no screenshots, no chasing" },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary shrink-0 flex items-center justify-center">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <span className="text-foreground/80 font-medium pt-1.5">{item.text}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <Link href="/socials">
+                <Button className="bg-primary hover:bg-primary/90 text-white h-14 px-8 rounded-full font-bold text-lg">
+                  See how FB & IG stores work <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="relative order-first lg:order-last">
+              <div className="relative w-full max-w-[480px] mx-auto">
+                {/* Main image */}
+                <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white relative">
+                  <img
+                    src="/images/socials-fbig.png"
+                    alt="Kenyan boutique seller managing her Instagram shop"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Floating Instagram product card */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute -top-4 -left-4 md:-left-12 bg-white rounded-2xl p-3 shadow-xl border border-border/50 w-[210px]"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 via-orange-400 to-yellow-400 flex items-center justify-center text-white">
+                      <Instagram className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-xs font-bold">@amani.beads</div>
+                      <div className="text-[10px] text-muted-foreground font-medium">Instagram synced</div>
+                    </div>
+                    <CheckCircle2 className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="grid grid-cols-3 gap-1">
+                    <div className="aspect-square rounded bg-gradient-to-br from-amber-200 to-orange-300" />
+                    <div className="aspect-square rounded bg-gradient-to-br from-emerald-200 to-primary/40" />
+                    <div className="aspect-square rounded bg-gradient-to-br from-rose-200 to-pink-300" />
+                    <div className="aspect-square rounded bg-gradient-to-br from-violet-200 to-purple-300" />
+                    <div className="aspect-square rounded bg-gradient-to-br from-sky-200 to-blue-300" />
+                    <div className="aspect-square rounded bg-gradient-to-br from-yellow-200 to-amber-300" />
+                  </div>
+                  <div className="text-[10px] text-muted-foreground font-medium mt-2 text-center">42 products imported</div>
+                </motion.div>
+
+                {/* Floating Facebook order card */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                  className="absolute -bottom-6 -right-4 md:-right-10 bg-white rounded-2xl p-4 shadow-xl border border-border/50 w-[240px]"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-lg bg-[#1877F2] flex items-center justify-center text-white">
+                      <Facebook className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold">New order from Page</div>
+                      <div className="text-[10px] text-muted-foreground font-medium">via Shop Now button</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-3 border-t border-border/40">
+                    <div className="text-xs text-muted-foreground font-medium">M-Pesa Till • now</div>
+                    <div className="font-bold text-base text-primary">+KES 2,800</div>
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>

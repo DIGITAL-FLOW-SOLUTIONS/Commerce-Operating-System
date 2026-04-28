@@ -35,6 +35,7 @@ export function Navbar() {
 
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/features" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">Features</Link>
+            <Link href="/socials" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">FB & IG</Link>
             <Link href="/tiktok" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
@@ -71,6 +72,7 @@ export function Navbar() {
             className="md:hidden absolute top-20 left-0 right-0 bg-white border-b shadow-lg flex flex-col p-4 gap-4"
           >
             <Link href="/features" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg">Features</Link>
+            <Link href="/socials" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg">Facebook & Instagram</Link>
             <Link href="/tiktok" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg flex items-center gap-2">
               TikTok Live <span className="bg-secondary text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">New</span>
             </Link>

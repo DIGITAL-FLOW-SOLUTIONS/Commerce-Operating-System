@@ -42,3 +42,15 @@ id = "t7halJzlWAvEdueHr1NSi"
 uri = "file://artifacts/marketing/public/images/store-3.png"
 type = "image"
 title = "Showcase store 3"
+
+[[generated]]
+id = "62KYbTWKax_a73Bxg9ESt"
+uri = "file://artifacts/marketing/public/images/socials-fbig.png"
+type = "image"
+title = "fb ig social seller"
+
+[[generated]]
+id = "k2yvaRqv3WHjGY5yb7Lxq"
+uri = "file://artifacts/marketing/public/images/socials-hero.png"
+type = "image"
+title = "instagram shop flatlay"
