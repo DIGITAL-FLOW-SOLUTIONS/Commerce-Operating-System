@@ -140,7 +140,7 @@ components:
         source:
           type: string
           description: Where the lead was captured.
-          enum: [homepage_hero, tiktok_page, build_page, boutique_page, pricing_page, footer, navbar]
+          enum: [homepage_hero, tiktok_page, socials_page, build_page, boutique_page, pricing_page, footer, navbar]
         intentType:
           type: string
           description: What the user wants to do.

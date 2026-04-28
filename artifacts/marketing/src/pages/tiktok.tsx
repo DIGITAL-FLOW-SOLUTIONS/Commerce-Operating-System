@@ -23,6 +23,7 @@ import {
   Eye,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { StreamSimulator } from "@/components/StreamSimulator";
 
 export default function TikTok() {
   const [, setLocation] = useLocation();
@@ -305,6 +306,28 @@ export default function TikTok() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Interactive stream simulator */}
+      <section className="py-24 border-t border-white/10 relative overflow-hidden">
+        <div className="absolute -top-20 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 md:px-6 relative">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/20 text-secondary font-bold text-sm mb-4 border border-secondary/30">
+              <Play className="w-4 h-4 fill-current" /> Try it live
+            </div>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 tracking-tight">
+              Run a fake live stream. See how it feels.
+            </h2>
+            <p className="text-white/70 text-lg">
+              Tap Go Live, then trigger product drops and flash sales. Watch viewers, comments, and M-Pesa orders roll in just like a real Tuesday-evening drop.
+            </p>
+          </div>
+
+          <StreamSimulator />
         </div>
       </section>
 

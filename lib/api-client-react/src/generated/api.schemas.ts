@@ -17,6 +17,7 @@ export type NewLeadSource = (typeof NewLeadSource)[keyof typeof NewLeadSource];
 export const NewLeadSource = {
   homepage_hero: "homepage_hero",
   tiktok_page: "tiktok_page",
+  socials_page: "socials_page",
   build_page: "build_page",
   boutique_page: "boutique_page",
   pricing_page: "pricing_page",

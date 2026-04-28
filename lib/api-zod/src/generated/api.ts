@@ -35,6 +35,7 @@ export const CreateLeadBody = zod.object({
     .enum([
       "homepage_hero",
       "tiktok_page",
+      "socials_page",
       "build_page",
       "boutique_page",
       "pricing_page",
