@@ -1,5 +1,7 @@
 import { Link } from "wouter";
 import { SokoaLogo } from "@/components/SokoaLogo";
+import { Facebook, Instagram } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 
 export function Footer() {
   return (
@@ -11,19 +13,36 @@ export function Footer() {
               <SokoaLogo variant="horizontal" theme="dark" height={36} />
             </Link>
             <p className="text-white/60 mb-6 max-w-sm">
-              The multi-surface commerce operating system for African social-commerce sellers. Built for the hustle.
+              The store, payments, and live-selling stack for African social sellers. Built for the hustle.
             </p>
-            <div className="flex items-center gap-4">
-              {/* Social icons would go here, placeholders for now */}
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors cursor-pointer text-white">
-                Fb
-              </div>
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors cursor-pointer text-white">
-                Ig
-              </div>
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors cursor-pointer text-white">
-                Tt
-              </div>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://facebook.com/sokoa"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Sokoa on Facebook"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-primary hover:scale-105 transition-all"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://instagram.com/sokoa"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Sokoa on Instagram"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-primary hover:scale-105 transition-all"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://tiktok.com/@sokoa"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Sokoa on TikTok"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-primary hover:scale-105 transition-all"
+              >
+                <SiTiktok className="w-4 h-4" />
+              </a>
             </div>
           </div>
           
