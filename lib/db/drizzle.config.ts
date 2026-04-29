@@ -3,12 +3,13 @@ import path from "path";
 
 /**
  * drizzle-kit (push / generate) needs a *session-mode* connection so it can
- * run DDL transactionally. Prefer the direct Supabase connection here; fall
- * back to the pooler (session port) or DATABASE_URL.
+ * run DDL transactionally. The Supavisor session pooler (port 5432) works
+ * for DDL and is IPv4-reachable, so prefer it here. Fall back to the direct
+ * connection (IPv6) or DATABASE_URL.
  */
 const url =
-  process.env.SUPABASE_DIRECT_CONNECTION_STRING ??
   process.env.SUPABASE_POOLER_CONNECTION_STRING ??
+  process.env.SUPABASE_DIRECT_CONNECTION_STRING ??
   process.env.DATABASE_URL;
 
 if (!url) {
