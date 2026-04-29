@@ -451,7 +451,7 @@ export default function TikTok() {
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 tracking-tight">
                 Every "drop the link" comment becomes a sale.
               </h2>
-              <p className="text-lg text-white/70 mb-8 leading-relaxed">Sokoa watches your live chat for keywords like "link", "drop", or your product reply codes — and instantly DMs the right checkout link to that viewer. You stay on camera, the bot does the work.</p>
+              <p className="text-lg text-white/70 mb-8 leading-relaxed">Sokoa watches your live chat for keywords like "link", "drop", or your product reply codes — and instantly DMs the right checkout link to that viewer. You stay on camera, Sokoa does the work.</p>
 
               <ul className="space-y-4 mb-10">
                 {[
