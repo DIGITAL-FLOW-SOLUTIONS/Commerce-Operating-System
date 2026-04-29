@@ -11,17 +11,61 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Package manager**: pnpm
 - **TypeScript version**: 5.9
 - **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
+- **Database**: **Supabase Postgres** (managed) + Drizzle ORM
 - **Validation**: Zod (`zod/v4`), `drizzle-zod`
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
+
+## Database — Supabase
+
+This project uses Supabase as the primary Postgres database. The previous
+Replit-managed Postgres (`DATABASE_URL`) is no longer the source of truth and
+should be considered legacy.
+
+### Connection strings
+
+The db layer (`lib/db/src/index.ts`) reads connection strings in this order:
+
+1. `SUPABASE_POOLER_CONNECTION_STRING` *(preferred for runtime)* — Supavisor
+   pooler URL from **Supabase Dashboard → Project Settings → Database →
+   Connection pooling**. Use the **Session pooler (port 5432)** URL. This is
+   IPv4-reachable, which is required because the Replit container does not
+   have IPv6.
+2. `SUPABASE_DIRECT_CONNECTION_STRING` *(used by `drizzle-kit push` and
+   migrations)* — direct `db.<ref>.supabase.co:5432` host. IPv6-only unless
+   the IPv4 add-on is enabled on the Supabase project.
+3. `DATABASE_URL` — legacy fallback only.
+
+### Required Supabase env secrets
+
+- `SUPABASE_URL` — REST endpoint, e.g. `https://<ref>.supabase.co`
+- `SUPABASE_ANON_PUBLIC_KEY` — public anon key
+- `SUPABASE_PUBLISHABLE_KEY` — alias of the publishable client key
+- `SUPABASE_SERVICE_ROLE_SECRET` — server-only privileged key (never ship to
+  the browser)
+- `SUPABASE_DIRECT_CONNECTION_STRING` — direct Postgres URL (migrations)
+- `SUPABASE_POOLER_CONNECTION_STRING` — Supavisor session-pooler URL (runtime)
+
+### Initial migration
+
+`.local/migrations/supabase_setup.sql` contains the idempotent schema + the 8
+existing leads ported from the prior Replit Postgres. Run it once in the
+Supabase SQL Editor (Dashboard → SQL Editor → New query) on a fresh project.
+
+### Row Level Security
+
+`leads` has RLS enabled with a single `service_role` policy. The Express API
+connects with the privileged Postgres role (via the pooler URL), so it bypasses
+RLS for all backend traffic. The anon key cannot read leads through PostgREST
+because no anon policy exists.
 
 ## Key Commands
 
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- `pnpm --filter @workspace/db run push` — push DB schema changes to Supabase
+  (uses `SUPABASE_DIRECT_CONNECTION_STRING`)
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
