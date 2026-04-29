@@ -1,6 +1,7 @@
 import { SEO } from "@/components/SEO";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { LiveActivityTicker } from "@/components/LiveActivityTicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation } from "wouter";
@@ -55,6 +56,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <SEO title="Sokoa | The OS for African Social Commerce" description="Turn your Facebook Page, Instagram, or TikTok into a fully functional online store with instant M-Pesa payouts." />
       <Navbar />
+      <LiveActivityTicker />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden relative">

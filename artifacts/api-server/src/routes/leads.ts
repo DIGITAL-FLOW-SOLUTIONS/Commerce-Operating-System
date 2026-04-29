@@ -1,8 +1,9 @@
 import { Router, type IRouter } from "express";
 import { randomUUID } from "node:crypto";
-import { db, leadsTable } from "@workspace/db";
+import { db, leadsTable, leadEventsTable } from "@workspace/db";
 import { CreateLeadBody } from "@workspace/api-zod";
 import { desc } from "drizzle-orm";
+import { anonymizeName, pickCity } from "../lib/lead-display";
 
 const router: IRouter = Router();
 
@@ -14,61 +15,6 @@ const NEXT_STEP_BY_INTENT: Record<string, string> = {
   signup: "/signup",
   contact: "/help",
 };
-
-const FIRST_NAMES = [
-  "Aisha",
-  "Brian",
-  "Cynthia",
-  "David",
-  "Esther",
-  "Faith",
-  "George",
-  "Halima",
-  "Ian",
-  "Joyce",
-  "Kevin",
-  "Lillian",
-  "Mwangi",
-  "Nadia",
-  "Otieno",
-  "Pamela",
-  "Quincy",
-  "Ruth",
-  "Samira",
-  "Tabitha",
-  "Umar",
-  "Violet",
-  "Wanjiku",
-  "Yusuf",
-  "Zainab",
-];
-
-const CITIES = [
-  "Nairobi",
-  "Mombasa",
-  "Kisumu",
-  "Nakuru",
-  "Eldoret",
-  "Thika",
-  "Machakos",
-  "Kampala",
-  "Dar es Salaam",
-  "Lagos",
-  "Accra",
-  "Kigali",
-];
-
-function anonymizeName(input: string, id: string): string {
-  const seed = id.charCodeAt(0) + id.charCodeAt(id.length - 1);
-  const first = FIRST_NAMES[seed % FIRST_NAMES.length] ?? "Friend";
-  const initial = input.replace(/[^a-zA-Z]/g, "").charAt(0).toUpperCase() || "M";
-  return `${first} ${initial}.`;
-}
-
-function pickCity(id: string): string {
-  const seed = id.charCodeAt(0) + id.charCodeAt(2 % id.length);
-  return CITIES[seed % CITIES.length] ?? "Nairobi";
-}
 
 router.post("/leads", async (req, res, next) => {
   try {
@@ -87,6 +33,25 @@ router.post("/leads", async (req, res, next) => {
 
     if (!row) {
       throw new Error("Failed to insert lead");
+    }
+
+    // Mirror a sanitized row into lead_events so the public realtime feed
+    // can broadcast this join without exposing the underlying input value
+    // or session token. Failure here MUST NOT block the user-facing response.
+    try {
+      await db.insert(leadEventsTable).values({
+        source: row.source,
+        intentType: row.intentType,
+        country: row.country,
+        displayName: anonymizeName(row.inputValue, row.id),
+        city: pickCity(row.id),
+        createdAt: row.createdAt,
+      });
+    } catch (eventErr) {
+      req.log.warn(
+        { err: eventErr, leadId: row.id },
+        "lead_events mirror insert failed",
+      );
     }
 
     const nextStep = NEXT_STEP_BY_INTENT[body.intentType] ?? "/build";

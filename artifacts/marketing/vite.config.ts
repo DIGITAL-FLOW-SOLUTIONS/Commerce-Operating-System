@@ -26,8 +26,16 @@ if (!basePath) {
   );
 }
 
+const supabaseUrl = process.env.SUPABASE_URL ?? "";
+const supabaseAnonKey =
+  process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_PUBLIC_KEY ?? "";
+
 export default defineConfig({
   base: basePath,
+  define: {
+    __SUPABASE_URL__: JSON.stringify(supabaseUrl),
+    __SUPABASE_ANON_KEY__: JSON.stringify(supabaseAnonKey),
+  },
   plugins: [
     react(),
     tailwindcss(),
