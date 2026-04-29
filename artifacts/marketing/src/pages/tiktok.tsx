@@ -63,12 +63,10 @@ export default function TikTok() {
         title="TikTok Live Selling for African Merchants | Sokoa"
         description="Turn viewers into buyers instantly with pay-per-hour stores designed specifically for TikTok Live. Drop a link, get paid in M-Pesa."
       />
-
       {/* Dark mode specific navbar for this page */}
       <div className="dark">
         <Navbar />
       </div>
-
       {/* Hero */}
       <section className="pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 via-black to-black" />
@@ -164,7 +162,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* 3-card features */}
       <section className="py-24 border-t border-white/10">
         <div className="container mx-auto px-4 md:px-6">
@@ -187,7 +184,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* How a Live store works — 4 steps */}
       <section className="py-24 border-t border-white/10 relative overflow-hidden">
         <div className="absolute -top-20 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
@@ -248,7 +244,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* What goes inside a Live store */}
       <section className="py-24 border-t border-white/10">
         <div className="container mx-auto px-4 md:px-6">
@@ -308,7 +303,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* Interactive stream simulator */}
       <section className="py-24 border-t border-white/10 relative overflow-hidden">
         <div className="absolute -top-20 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
@@ -330,7 +324,6 @@ export default function TikTok() {
           <StreamSimulator />
         </div>
       </section>
-
       {/* Pricing — what an actual live session costs */}
       <section className="py-24 border-t border-white/10 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-primary/5" />
@@ -415,7 +408,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* Pinned-comment-to-checkout */}
       <section className="py-24 border-t border-white/10">
         <div className="container mx-auto px-4 md:px-6">
@@ -459,9 +451,7 @@ export default function TikTok() {
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 tracking-tight">
                 Every "drop the link" comment becomes a sale.
               </h2>
-              <p className="text-lg text-white/70 mb-8 leading-relaxed">
-                Sokoa's TikTok bot watches your live chat for keywords like "link", "drop", or your product reply codes — and instantly DMs the right checkout link to that viewer. You stay on camera, the bot does the work.
-              </p>
+              <p className="text-lg text-white/70 mb-8 leading-relaxed">Sokoa watches your live chat for keywords like "link", "drop", or your product reply codes — and instantly DMs the right checkout link to that viewer. You stay on camera, the bot does the work.</p>
 
               <ul className="space-y-4 mb-10">
                 {[
@@ -485,7 +475,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* FAQ */}
       <section className="py-24 border-t border-white/10">
         <div className="container mx-auto px-4 md:px-6">
@@ -522,7 +511,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-24 border-t border-white/10">
         <div className="container mx-auto px-4 md:px-6">
@@ -545,7 +533,6 @@ export default function TikTok() {
           </div>
         </div>
       </section>
-
       <div className="dark">
         <Footer />
       </div>
