@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import TikTok from "@/pages/tiktok";
 import Socials from "@/pages/socials";
-import Sneakers from "@/pages/sneakers";
 import Build from "@/pages/build";
 import Boutique from "@/pages/boutique";
 import Pricing from "@/pages/pricing";
@@ -27,7 +26,6 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/tiktok" component={TikTok} />
       <Route path="/socials" component={Socials} />
-      <Route path="/sneakers" component={Sneakers} />
       <Route path="/build" component={Build} />
       <Route path="/boutique" component={Boutique} />
       <Route path="/pricing" component={Pricing} />

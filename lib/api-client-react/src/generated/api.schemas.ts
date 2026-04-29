@@ -18,7 +18,6 @@ export const NewLeadSource = {
   homepage_hero: "homepage_hero",
   tiktok_page: "tiktok_page",
   socials_page: "socials_page",
-  sneakers_page: "sneakers_page",
   build_page: "build_page",
   boutique_page: "boutique_page",
   pricing_page: "pricing_page",

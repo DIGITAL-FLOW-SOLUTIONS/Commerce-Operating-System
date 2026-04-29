@@ -43,13 +43,6 @@ export function Navbar() {
               </span>
               TikTok Live
             </Link>
-            <Link href="/sneakers" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-              </span>
-              Sneakers
-            </Link>
             <Link href="/boutique" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">Boutique</Link>
             <Link href="/pricing" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">Pricing</Link>
             <Link href="/templates" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">Templates</Link>
@@ -82,9 +75,6 @@ export function Navbar() {
             <Link href="/socials" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg">Facebook & Instagram</Link>
             <Link href="/tiktok" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg flex items-center gap-2">
               TikTok Live <span className="bg-secondary text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">New</span>
-            </Link>
-            <Link href="/sneakers" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg flex items-center gap-2">
-              Sneakers <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">Hype</span>
             </Link>
             <Link href="/boutique" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg">Boutique</Link>
             <Link href="/pricing" className="p-3 text-lg font-medium text-foreground border-b hover:bg-muted/50 rounded-lg">Pricing</Link>
