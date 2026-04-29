@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { SokoaLogo } from "@/components/SokoaLogo";
 
 export function Footer() {
   return (
@@ -6,11 +7,8 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           <div className="col-span-2 lg:col-span-2">
-            <Link href="/" className="font-display font-bold text-2xl tracking-tight text-white flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
-                S
-              </div>
-              Sokoa
+            <Link href="/" className="flex items-center mb-4" aria-label="Sokoa home">
+              <SokoaLogo variant="horizontal" theme="dark" height={36} />
             </Link>
             <p className="text-white/60 mb-6 max-w-sm">
               The multi-surface commerce operating system for African social-commerce sellers. Built for the hustle.

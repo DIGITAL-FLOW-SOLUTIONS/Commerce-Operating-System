@@ -16,6 +16,7 @@ import Help from "@/pages/help";
 import Contact from "@/pages/contact";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
+import Brand from "@/pages/brand";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/brand" component={Brand} />
       <Route component={NotFound} />
     </Switch>
   );
