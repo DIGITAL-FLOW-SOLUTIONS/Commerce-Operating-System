@@ -36,8 +36,6 @@ export default function Build() {
     };
 
     runSteps();
-    
-    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
