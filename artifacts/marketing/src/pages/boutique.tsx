@@ -342,9 +342,7 @@ export default function Boutique() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
                 The dashboard
               </div>
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-6 tracking-tight">
-                Run the whole shop from your front pocket.
-              </h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-6 tracking-tight">Run the whole boutique from your front pocket.</h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 Everything that used to live in three notebooks, two WhatsApp groups, and one very chaotic Excel sheet — now sits on a single screen, designed for thumbs and matatu lighting.
               </p>
