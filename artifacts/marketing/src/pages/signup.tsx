@@ -8,8 +8,7 @@ import { FaApple } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { SokoaLogo } from "@/components/SokoaLogo";
-
-const ALLOWED_EMAIL_RE = /^[^\s@]+@(gmail\.com|yahoo\.[a-z.]{2,})$/i;
+import { validateEmail, emailErrorMessage } from "@/lib/email-validation";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -25,14 +24,16 @@ export default function Signup() {
 
   const trimmed = email.trim();
   const isEmpty = trimmed.length === 0;
-  const isValid = useMemo(() => ALLOWED_EMAIL_RE.test(trimmed), [trimmed]);
+  const result = useMemo(() => validateEmail(trimmed), [trimmed]);
+  const isValid = result.ok;
   const showError = touched && !isEmpty && !isValid;
+  const errorText = !isValid && !isEmpty ? emailErrorMessage(result.reason) : "";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(true);
-    if (!isValid) return;
-    localStorage.setItem("sokoa_signup_email", trimmed);
+    if (!result.ok) return;
+    localStorage.setItem("sokoa_signup_email", result.normalized);
     setLocation("/build");
   };
 
@@ -94,7 +95,7 @@ export default function Signup() {
                 />
                 {showError && (
                   <p id="email-error" className="mt-2 text-xs font-medium text-destructive">
-                    Unsupported email — please use a universal known email account (Gmail or Yahoo).
+                    {errorText}
                   </p>
                 )}
               </div>
