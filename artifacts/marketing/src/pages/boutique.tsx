@@ -595,9 +595,7 @@ export default function Boutique() {
             <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-secondary/30 rounded-full blur-3xl" />
             <div className="relative">
-              <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 tracking-tight">
-                Your shop deserves a real back office.
-              </h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 tracking-tight">Your boutique deserves a real back office.</h2>
               <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
                 14 days of Boutique on us. No card up front. Bring your handle, your Till, and one product — we'll do the rest.
               </p>
