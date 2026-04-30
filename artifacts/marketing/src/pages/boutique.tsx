@@ -61,7 +61,7 @@ export default function Boutique() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/signup">
                   <Button className="h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]">
-                    Start 14-day trial
+                    Start free trial
                   </Button>
                 </Link>
                 <Link href="/pricing">
@@ -597,12 +597,12 @@ export default function Boutique() {
             <div className="relative">
               <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 tracking-tight">Your boutique deserves a real back office.</h2>
               <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
-                14 days of Boutique on us. No card up front. Bring your handle, your Till, and one product — we'll do the rest.
+                Open a free Sokoa account and start selling today. No card up front, no expiry. Bring your handle, your Till, and one product — we'll do the rest.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/signup">
                   <Button className="bg-white text-primary hover:bg-white/90 h-14 px-10 rounded-full font-bold text-lg">
-                    Start 14-day trial <ArrowRight className="ml-2 w-5 h-5" />
+                    Create free account <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link href="/pricing">

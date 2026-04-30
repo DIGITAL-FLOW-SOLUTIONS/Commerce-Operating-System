@@ -106,7 +106,7 @@ export default function Home() {
                 {createLead.isPending ? "Generating..." : "Generate Store"}
               </Button>
             </form>
-            <p className="text-xs text-muted-foreground font-medium">No credit card required. 14-day free trial.</p>
+            <p className="text-xs text-muted-foreground font-medium">Free account. No credit card required.</p>
 
             {/* Stats row */}
             {stats && (

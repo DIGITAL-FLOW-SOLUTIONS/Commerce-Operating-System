@@ -36,7 +36,7 @@ export default function Signup() {
           )}
           
           <h1 className="text-3xl font-display font-bold mb-2 tracking-tight">Create your account</h1>
-          <p className="text-muted-foreground mb-8">Start your 14-day free trial. No credit card required.</p>
+          <p className="text-muted-foreground mb-8">Create your free Sokoa account. No credit card required.</p>
 
           <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
             <div className="grid grid-cols-2 gap-4">

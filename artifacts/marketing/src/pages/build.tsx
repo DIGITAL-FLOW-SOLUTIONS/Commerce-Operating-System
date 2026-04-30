@@ -113,7 +113,7 @@ export default function Build() {
             >
               Claim your store <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <p className="text-center text-xs text-muted-foreground mt-4 font-medium">14-day free trial. No credit card required.</p>
+            <p className="text-center text-xs text-muted-foreground mt-4 font-medium">Free account. No credit card required.</p>
           </motion.div>
         ) : (
           <div className="h-14" /> /* Placeholder to prevent layout jump */
