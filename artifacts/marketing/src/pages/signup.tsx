@@ -2,100 +2,276 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation } from "wouter";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, CheckCircle2, ShoppingBag, Wallet, Play } from "lucide-react";
+import { SiGoogle } from "react-icons/si";
+import { FaApple } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { SokoaLogo } from "@/components/SokoaLogo";
+
+const ALLOWED_EMAIL_RE = /^[^\s@]+@(gmail\.com|yahoo\.[a-z.]{2,})$/i;
 
 export default function Signup() {
+  const [, setLocation] = useLocation();
   const [hasLead, setHasLead] = useState(false);
-  
+  const [email, setEmail] = useState("");
+  const [touched, setTouched] = useState(false);
+
   useEffect(() => {
-    // Check if we captured a lead from the marketing flow
     if (localStorage.getItem("sokoa_session_token")) {
       setHasLead(true);
     }
   }, []);
 
+  const trimmed = email.trim();
+  const isEmpty = trimmed.length === 0;
+  const isValid = useMemo(() => ALLOWED_EMAIL_RE.test(trimmed), [trimmed]);
+  const showError = touched && !isEmpty && !isValid;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched(true);
+    if (!isValid) return;
+    localStorage.setItem("sokoa_signup_email", trimmed);
+    setLocation("/build");
+  };
+
   return (
     <div className="min-h-screen flex bg-background">
-      <SEO title="Create your Sokoa account" description="Start selling in minutes." />
-      
-      <div className="w-full lg:w-1/2 flex flex-col p-8 md:p-12 justify-center relative">
-        <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="w-4 h-4" /> Back to Home
-        </Link>
+      <SEO
+        title="Create your Sokoa account"
+        description="Open a free Sokoa account in seconds. Sell on Instagram, Facebook, TikTok, and WhatsApp with M-Pesa checkout."
+      />
 
-        <div className="max-w-md w-full mx-auto mt-12">
-          {hasLead && (
-            <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 mb-8 flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-bold text-primary mb-1">Your store is ready to be claimed!</p>
-                <p className="text-xs text-primary/80">Create an account below to securely attach the store we just generated for you.</p>
-              </div>
-            </div>
-          )}
-          
-          <h1 className="text-3xl font-display font-bold mb-2 tracking-tight">Create your account</h1>
-          <p className="text-muted-foreground mb-8">Create your free Sokoa account. No credit card required.</p>
-
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold mb-2">First Name</label>
-                <Input type="text" placeholder="Aisha" className="h-12 bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:border-primary" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-2">Last Name</label>
-                <Input type="text" placeholder="M." className="h-12 bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:border-primary" />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-bold mb-2">Email Address</label>
-              <Input type="email" placeholder="you@example.com" className="h-12 bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:border-primary" />
-            </div>
-            <div>
-              <label className="block text-sm font-bold mb-2">Password</label>
-              <Input type="password" placeholder="••••••••" className="h-12 bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:border-primary" />
-            </div>
-            
-            <Button className="w-full h-12 mt-6 font-bold text-base bg-primary text-white hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/20">
-              Create Account
-            </Button>
-          </form>
-
-          <p className="text-center mt-8 text-sm text-muted-foreground">
-            Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Log in</Link>
-          </p>
+      {/* Left — form */}
+      <div className="w-full lg:w-1/2 flex flex-col px-6 sm:px-10 md:px-14 py-8 relative">
+        <div className="flex items-center justify-between">
+          <Link href="/" aria-label="Sokoa home" className="inline-flex">
+            <SokoaLogo variant="horizontal" theme="light" height={32} />
+          </Link>
+          <Link
+            href="/"
+            className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back home
+          </Link>
         </div>
-      </div>
 
-      <div className="hidden lg:block w-1/2 bg-foreground p-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-primary/20 opacity-50" />
-        <div className="relative z-10 h-full flex flex-col justify-center text-white max-w-lg mx-auto">
-          <div className="grid grid-cols-2 gap-8">
-             <div>
-              <div className="text-3xl mb-4">🚀</div>
-              <h3 className="font-bold text-xl mb-2 font-display">Launch Instantly</h3>
-              <p className="text-white/60 text-sm leading-relaxed">No developers needed. Your site goes live the moment you sign up.</p>
-             </div>
-             <div>
-              <div className="text-3xl mb-4">💳</div>
-              <h3 className="font-bold text-xl mb-2 font-display">Native M-Pesa</h3>
-              <p className="text-white/60 text-sm leading-relaxed">Connect your Till or Paybill and start receiving funds directly.</p>
-             </div>
-             <div>
-              <div className="text-3xl mb-4">📱</div>
-              <h3 className="font-bold text-xl mb-2 font-display">Mobile First</h3>
-              <p className="text-white/60 text-sm leading-relaxed">Manage your entire business from your phone browser. No app required.</p>
-             </div>
-             <div>
-              <div className="text-3xl mb-4">🌍</div>
-              <h3 className="font-bold text-xl mb-2 font-display">Custom Domain</h3>
-              <p className="text-white/60 text-sm leading-relaxed">Look professional with your own .com or .co.ke domain.</p>
-             </div>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="max-w-sm w-full mx-auto py-12">
+            {hasLead && (
+              <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 mb-8 flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-bold text-primary mb-1">Your store is ready to claim</p>
+                  <p className="text-xs text-primary/80">
+                    Sign up below to attach the store we just built for you.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <h1 className="text-3xl md:text-4xl font-display font-extrabold text-center mb-2 tracking-tight">
+              Join Sokoa
+            </h1>
+            <p className="text-center text-muted-foreground mb-8">Create your free account.</p>
+
+            <form className="space-y-3" onSubmit={handleSubmit} noValidate>
+              <div>
+                <Input
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => setTouched(true)}
+                  aria-invalid={showError}
+                  aria-describedby={showError ? "email-error" : undefined}
+                  className={`h-12 rounded-xl bg-muted/60 border ${
+                    showError ? "border-destructive focus-visible:ring-destructive" : "border-transparent focus-visible:ring-primary focus-visible:border-primary"
+                  } px-4 text-base`}
+                />
+                {showError && (
+                  <p id="email-error" className="mt-2 text-xs font-medium text-destructive">
+                    Unsupported email — please use a universal known email account (Gmail or Yahoo).
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={!isValid}
+                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-white hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none shadow-lg shadow-primary/20 transition-all"
+              >
+                Continue
+              </Button>
+            </form>
+
+            <p className="text-xs text-muted-foreground text-center mt-4 leading-relaxed">
+              By clicking <span className="font-semibold text-foreground">Continue</span>, you agree to Sokoa's{" "}
+              <a href="#" className="underline hover:text-foreground">privacy notice</a> and{" "}
+              <a href="#" className="underline hover:text-foreground">terms</a>, and to receive product updates.
+            </p>
+
+            <div className="flex items-center gap-3 my-6">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs font-bold text-muted-foreground tracking-wider">OR</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <div className="space-y-3">
+              <button
+                type="button"
+                className="w-full h-12 rounded-xl border border-border bg-white hover:bg-muted/40 transition-colors flex items-center justify-center gap-3 font-semibold text-foreground"
+              >
+                <SiGoogle className="w-4 h-4" />
+                Continue with Google
+              </button>
+              <button
+                type="button"
+                className="w-full h-12 rounded-xl border border-border bg-white hover:bg-muted/40 transition-colors flex items-center justify-center gap-3 font-semibold text-foreground"
+              >
+                <FaApple className="w-5 h-5" />
+                Continue with Apple
+              </button>
+            </div>
+
+            <p className="text-center mt-8 text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primary font-bold hover:underline">
+                Log in
+              </Link>
+            </p>
           </div>
         </div>
       </div>
+
+      {/* Right — Sokoa brand visual */}
+      <SignupVisual />
     </div>
+  );
+}
+
+function SignupVisual() {
+  return (
+    <aside className="hidden lg:flex w-1/2 relative overflow-hidden bg-gradient-to-br from-primary via-emerald-500 to-emerald-700 items-center justify-center p-12">
+      {/* Decorative ambient blobs */}
+      <div className="absolute -top-32 -left-20 w-96 h-96 bg-secondary/40 rounded-full blur-3xl" />
+      <div className="absolute -bottom-32 -right-20 w-96 h-96 bg-emerald-300/30 rounded-full blur-3xl" />
+      <div className="absolute top-1/3 right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+
+      {/* Subtle dot pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, white 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+
+      {/* Composition */}
+      <div className="relative w-full max-w-[460px] aspect-[4/5]">
+        {/* Center: faux TikTok-style phone frame */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="absolute inset-x-12 top-8 bottom-12 rounded-[2rem] bg-zinc-900 border-[6px] border-white/20 shadow-2xl overflow-hidden"
+        >
+          {/* Stream gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/40 via-zinc-900 to-zinc-900" />
+
+          {/* LIVE pill */}
+          <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-secondary text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            <Play className="w-2.5 h-2.5 fill-current" /> LIVE
+          </div>
+          <div className="absolute top-4 right-4 bg-black/40 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+            1.2k watching
+          </div>
+
+          {/* Center seller silhouette */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[55%] w-32 h-32 rounded-full bg-gradient-to-br from-pink-400 via-secondary to-pink-600 opacity-90 blur-sm" />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[55%] w-28 h-28 rounded-full bg-gradient-to-br from-yellow-300 via-secondary to-rose-500" />
+
+          {/* Bottom drawer: storefront link */}
+          <div className="absolute inset-x-3 bottom-3 bg-white rounded-2xl p-3 shadow-xl">
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <div className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                Store is live
+              </div>
+            </div>
+            <div className="text-xs font-semibold text-foreground mb-2 truncate">
+              Tap to shop today's drop · M-Pesa
+            </div>
+            <div className="bg-primary text-white text-[11px] font-bold rounded-lg py-2 text-center">
+              sokoa.shop/live/amani
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Floating: "Order placed" card */}
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="absolute -left-6 top-20 bg-white rounded-2xl p-3.5 shadow-2xl flex items-center gap-3 max-w-[220px]"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0">
+            <ShoppingBag className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] font-bold text-foreground">wanjiku99 just bought</div>
+            <div className="text-[10px] text-muted-foreground font-medium truncate">
+              Emerald wrap dress · M
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Floating: M-Pesa receipt */}
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="absolute -right-4 top-44 bg-white rounded-2xl p-3.5 shadow-2xl max-w-[200px]"
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-7 h-7 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
+              <Wallet className="w-4 h-4" />
+            </div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              M-Pesa · just now
+            </div>
+          </div>
+          <div className="text-base font-display font-extrabold text-primary">+KES 4,500</div>
+          <div className="text-[10px] text-muted-foreground font-medium">to your Till</div>
+        </motion.div>
+
+        {/* Floating: handle pill (lower-left) */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.1 }}
+          className="absolute -left-2 bottom-16 bg-white/95 backdrop-blur rounded-full pl-1 pr-4 py-1 shadow-xl flex items-center gap-2"
+        >
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-pink-500 via-secondary to-yellow-400 flex items-center justify-center text-white text-xs font-bold">
+            A
+          </div>
+          <span className="text-xs font-bold text-foreground">@amani.kicks</span>
+        </motion.div>
+      </div>
+
+      {/* Tagline anchored bottom */}
+      <div className="absolute bottom-10 left-12 right-12 text-white">
+        <h2 className="text-2xl md:text-3xl font-display font-bold leading-tight mb-2">
+          Sell live. Get paid in M-Pesa. Today.
+        </h2>
+        <p className="text-white/80 text-sm font-medium">
+          The store, payments &amp; live-selling stack for African social sellers.
+        </p>
+      </div>
+    </aside>
   );
 }

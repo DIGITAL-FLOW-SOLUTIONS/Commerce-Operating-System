@@ -1,60 +1,267 @@
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "wouter";
-import { ArrowLeft } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { ArrowLeft, Wallet, Package, TrendingUp } from "lucide-react";
+import { SiGoogle, SiInstagram } from "react-icons/si";
+import { FaApple } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { SokoaLogo } from "@/components/SokoaLogo";
+
+const ALLOWED_EMAIL_RE = /^[^\s@]+@(gmail\.com|yahoo\.[a-z.]{2,})$/i;
 
 export default function Login() {
+  const [, setLocation] = useLocation();
+  const [email, setEmail] = useState("");
+  const [touched, setTouched] = useState(false);
+
+  const trimmed = email.trim();
+  const isEmpty = trimmed.length === 0;
+  const isValid = useMemo(() => ALLOWED_EMAIL_RE.test(trimmed), [trimmed]);
+  const showError = touched && !isEmpty && !isValid;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched(true);
+    if (!isValid) return;
+    setLocation("/");
+  };
+
   return (
     <div className="min-h-screen flex bg-background">
-      <SEO title="Log in to Sokoa" description="Access your Sokoa dashboard." />
-      
-      {/* Left side form */}
-      <div className="w-full lg:w-1/2 flex flex-col p-8 md:p-12 justify-center relative">
-        <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="w-4 h-4" /> Back to Home
-        </Link>
+      <SEO
+        title="Log in to Sokoa"
+        description="Welcome back. Log in to manage your Sokoa storefront."
+      />
 
-        <div className="max-w-md w-full mx-auto">
-          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-display font-bold text-2xl mb-8 shadow-lg shadow-primary/20">
-            S
-          </div>
-          
-          <h1 className="text-3xl font-display font-bold mb-2 tracking-tight">Welcome back</h1>
-          <p className="text-muted-foreground mb-8">Log in to manage your boutique.</p>
+      {/* Left — form */}
+      <div className="w-full lg:w-1/2 flex flex-col px-6 sm:px-10 md:px-14 py-8 relative">
+        <div className="flex items-center justify-between">
+          <Link href="/" aria-label="Sokoa home" className="inline-flex">
+            <SokoaLogo variant="horizontal" theme="light" height={32} />
+          </Link>
+          <Link
+            href="/"
+            className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back home
+          </Link>
+        </div>
 
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label className="block text-sm font-bold mb-2">Email Address</label>
-              <Input type="email" placeholder="you@example.com" className="h-12 bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:border-primary" />
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-bold">Password</label>
-                <a href="#" className="text-sm text-primary font-medium hover:underline">Forgot?</a>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="max-w-sm w-full mx-auto py-12">
+            <h1 className="text-3xl md:text-4xl font-display font-extrabold text-center mb-2 tracking-tight">
+              Welcome back
+            </h1>
+            <p className="text-center text-muted-foreground mb-8">Log in to your Sokoa.</p>
+
+            <form className="space-y-3" onSubmit={handleSubmit} noValidate>
+              <div>
+                <Input
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => setTouched(true)}
+                  aria-invalid={showError}
+                  aria-describedby={showError ? "email-error" : undefined}
+                  className={`h-12 rounded-xl bg-muted/60 border ${
+                    showError ? "border-destructive focus-visible:ring-destructive" : "border-transparent focus-visible:ring-primary focus-visible:border-primary"
+                  } px-4 text-base`}
+                />
+                {showError && (
+                  <p id="email-error" className="mt-2 text-xs font-medium text-destructive">
+                    Unsupported email — please use a universal known email account (Gmail or Yahoo).
+                  </p>
+                )}
               </div>
-              <Input type="password" placeholder="••••••••" className="h-12 bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:border-primary" />
+
+              <Button
+                type="submit"
+                disabled={!isValid}
+                className="w-full h-12 rounded-xl font-bold text-base bg-foreground text-white hover:bg-foreground/90 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none transition-all"
+              >
+                Continue
+              </Button>
+            </form>
+
+            <div className="flex items-center gap-3 my-6">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs font-bold text-muted-foreground tracking-wider">OR</span>
+              <div className="h-px flex-1 bg-border" />
             </div>
-            
-            <Button className="w-full h-12 mt-4 font-bold text-base bg-foreground text-white hover:bg-foreground/90 rounded-xl">
-              Log in
-            </Button>
-          </form>
 
-          <p className="text-center mt-8 text-sm text-muted-foreground">
-            Don't have an account? <Link href="/signup" className="text-primary font-bold hover:underline">Sign up</Link>
-          </p>
+            <div className="space-y-3">
+              <button
+                type="button"
+                className="w-full h-12 rounded-xl border border-border bg-white hover:bg-muted/40 transition-colors flex items-center justify-center gap-3 font-semibold text-foreground"
+              >
+                <SiGoogle className="w-4 h-4" />
+                Continue with Google
+              </button>
+              <button
+                type="button"
+                className="w-full h-12 rounded-xl border border-border bg-white hover:bg-muted/40 transition-colors flex items-center justify-center gap-3 font-semibold text-foreground"
+              >
+                <FaApple className="w-5 h-5" />
+                Continue with Apple
+              </button>
+            </div>
+
+            <div className="text-center mt-8 space-y-3">
+              <a href="#" className="text-sm text-primary font-semibold hover:underline">
+                Forgot your password?
+              </a>
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?{" "}
+                <Link href="/signup" className="text-primary font-bold hover:underline">
+                  Sign up
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Right side visual */}
-      <div className="hidden lg:block w-1/2 bg-primary p-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/boutique.png')] opacity-30 mix-blend-multiply bg-cover bg-center" />
-        <div className="relative z-10 h-full flex flex-col justify-end text-white max-w-lg">
-          <h2 className="text-4xl font-display font-bold mb-4 leading-tight">"Sokoa saved me 2 hours a day of answering DMs."</h2>
-          <p className="text-xl text-white/80 font-medium mb-8">— Aisha, Nairobi</p>
-        </div>
-      </div>
+      {/* Right — Sokoa brand visual */}
+      <LoginVisual />
     </div>
+  );
+}
+
+function LoginVisual() {
+  return (
+    <aside className="hidden lg:flex w-1/2 relative overflow-hidden bg-gradient-to-br from-secondary via-orange-500 to-rose-600 items-center justify-center p-12">
+      {/* Decorative ambient blobs */}
+      <div className="absolute -top-32 -right-20 w-96 h-96 bg-yellow-300/40 rounded-full blur-3xl" />
+      <div className="absolute -bottom-32 -left-20 w-96 h-96 bg-primary/40 rounded-full blur-3xl" />
+
+      {/* Grid pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* Composition */}
+      <div className="relative w-full max-w-[440px] aspect-[4/5]">
+        {/* Center: phone-like dashboard frame */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="absolute inset-x-12 top-6 bottom-16 rounded-[2rem] bg-white border-[6px] border-white/30 shadow-2xl overflow-hidden"
+        >
+          {/* Status bar */}
+          <div className="bg-foreground text-white px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <SokoaLogo variant="mark" theme="light" height={20} />
+              <span className="text-[11px] font-bold">Boutique</span>
+            </div>
+            <div className="text-[10px] font-medium text-white/60">Today</div>
+          </div>
+
+          {/* Revenue card */}
+          <div className="p-4 bg-gradient-to-br from-primary/5 via-white to-secondary/5">
+            <div className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+              Revenue today
+            </div>
+            <div className="flex items-end gap-2 mb-1">
+              <div className="text-2xl font-display font-extrabold text-foreground">KES 45,200</div>
+              <div className="text-[10px] font-bold text-primary mb-1.5 flex items-center gap-0.5">
+                <TrendingUp className="w-3 h-3" /> +28%
+              </div>
+            </div>
+            <div className="text-[10px] text-muted-foreground font-medium">42 orders · 11 buyers</div>
+
+            {/* Bar chart */}
+            <div className="mt-3 flex items-end gap-1.5 h-14">
+              {[40, 65, 50, 80, 95, 75, 90].map((h, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                  <div
+                    className="w-full rounded-t bg-gradient-to-t from-primary to-emerald-300"
+                    style={{ height: `${h}%` }}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-1 flex justify-between text-[8px] text-muted-foreground font-bold">
+              {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+                <span key={`day-${i}`}>{d}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Order rows */}
+          <div className="px-4 pt-1 pb-3 space-y-1.5">
+            {[
+              { name: "Emerald wrap · M", price: "KES 3,200" },
+              { name: "Air Jordans · 42", price: "KES 4,500" },
+              { name: "Beaded earrings", price: "KES 1,200" },
+            ].map((o) => (
+              <div
+                key={o.name}
+                className="flex items-center justify-between bg-muted/40 rounded-lg px-2.5 py-2"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <Package className="w-3 h-3" />
+                  </div>
+                  <div className="text-[10px] font-bold text-foreground truncate">{o.name}</div>
+                </div>
+                <div className="text-[10px] font-extrabold text-primary shrink-0">{o.price}</div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Floating: M-Pesa to your till */}
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="absolute -left-8 bottom-32 bg-white rounded-2xl p-3.5 shadow-2xl flex items-center gap-3 max-w-[210px]"
+        >
+          <div className="w-9 h-9 rounded-xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+            <Wallet className="w-4 h-4" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] font-bold text-foreground">+KES 4,500</div>
+            <div className="text-[10px] text-muted-foreground font-medium truncate">
+              M-Pesa · 0712****89
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Floating: handle pill */}
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="absolute -right-6 top-24 bg-white/95 backdrop-blur rounded-full pl-1 pr-3 py-1 shadow-xl flex items-center gap-2"
+        >
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-pink-500 via-secondary to-yellow-400 flex items-center justify-center text-white text-xs">
+            <SiInstagram className="w-3.5 h-3.5" />
+          </div>
+          <span className="text-xs font-bold text-foreground">@nyota.boutique</span>
+        </motion.div>
+      </div>
+
+      {/* Tagline anchored bottom */}
+      <div className="absolute bottom-10 left-12 right-12 text-white">
+        <h2 className="text-2xl md:text-3xl font-display font-bold leading-tight mb-2">
+          Your shop is waiting.
+        </h2>
+        <p className="text-white/80 text-sm font-medium">
+          Pick up where you left off — orders, stock, and M-Pesa receipts in one place.
+        </p>
+      </div>
+    </aside>
   );
 }
