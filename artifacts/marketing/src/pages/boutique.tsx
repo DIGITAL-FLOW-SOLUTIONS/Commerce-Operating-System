@@ -38,7 +38,6 @@ export default function Boutique() {
         description="The professional dashboard for serious African merchants. Manage inventory, orders, payouts, and team — across every channel — from one mobile-first store."
       />
       <Navbar />
-
       {/* Hero */}
       <section className="pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/5" />
@@ -58,9 +57,7 @@ export default function Boutique() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-foreground leading-[1.1] tracking-tight mb-6">
                 Stop running your business on <span className="text-primary">WhatsApp DMs.</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl">
-                Sokoa Boutique is the professional-grade management surface for your growing store. Track inventory, analyze sales, and process orders from a beautiful, mobile-first dashboard.
-              </p>
+              <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl">Sokoa Boutique is the professional-grade management surface for your growing Boutique. Track inventory, analyze sales, and process orders from a beautiful, mobile-first dashboard.</p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/signup">
                   <Button className="h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]">
@@ -127,7 +124,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Feature grid */}
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
@@ -173,7 +169,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Build in 3 minutes. Sell to millions. */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute -top-20 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
@@ -288,7 +283,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Dashboard tour */}
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
@@ -383,7 +377,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Operational scenarios */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6">
@@ -437,7 +430,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Comparison table */}
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
@@ -528,7 +520,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Testimonial */}
       <section className="py-24 bg-foreground text-white relative overflow-hidden">
         <div className="absolute -top-32 -right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
@@ -567,7 +558,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* FAQ */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6">
@@ -604,7 +594,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
@@ -634,7 +623,6 @@ export default function Boutique() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
