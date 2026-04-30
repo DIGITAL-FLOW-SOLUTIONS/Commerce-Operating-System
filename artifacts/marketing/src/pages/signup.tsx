@@ -103,7 +103,7 @@ export default function Signup() {
               <Button
                 type="submit"
                 disabled={!isValid}
-                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-white hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none shadow-lg shadow-primary/20 transition-all"
+                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-black hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none shadow-lg shadow-primary/20 transition-all"
               >
                 Continue
               </Button>
@@ -124,16 +124,16 @@ export default function Signup() {
             <div className="space-y-3">
               <button
                 type="button"
-                className="w-full h-12 rounded-xl border border-border bg-white hover:bg-muted/40 transition-colors flex items-center justify-center gap-3 font-semibold text-foreground"
+                className="w-full h-12 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center justify-center gap-3 font-semibold text-gray-700 shadow-sm"
               >
-                <SiGoogle className="w-4 h-4" />
+                <SiGoogle className="w-4 h-4" style={{ color: "#4285F4" }} />
                 Continue with Google
               </button>
               <button
                 type="button"
-                className="w-full h-12 rounded-xl border border-border bg-white hover:bg-muted/40 transition-colors flex items-center justify-center gap-3 font-semibold text-foreground"
+                className="w-full h-12 rounded-xl bg-black hover:bg-neutral-800 transition-colors flex items-center justify-center gap-3 font-semibold text-white shadow-sm"
               >
-                <FaApple className="w-5 h-5" />
+                <FaApple className="w-5 h-5 -mt-0.5" />
                 Continue with Apple
               </button>
             </div>
