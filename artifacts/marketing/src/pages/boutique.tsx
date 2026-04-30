@@ -380,9 +380,7 @@ export default function Boutique() {
             <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-6 tracking-tight">
               Run your back office like a pro.
             </h2>
-            <p className="text-lg text-muted-foreground">
-              We built Boutique around the days that actually happen in a Kenyan shop. Restock day. Drop day. Cashbook day. KRA day.
-            </p>
+            <p className="text-lg text-muted-foreground">We built Boutique around the days that actually happen in a Kenyan boutique store. Restock day. Drop day. Cashbook day. KRA day.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
