@@ -2,7 +2,7 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation } from "wouter";
-import { ArrowLeft, CheckCircle2, ShoppingBag, Wallet, Play } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShoppingBag, Wallet, BadgeCheck, MapPin, Star, Radio } from "lucide-react";
 import { SiGoogle } from "react-icons/si";
 import { FaApple } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -103,7 +103,7 @@ export default function Signup() {
               <Button
                 type="submit"
                 disabled={!isValid}
-                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-black hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none shadow-lg shadow-primary/20 transition-all"
+                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-black hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-primary/20 transition-all"
               >
                 Continue
               </Button>
@@ -157,120 +157,152 @@ export default function Signup() {
 function SignupVisual() {
   return (
     <aside className="hidden lg:flex w-1/2 relative overflow-hidden bg-gradient-to-br from-primary via-emerald-500 to-emerald-700 items-center justify-center p-12">
-      {/* Decorative ambient blobs */}
-      <div className="absolute -top-32 -left-20 w-96 h-96 bg-secondary/40 rounded-full blur-3xl" />
-      <div className="absolute -bottom-32 -right-20 w-96 h-96 bg-emerald-300/30 rounded-full blur-3xl" />
-      <div className="absolute top-1/3 right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-
-      {/* Subtle dot pattern */}
+      {/* Subtle grid pattern (matches login's tactile feel) */}
       <div
-        className="absolute inset-0 opacity-[0.07]"
+        className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:
-            "radial-gradient(circle, white 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
+            "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
         }}
       />
+      {/* Soft ambient highlights */}
+      <div className="absolute -top-32 -right-20 w-96 h-96 bg-emerald-300/30 rounded-full blur-3xl" />
+      <div className="absolute -bottom-40 -left-24 w-[28rem] h-[28rem] bg-secondary/25 rounded-full blur-3xl" />
 
       {/* Composition */}
-      <div className="relative w-full max-w-[460px] aspect-[4/5]">
-        {/* Center: faux TikTok-style phone frame */}
+      <div className="relative w-full max-w-[400px] -mt-16">
+        {/* Center card: Sokoa storefront preview */}
         <motion.div
-          initial={{ y: 30, opacity: 0 }}
+          initial={{ y: 24, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="absolute inset-x-12 top-8 bottom-12 rounded-[2rem] bg-zinc-900 border-[6px] border-white/20 shadow-2xl overflow-hidden"
+          className="relative bg-white rounded-[24px] shadow-2xl overflow-hidden ring-1 ring-black/5"
         >
-          {/* Stream gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/40 via-zinc-900 to-zinc-900" />
-
-          {/* LIVE pill */}
-          <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-secondary text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
-            <Play className="w-2.5 h-2.5 fill-current" /> LIVE
+          {/* Browser chrome */}
+          <div className="flex items-center gap-1.5 px-4 py-2.5 bg-zinc-900 border-b border-black/10">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+            </div>
+            <div className="flex-1 mx-3 bg-zinc-700/60 rounded-md px-3 py-1 text-[10px] text-zinc-300 font-mono truncate">
+              sokoa.shop/amani.kicks
+            </div>
           </div>
-          <div className="absolute top-4 right-4 bg-black/40 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-            1.2k watching
+
+          {/* Cover banner */}
+          <div className="relative h-16 bg-gradient-to-br from-secondary via-rose-400 to-pink-500">
+            <div
+              className="absolute inset-0 opacity-30"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 70% 30%, white 1px, transparent 1px)",
+                backgroundSize: "30px 30px",
+              }}
+            />
           </div>
 
-          {/* Center seller silhouette */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[55%] w-32 h-32 rounded-full bg-gradient-to-br from-pink-400 via-secondary to-pink-600 opacity-90 blur-sm" />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[55%] w-28 h-28 rounded-full bg-gradient-to-br from-yellow-300 via-secondary to-rose-500" />
+          {/* Profile block */}
+          <div className="px-5 -mt-7 relative">
+            <div className="w-14 h-14 rounded-2xl ring-4 ring-white bg-gradient-to-br from-yellow-300 via-secondary to-rose-500 shadow-md flex items-center justify-center text-white text-xl font-display font-extrabold">
+              A
+            </div>
+            <div className="mt-2.5 flex items-center gap-1.5">
+              <h3 className="text-base font-display font-extrabold text-foreground">Amani Kicks</h3>
+              <BadgeCheck className="w-4 h-4 text-primary fill-primary/15" />
+            </div>
+            <div className="flex items-center gap-3 mt-0.5 text-[11px] text-muted-foreground font-medium">
+              <span className="flex items-center gap-1">
+                <MapPin className="w-3 h-3" /> Nairobi, KE
+              </span>
+              <span className="flex items-center gap-1">
+                <Star className="w-3 h-3 fill-amber-400 text-amber-400" /> 4.9 · 312 reviews
+              </span>
+            </div>
+          </div>
 
-          {/* Bottom drawer: storefront link */}
-          <div className="absolute inset-x-3 bottom-3 bg-white rounded-2xl p-3 shadow-xl">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              <div className="text-[10px] font-bold uppercase tracking-wider text-primary">
-                Store is live
+          {/* Tab strip */}
+          <div className="px-5 mt-4 flex gap-5 border-b border-border/60 text-xs font-semibold">
+            <div className="pb-2 border-b-2 border-foreground text-foreground">Shop</div>
+            <div className="pb-2 text-muted-foreground">Live</div>
+            <div className="pb-2 text-muted-foreground">About</div>
+          </div>
+
+          {/* Product grid (single row, 3-up) */}
+          <div className="p-3.5 grid grid-cols-3 gap-2.5">
+            {[
+              { name: "AJ4 · Bred", price: "4,500", grad: "from-rose-200 to-rose-400", tag: "Hot" },
+              { name: "AF1 · White", price: "5,200", grad: "from-zinc-100 to-zinc-300", tag: null },
+              { name: "Yeezy · Zebra", price: "6,800", grad: "from-stone-200 to-stone-400", tag: "12" },
+            ].map((p, i) => (
+              <div key={i} className="rounded-lg overflow-hidden bg-muted/40">
+                <div className={`relative h-14 bg-gradient-to-br ${p.grad} flex items-center justify-center`}>
+                  <div className="w-10 h-4 bg-white/75" style={{ clipPath: "polygon(0% 60%, 15% 30%, 35% 20%, 70% 25%, 100% 60%, 100% 100%, 0% 100%)" }} />
+                  {p.tag && (
+                    <span className="absolute top-1 right-1 bg-secondary text-white text-[8px] font-extrabold px-1 py-0.5 rounded uppercase tracking-wider">
+                      {p.tag}
+                    </span>
+                  )}
+                </div>
+                <div className="px-1.5 py-1">
+                  <div className="text-[9px] font-semibold text-foreground truncate">{p.name}</div>
+                  <div className="text-[9px] font-extrabold text-primary mt-0.5">KES {p.price}</div>
+                </div>
               </div>
-            </div>
-            <div className="text-xs font-semibold text-foreground mb-2 truncate">
-              Tap to shop today's drop · M-Pesa
-            </div>
-            <div className="bg-primary text-white text-[11px] font-bold rounded-lg py-2 text-center">
-              sokoa.shop/live/amani
+            ))}
+          </div>
+
+          {/* Sticky M-Pesa CTA */}
+          <div className="px-3.5 pb-3.5">
+            <div className="bg-primary text-black rounded-lg py-2 text-center text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md shadow-primary/30">
+              <Wallet className="w-3.5 h-3.5" /> Pay with M-Pesa
             </div>
           </div>
         </motion.div>
 
-        {/* Floating: "Order placed" card */}
+        {/* Floating: Live now pill (anchored top-left, peeks above card) */}
         <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="absolute -left-6 top-20 bg-white rounded-2xl p-3.5 shadow-2xl flex items-center gap-3 max-w-[220px]"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="absolute -left-5 -top-5 bg-white rounded-2xl pl-2 pr-3.5 py-2 shadow-2xl flex items-center gap-2.5 z-20"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0">
-            <ShoppingBag className="w-5 h-5" />
+          <div className="relative w-7 h-7 rounded-full bg-rose-500 flex items-center justify-center shrink-0">
+            <Radio className="w-3.5 h-3.5 text-white" />
+            <span className="absolute inset-0 rounded-full bg-rose-500 animate-ping opacity-60" />
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <div className="text-[9px] font-extrabold text-rose-600 uppercase tracking-wider leading-none">Live now</div>
+            <div className="text-[11px] font-semibold text-foreground leading-none">47 watching</div>
+          </div>
+        </motion.div>
+
+        {/* Floating: Order received card (peeks bottom-right, below CTA) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="absolute -right-12 -bottom-10 bg-white rounded-2xl p-3 shadow-2xl flex items-center gap-2.5 z-20"
+        >
+          <div className="w-9 h-9 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0">
+            <ShoppingBag className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <div className="text-[11px] font-bold text-foreground">wanjiku99 just bought</div>
-            <div className="text-[10px] text-muted-foreground font-medium truncate">
-              Emerald wrap dress · M
-            </div>
+            <div className="text-[11px] font-bold text-foreground leading-tight">wanjiku99 paid</div>
+            <div className="text-[10px] text-primary font-extrabold leading-tight mt-0.5">+KES 4,500 · M-Pesa</div>
           </div>
-        </motion.div>
-
-        {/* Floating: M-Pesa receipt */}
-        <motion.div
-          initial={{ x: 20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="absolute -right-4 top-44 bg-white rounded-2xl p-3.5 shadow-2xl max-w-[200px]"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
-              <Wallet className="w-4 h-4" />
-            </div>
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-              M-Pesa · just now
-            </div>
-          </div>
-          <div className="text-base font-display font-extrabold text-primary">+KES 4,500</div>
-          <div className="text-[10px] text-muted-foreground font-medium">to your Till</div>
-        </motion.div>
-
-        {/* Floating: handle pill (lower-left) */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1.1 }}
-          className="absolute -left-2 bottom-16 bg-white/95 backdrop-blur rounded-full pl-1 pr-4 py-1 shadow-xl flex items-center gap-2"
-        >
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-pink-500 via-secondary to-yellow-400 flex items-center justify-center text-white text-xs font-bold">
-            A
-          </div>
-          <span className="text-xs font-bold text-foreground">@amani.kicks</span>
+          <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
         </motion.div>
       </div>
 
       {/* Tagline anchored bottom */}
       <div className="absolute bottom-10 left-12 right-12 text-white">
         <h2 className="text-2xl md:text-3xl font-display font-bold leading-tight mb-2">
-          Sell live. Get paid in M-Pesa. Today.
+          Your shop, ready in 3 minutes.
         </h2>
         <p className="text-white/80 text-sm font-medium">
-          The store, payments &amp; live-selling stack for African social sellers.
+          A storefront, M-Pesa checkout, and live-selling stack — built for African social sellers.
         </p>
       </div>
     </aside>

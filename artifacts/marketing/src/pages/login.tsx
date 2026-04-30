@@ -83,7 +83,7 @@ export default function Login() {
               <Button
                 type="submit"
                 disabled={!isValid}
-                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-black hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none shadow-lg shadow-primary/20 transition-all"
+                className="w-full h-12 rounded-xl font-bold text-base bg-primary text-black hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-primary/20 transition-all"
               >
                 Continue
               </Button>
