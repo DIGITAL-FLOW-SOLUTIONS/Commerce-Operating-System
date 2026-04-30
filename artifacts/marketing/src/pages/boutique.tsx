@@ -134,9 +134,7 @@ export default function Boutique() {
             <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-6 tracking-tight">
               Everything a modern boutique needs.
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Every tool a Nairobi shopkeeper, a Kisumu reseller, or a Mombasa boutique owner has been hacking together in WhatsApp, Excel, and DMs — finally in one place.
-            </p>
+            <p className="text-lg text-muted-foreground">Every tool a Nairobi boutique, a Kisumu reseller, or a Mombasa boutique owner has been hacking together in WhatsApp, Excel, and DMs — finally in one place.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
