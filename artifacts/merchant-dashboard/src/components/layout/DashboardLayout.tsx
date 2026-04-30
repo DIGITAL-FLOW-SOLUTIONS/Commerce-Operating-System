@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useData } from "@/lib/mock-data";
-import { 
-  LayoutDashboard, 
-  Store, 
-  Globe, 
-  CreditCard, 
-  CreditCard as Subscriptions, // Using credit card for subs too or something else
-  BarChart, 
-  Bell, 
-  Settings, 
+import { SokoaLogo } from "@/components/SokoaLogo";
+import {
+  LayoutDashboard,
+  Store,
+  Globe,
+  CreditCard,
+  Sparkles,
+  BarChart,
+  Bell,
+  Settings,
   Menu,
   Search,
   X,
@@ -37,7 +38,7 @@ export const NAVIGATION = [
   { name: "My Stores", href: "/stores", icon: Store },
   { name: "Published Stores", href: "/published", icon: Globe },
   { name: "Payouts", href: "/payouts", icon: CreditCard },
-  { name: "Subscriptions", href: "/subscriptions", icon: CreditCard },
+  { name: "Subscriptions", href: "/subscriptions", icon: Sparkles },
   { name: "Analytics", href: "/analytics", icon: BarChart },
   { name: "Notifications", href: "/notifications", icon: Bell },
   { name: "Settings", href: "/settings", icon: Settings },
@@ -51,12 +52,9 @@ function SidebarContent() {
   return (
     <div className="flex h-full flex-col gap-2 bg-sidebar border-r border-sidebar-border text-sidebar-foreground">
       <div className="p-6">
-        <div className="flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-primary">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            S
-          </div>
-          Sokoa
-        </div>
+        <Link href="/" className="flex items-center" aria-label="Sokoa home">
+          <SokoaLogo variant="horizontal" theme="light" height={32} />
+        </Link>
       </div>
       <div className="flex-1 overflow-auto py-2">
         <nav className="grid gap-1 px-4 text-sm font-medium">
@@ -112,6 +110,10 @@ function Topbar() {
           <SidebarContent />
         </SheetContent>
       </Sheet>
+
+      <Link href="/" className="md:hidden flex items-center" aria-label="Sokoa home">
+        <SokoaLogo variant="horizontal" theme="light" height={26} />
+      </Link>
 
       <div className="flex flex-1 items-center gap-4 md:gap-8">
         <div className="flex-1 md:flex-initial w-full max-w-sm ml-auto md:ml-0 hidden sm:flex">

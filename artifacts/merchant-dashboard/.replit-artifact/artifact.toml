@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/dashboard/"
+previewPath = "/~/"
 title = "Sokoa — Merchant Dashboard"
 version = "1.0.0"
 id = "artifacts/merchant-dashboard"
@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/dashboard/" ]
+paths = [ "/~/" ]
 localPort = 19445
 
 [services.development]
@@ -28,4 +28,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "19445"
-BASE_PATH = "/dashboard/"
+BASE_PATH = "/~/"

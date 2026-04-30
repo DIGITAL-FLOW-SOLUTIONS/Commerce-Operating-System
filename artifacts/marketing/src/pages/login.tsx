@@ -26,8 +26,8 @@ export default function Login() {
     setTouched(true);
     if (!result.ok) return;
     // Authenticated merchants are sent to the Merchant Dashboard,
-    // which is a separate artifact mounted at /dashboard/.
-    window.location.assign("/dashboard/");
+    // which is a separate artifact mounted at /~/.
+    window.location.assign("/~/");
   };
 
   return (

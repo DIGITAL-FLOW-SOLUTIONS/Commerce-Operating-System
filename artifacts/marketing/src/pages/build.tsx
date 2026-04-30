@@ -105,7 +105,7 @@ export default function Build() {
           >
             <Button 
               className="w-full h-14 text-lg font-bold rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]"
-              onClick={() => window.location.assign("/dashboard/")}
+              onClick={() => window.location.assign("/~/")}
             >
               Claim your store <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
