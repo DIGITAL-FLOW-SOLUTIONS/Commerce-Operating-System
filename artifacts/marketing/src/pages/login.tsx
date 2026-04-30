@@ -1,7 +1,7 @@
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { ArrowLeft, Wallet, Package, TrendingUp } from "lucide-react";
 import { SiGoogle, SiInstagram } from "react-icons/si";
 import { FaApple } from "react-icons/fa";
@@ -11,7 +11,6 @@ import { SokoaLogo } from "@/components/SokoaLogo";
 import { validateEmail, emailErrorMessage } from "@/lib/email-validation";
 
 export default function Login() {
-  const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
 
@@ -26,7 +25,9 @@ export default function Login() {
     e.preventDefault();
     setTouched(true);
     if (!result.ok) return;
-    setLocation("/");
+    // Authenticated merchants are sent to the Merchant Dashboard,
+    // which is a separate artifact mounted at /dashboard/.
+    window.location.assign("/dashboard/");
   };
 
   return (

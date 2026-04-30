@@ -69,3 +69,10 @@ because no anon policy exists.
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Artifacts
+
+- `artifacts/marketing` (`/`) — Sokoa marketing site (login, signup, build flow). Authenticated merchants are redirected to `/dashboard/` via `window.location.assign` (cross-artifact base paths).
+- `artifacts/merchant-dashboard` (`/dashboard/`) — Sokoa Merchant Dashboard (Multi-Surface Commerce OS). React + Vite + wouter + framer-motion + next-themes. Mock data lives in `src/lib/mock-data.tsx` (`DataProvider` + `useData` hook) with a four-state demo toggle (`both` / `tiktok_only` / `boutique_only` / `none`). Sidebar nav: Dashboard, My Stores, Published Stores, Payouts, Subscriptions, Analytics, Notifications, Settings. Built pages: `/`, `/payouts`. Other routes render an under-construction `Placeholder` for expandability. Brand tokens live in `src/index.css` mirroring marketing. Public asset URLs must be prefixed with `import.meta.env.BASE_URL` (helper `ASSET()` in mock-data).
+- `artifacts/api-server` (`/api`) — shared Express API + Supabase.
+- `artifacts/mockup-sandbox` (`/__mockup`) — design canvas preview server.

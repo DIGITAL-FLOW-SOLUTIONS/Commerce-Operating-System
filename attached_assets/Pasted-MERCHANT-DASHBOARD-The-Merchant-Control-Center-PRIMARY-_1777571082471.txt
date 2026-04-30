@@ -1,0 +1,236 @@
+MERCHANT DASHBOARD (/~)
+“The Merchant Control Center”
+🧠 🎯 PRIMARY PURPOSE
+
+The Merchant Dashboard is:
+
+The central operating system interface where every merchant manages their commerce activities across all surfaces (TikTok, Boutique, Payments, Stores, Subscriptions).
+
+⚠️ IMPORTANT POSITIONING
+
+This is NOT just a dashboard.
+
+It is:
+
+A launcher (start new commerce flows)
+A status center (what’s happening now)
+A control hub (manage everything)
+A growth surface (upsell features later)
+🧭 CORE DESIGN PRINCIPLES
+1. Mobile-first always
+Must feel like an app, not a website
+2. Zero confusion
+New user knows what to do in 3 seconds
+3. Speed = Trust
+Everything loads instantly
+4. Progressive complexity
+New users see simple UI
+Power users unlock more
+🧩 DASHBOARD STRUCTURE (BASED ON YOUR DESIGN)
+🟡 1. MAIN PAGE (/~)
+🧠 Purpose:
+First screen after login
+Show what to do next
+Show what is working
+🧱 SECTION 1 — HEADER
+Content:
+“👋 Welcome back, [Name]”
+“Merchant Workspace”
+🧱 SECTION 2 — PRIMARY ACTION GRID (MOST IMPORTANT)
+
+This replaces the input field in your screenshot
+
+🎯 Two Core Cards:
+🟣 CARD 1 — TikTok Live Selling Store
+Title: “TikTok Live Selling”
+Description: “Create a live selling store instantly”
+CTA:
+If not created → “Create Store”
+If exists → show:
+Revenue today
+Total revenue
+Active session status
+🔵 CARD 2 — My Boutique Store
+Title: “Boutique Store”
+Description: “Your full online store”
+CTA:
+If not created → “Create Store”
+If exists → show:
+Revenue today
+Orders count
+Store status
+⚙️ Behavior Logic
+State	UI
+No stores	“Create your first store”
+Has TikTok only	Show TikTok analytics
+Has Boutique only	Show Boutique analytics
+Has both	Show both summaries
+🤖 AI PROMPT — PRIMARY GRID
+Design the primary dashboard action grid:
+
+- Two main cards:
+  1. TikTok Live Selling Store
+  2. Boutique Store
+
+Each card must:
+- Show CTA if not created
+- Show analytics if created (revenue, orders, status)
+
+Include state-based rendering:
+- No store → "Create your first store"
+- Existing store → show summary metrics
+
+Make it visually rich, mobile-first, and tappable.
+🟢 3. “MY STORES” SECTION
+🎯 Purpose:
+
+Quick access to created stores
+
+🧱 Structure:
+Horizontal scroll (mobile)
+Grid (desktop)
+Each Store Card:
+Store name
+Type (TikTok / Boutique)
+Status (active, expired, draft)
+Revenue snapshot
+CTA: “Open / Manage”
+⚙️ Behavior:
+Hidden if no stores exist
+“View All” button → /stores
+🤖 AI PROMPT
+Design a "My Stores" section:
+
+- Display list of merchant stores
+- Show name, type, status, and revenue snapshot
+- Include "View All" navigation
+- Hide section if no stores exist
+
+Ensure smooth scrolling and fast rendering.
+🟡 4. STORE COLLECTION (TEMPLATES)
+🎯 Purpose:
+
+Drive store creation via inspiration
+
+🧱 Structure:
+
+Exactly like your screenshot
+
+Content:
+Pre-built store templates:
+TikTok Live templates
+Boutique themes
+Each Card:
+Preview image
+Store type
+“Use this template” CTA
+⚙️ Behavior:
+Clicking → starts store creation flow
+Preloads theme into store
+🤖 AI PROMPT
+Design a Store Collection section:
+
+- Show template cards for:
+  - TikTok Live stores
+  - Boutique stores
+
+Each card:
+- Preview image
+- Type label
+- CTA: "Use this template"
+
+Ensure fast loading and attractive UI.
+🟣 SIDEBAR NAVIGATION (BASED ON YOUR IMAGE)
+🧱 Structure
+Sections:
+Dashboard
+My Stores
+Published Stores
+Payouts
+Subscriptions
+Analytics
+Notifications
+Settings
+⚙️ Behavior:
+Collapsible (mobile)
+Persistent (desktop)
+🤖 AI PROMPT
+Design a sidebar navigation:
+
+Include:
+- Dashboard
+- My Stores
+- Published Stores
+- Payouts
+- Subscriptions
+- Analytics
+- Notifications
+- Settings
+
+Make it collapsible and mobile-friendly.
+🟡 TOP LEFT MENU (PROFILE DROPDOWN)
+
+Based on your second image
+
+Options:
+Settings
+Notifications
+Theme (Light/Dark)
+Help
+Logout
+🤖 AI PROMPT
+Design a profile dropdown menu:
+
+Include:
+- Settings
+- Notifications
+- Theme toggle
+- Help
+- Logout
+
+Make it clean and minimal.
+🔴 PAYOUTS ENTRY (IMPORTANT)
+🎯 Purpose:
+
+Enable merchants to receive money
+
+Minimal MVP inside dashboard:
+Add:
+Till number
+Paybill
+Bank account
+⚙️ Behavior:
+Show warning if not set
+Block store publishing if missing
+🧠 FUTURE FEATURES (MUST BE PREPARED FOR)
+
+You mentioned powerful ones — we design for them now:
+
+1. Team & Roles
+Add staff accounts
+Permission-based access
+2. KRA Reports
+VAT-ready exports
+Monthly reports
+3. Customer Import
+CSV upload
+Contact sync
+⚠️ IMPORTANT:
+
+Do NOT build full UI yet — but structure dashboard to support expansion.
+
+🔐 ACCESS CONTROL
+Only authenticated users access /~
+Must belong to tenant
+If not:
+→ redirect to onboarding
+⚡ PERFORMANCE RULES
+Lazy load sections
+Cache summaries
+Avoid blocking calls
+🧪 EDGE CASES
+No stores created
+Subscription expired
+No payout method set
+Slow API response
+Empty analytics

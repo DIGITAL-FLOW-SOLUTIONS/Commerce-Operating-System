@@ -60,3 +60,27 @@ id = "-G_CcPKN1_IMQHRShqWTr"
 uri = "file://artifacts/marketing/public/images/tiktok-creator.png"
 type = "image"
 title = "tiktok live creator setup"
+
+[[generated]]
+id = "LyinNZojradsruCBL0g9Q"
+uri = "file://artifacts/merchant-dashboard/public/templates/tiktok-live.png"
+type = "image"
+title = "TikTok Live stream interface preview"
+
+[[generated]]
+id = "OPgSZ5szb5KBbZfI6RTNs"
+uri = "file://artifacts/merchant-dashboard/public/templates/boutique.png"
+type = "image"
+title = "Elegant fashion boutique flat-lay"
+
+[[generated]]
+id = "YUQOP97H21O2iXGaTqyW7"
+uri = "file://artifacts/merchant-dashboard/public/templates/electronics.png"
+type = "image"
+title = "Modern electronics store layout"
+
+[[generated]]
+id = "hPWy2ZE3Fy4cAidf-hTqj"
+uri = "file://artifacts/merchant-dashboard/public/templates/fashion.png"
+type = "image"
+title = "Vibrant streetwear fashion store"

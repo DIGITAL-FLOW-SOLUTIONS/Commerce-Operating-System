@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Store, Package, Smartphone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,6 @@ const steps = [
 ];
 
 export default function Build() {
-  const [location, setLocation] = useLocation();
   const [currentStep, setCurrentStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   
@@ -107,7 +105,7 @@ export default function Build() {
           >
             <Button 
               className="w-full h-14 text-lg font-bold rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]"
-              onClick={() => setLocation("/signup?intent=claim")}
+              onClick={() => window.location.assign("/dashboard/")}
             >
               Claim your store <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
