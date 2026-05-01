@@ -44,6 +44,80 @@ export const NAVIGATION = [
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
+function SidebarHeader() {
+  const { user } = useData();
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div className="flex items-center justify-between px-4 py-4 border-b border-sidebar-border">
+      {/* Avatar + profile dropdown */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 p-0">
+            <Avatar className="h-9 w-9 border border-border">
+              <AvatarImage src={user.avatarUrl} alt={user.name} />
+              <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
+                {user.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">{user.name}</p>
+              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/settings" className="cursor-pointer flex items-center w-full">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Settings</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/notifications" className="cursor-pointer flex items-center w-full">
+              <Bell className="mr-2 h-4 w-4" />
+              <span>Notifications</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+            {theme === "dark" ? (
+              <>
+                <Sun className="mr-2 h-4 w-4" />
+                <span>Light Mode</span>
+              </>
+            ) : (
+              <>
+                <Moon className="mr-2 h-4 w-4" />
+                <span>Dark Mode</span>
+              </>
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/help" className="cursor-pointer flex items-center w-full">
+              <HelpCircle className="mr-2 h-4 w-4" />
+              <span>Help Center</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Search icon */}
+      <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full text-muted-foreground hover:text-foreground">
+        <Search className="h-4 w-4" />
+        <span className="sr-only">Search</span>
+      </Button>
+    </div>
+  );
+}
+
 function SidebarContent() {
   const [location] = useLocation();
   const { notifications } = useData();
@@ -51,11 +125,7 @@ function SidebarContent() {
 
   return (
     <div className="flex h-full flex-col gap-2 bg-sidebar border-r border-sidebar-border text-sidebar-foreground">
-      <div className="p-6">
-        <Link href="/" className="flex items-center" aria-label="Sokoa home">
-          <SokoaLogo variant="horizontal" theme="light" height={32} />
-        </Link>
-      </div>
+      <SidebarHeader />
       <div className="flex-1 overflow-auto py-2">
         <nav className="grid gap-1 px-4 text-sm font-medium">
           {NAVIGATION.map((item) => {
@@ -98,10 +168,10 @@ function Topbar() {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur px-4 md:px-6">
+    <header className="md:hidden sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur px-4">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="md:hidden">
+          <Button variant="ghost" size="icon">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
