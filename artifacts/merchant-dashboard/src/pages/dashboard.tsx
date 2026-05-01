@@ -23,17 +23,13 @@ import {
   ArrowRight,
   ChevronDown,
   ChevronRight,
-  Facebook,
-  Instagram,
   RefreshCw,
   Send,
   ShoppingBag,
-  ShoppingCart,
   Video,
-  Store as StoreIcon,
   Package,
-  ExternalLink,
 } from "lucide-react";
+import { SiTiktok, SiInstagram, SiFacebook } from "react-icons/si";
 import { cn } from "@/lib/utils";
 import { SokoaLogo } from "@/components/SokoaLogo";
 
@@ -49,11 +45,11 @@ type InputMode = "business" | "tiktok" | "socials";
 type SocialPlatform = "instagram" | "facebook";
 
 const STORE_TYPES = [
-  { id: "boutique", label: "Boutique", icon: ShoppingBag },
-  { id: "tiktok", label: "TikTok Live", icon: Video },
-  { id: "preorder", label: "Pre-order", icon: Package },
-  { id: "fb", label: "FB Store", icon: Facebook },
-  { id: "ig", label: "IG Store", icon: Instagram },
+  { id: "boutique", label: "Boutique", icon: ShoppingBag, color: undefined },
+  { id: "tiktok", label: "TikTok Live", icon: SiTiktok, color: "#010101" },
+  { id: "preorder", label: "Pre-order", icon: Package, color: undefined },
+  { id: "fb", label: "FB Store", icon: SiFacebook, color: "#1877F2" },
+  { id: "ig", label: "IG Store", icon: SiInstagram, color: "#E4405F" },
 ];
 
 const BUSINESS_SUGGESTIONS = [
@@ -68,10 +64,12 @@ const BUSINESS_SUGGESTIONS = [
 function StoreTypeIcon({
   label,
   icon: Icon,
+  color,
   onClick,
 }: {
   label: string;
   icon: React.ElementType;
+  color?: string;
   onClick: () => void;
 }) {
   return (
@@ -80,8 +78,14 @@ function StoreTypeIcon({
       onClick={onClick}
       className="flex flex-col items-center gap-2 group focus:outline-none"
     >
-      <div className="w-14 h-14 rounded-2xl bg-muted border border-border flex items-center justify-center text-muted-foreground group-hover:border-primary/50 group-hover:text-primary group-hover:bg-primary/5 transition-all">
-        <Icon className="w-6 h-6" />
+      <div
+        className="w-14 h-14 rounded-2xl bg-muted border border-border flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md"
+        style={color ? { borderColor: `${color}33` } : undefined}
+      >
+        <Icon
+          className="w-6 h-6"
+          style={{ color: color ?? undefined }}
+        />
       </div>
       <span className="text-xs text-muted-foreground group-hover:text-foreground font-medium text-center leading-tight transition-colors">
         {label}
@@ -252,10 +256,10 @@ function HeroCreateSection() {
                 <div className="flex items-center gap-1 px-3 py-2 bg-muted/40">
                   {(
                     [
-                      { id: "instagram", label: "Instagram", Icon: Instagram },
-                      { id: "facebook", label: "Facebook", Icon: Facebook },
-                    ] as { id: SocialPlatform; label: string; Icon: React.ElementType }[]
-                  ).map(({ id, label, Icon }) => (
+                      { id: "instagram", label: "Instagram", Icon: SiInstagram, color: "#E4405F" },
+                      { id: "facebook", label: "Facebook", Icon: SiFacebook, color: "#1877F2" },
+                    ] as { id: SocialPlatform; label: string; Icon: React.ElementType; color: string }[]
+                  ).map(({ id, label, Icon, color }) => (
                     <button
                       key={id}
                       type="button"
@@ -263,12 +267,12 @@ function HeroCreateSection() {
                       className={cn(
                         "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
                         socialPlatform === id
-                          ? "bg-background text-foreground shadow-sm border border-border"
+                          ? "bg-background shadow-sm border border-border"
                           : "text-muted-foreground hover:text-foreground"
                       )}
                     >
-                      <Icon className="w-3.5 h-3.5" />
-                      {label}
+                      <Icon className="w-3.5 h-3.5" style={{ color }} />
+                      <span style={socialPlatform === id ? { color } : undefined}>{label}</span>
                     </button>
                   ))}
                   <p className="ml-auto text-[10px] text-muted-foreground">
@@ -293,6 +297,7 @@ function HeroCreateSection() {
             key={st.id}
             label={st.label}
             icon={st.icon}
+            color={st.color}
             onClick={() => handleStoreType(st.id)}
           />
         ))}
