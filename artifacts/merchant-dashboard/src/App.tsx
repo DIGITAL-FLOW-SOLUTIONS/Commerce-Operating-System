@@ -9,6 +9,7 @@ import Dashboard from "@/pages/dashboard";
 import Payouts from "@/pages/payouts";
 import MyStores from "@/pages/stores";
 import PublishedStores from "@/pages/published";
+import StoreDetail from "@/pages/store-detail";
 import { DataProvider } from "@/lib/mock-data";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/stores" component={MyStores} />
+        <Route path="/stores/:id" component={StoreDetail} />
         <Route path="/published" component={PublishedStores} />
         <Route path="/payouts" component={Payouts} />
         <Route path="/subscriptions">

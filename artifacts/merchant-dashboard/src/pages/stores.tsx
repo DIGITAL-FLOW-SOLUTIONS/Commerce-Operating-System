@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutGrid,
@@ -84,6 +84,7 @@ function StoreThumbnail({ store, className }: { store: Store; className?: string
 }
 
 function StoreCard({ store }: { store: Store }) {
+  const [, navigate] = useLocation();
   return (
     <motion.div
       layout
@@ -91,7 +92,8 @@ function StoreCard({ store }: { store: Store }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.2 }}
-      className="group relative rounded-xl border border-border bg-card overflow-hidden hover:border-border/80 hover:shadow-md transition-all duration-200"
+      onClick={() => navigate(`/stores/${store.id}`)}
+      className="group relative rounded-xl border border-border bg-card overflow-hidden hover:border-border/80 hover:shadow-md transition-all duration-200 cursor-pointer"
     >
       <StoreThumbnail store={store} className="aspect-[16/9]" />
       <div className="p-3.5 space-y-2">
@@ -115,16 +117,16 @@ function StoreCard({ store }: { store: Store }) {
                 variant="ghost"
                 size="icon"
                 className="h-6 w-6 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={e => e.preventDefault()}
+                onClick={e => e.stopPropagation()}
               >
                 <MoreHorizontal className="h-3.5 w-3.5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
-              <DropdownMenuItem>Edit Store</DropdownMenuItem>
-              <DropdownMenuItem>Duplicate</DropdownMenuItem>
-              <DropdownMenuItem>View Analytics</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={e => { e.stopPropagation(); navigate(`/stores/${store.id}`); }}>View Analytics</DropdownMenuItem>
+              <DropdownMenuItem onClick={e => e.stopPropagation()}>Edit Store</DropdownMenuItem>
+              <DropdownMenuItem onClick={e => e.stopPropagation()}>Duplicate</DropdownMenuItem>
+              <DropdownMenuItem onClick={e => e.stopPropagation()} className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -142,6 +144,7 @@ function StoreCard({ store }: { store: Store }) {
 }
 
 function StoreRow({ store }: { store: Store }) {
+  const [, navigate] = useLocation();
   return (
     <motion.div
       layout
@@ -149,7 +152,8 @@ function StoreRow({ store }: { store: Store }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="group flex items-center gap-4 rounded-xl border border-border bg-card p-3 hover:border-border/80 hover:shadow-sm transition-all duration-200"
+      onClick={() => navigate(`/stores/${store.id}`)}
+      className="group flex items-center gap-4 rounded-xl border border-border bg-card p-3 hover:border-border/80 hover:shadow-sm transition-all duration-200 cursor-pointer"
     >
       <StoreThumbnail store={store} className="h-14 w-24 rounded-lg shrink-0" />
       <div className="flex-1 min-w-0">
@@ -178,16 +182,16 @@ function StoreRow({ store }: { store: Store }) {
               variant="ghost"
               size="icon"
               className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={e => e.preventDefault()}
+              onClick={e => e.stopPropagation()}
             >
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem>Edit Store</DropdownMenuItem>
-            <DropdownMenuItem>Duplicate</DropdownMenuItem>
-            <DropdownMenuItem>View Analytics</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={e => { e.stopPropagation(); navigate(`/stores/${store.id}`); }}>View Analytics</DropdownMenuItem>
+            <DropdownMenuItem onClick={e => e.stopPropagation()}>Edit Store</DropdownMenuItem>
+            <DropdownMenuItem onClick={e => e.stopPropagation()}>Duplicate</DropdownMenuItem>
+            <DropdownMenuItem onClick={e => e.stopPropagation()} className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
