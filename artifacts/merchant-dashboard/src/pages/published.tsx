@@ -11,8 +11,9 @@ import {
   MoreHorizontal,
   ChevronDown,
   Rocket,
+  BarChart2,
 } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -74,6 +75,7 @@ function StoreThumbnail({ store, className }: { store: Store; className?: string
 }
 
 function PublishedCard({ store }: { store: Store }) {
+  const [, navigate] = useLocation();
   return (
     <motion.div
       layout
@@ -81,7 +83,8 @@ function PublishedCard({ store }: { store: Store }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.2 }}
-      className="group relative rounded-xl border border-border bg-card overflow-hidden hover:border-border/80 hover:shadow-md transition-all duration-200"
+      onClick={() => navigate(`/stores/${store.id}`)}
+      className="group relative rounded-xl border border-border bg-card overflow-hidden hover:border-border/80 hover:shadow-md transition-all duration-200 cursor-pointer"
     >
       <StoreThumbnail store={store} className="aspect-[16/9]" />
       <div className="p-3.5 space-y-2">
@@ -101,18 +104,33 @@ function PublishedCard({ store }: { store: Store }) {
                 variant="ghost"
                 size="icon"
                 className="h-6 w-6 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={e => e.preventDefault()}
+                onClick={e => e.stopPropagation()}
               >
                 <MoreHorizontal className="h-3.5 w-3.5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
-              <DropdownMenuItem>
-                <ExternalLink className="h-3.5 w-3.5 mr-2" /> Visit Store
+              {store.url && (
+                <DropdownMenuItem asChild>
+                  <a
+                    href={`https://${store.url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <ExternalLink className="h-3.5 w-3.5 mr-2" /> Visit Store
+                  </a>
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem onClick={e => { e.stopPropagation(); navigate(`/stores/${store.id}`); }}>
+                <BarChart2 className="h-3.5 w-3.5 mr-2" /> View Analytics
               </DropdownMenuItem>
-              <DropdownMenuItem>View Analytics</DropdownMenuItem>
-              <DropdownMenuItem>Edit Store</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive focus:text-destructive">Unpublish</DropdownMenuItem>
+              <DropdownMenuItem onClick={e => { e.stopPropagation(); navigate(`/stores/${store.id}`); }}>
+                Edit Store
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={e => e.stopPropagation()}>
+                Unpublish
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -142,6 +160,7 @@ function PublishedCard({ store }: { store: Store }) {
 }
 
 function PublishedRow({ store }: { store: Store }) {
+  const [, navigate] = useLocation();
   return (
     <motion.div
       layout
@@ -149,7 +168,8 @@ function PublishedRow({ store }: { store: Store }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="group flex items-center gap-4 rounded-xl border border-border bg-card p-3 hover:border-border/80 hover:shadow-sm transition-all duration-200"
+      onClick={() => navigate(`/stores/${store.id}`)}
+      className="group flex items-center gap-4 rounded-xl border border-border bg-card p-3 hover:border-border/80 hover:shadow-sm transition-all duration-200 cursor-pointer"
     >
       <StoreThumbnail store={store} className="h-14 w-24 rounded-lg shrink-0" />
       <div className="flex-1 min-w-0">
@@ -181,18 +201,33 @@ function PublishedRow({ store }: { store: Store }) {
               variant="ghost"
               size="icon"
               className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={e => e.preventDefault()}
+              onClick={e => e.stopPropagation()}
             >
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
-            <DropdownMenuItem>
-              <ExternalLink className="h-3.5 w-3.5 mr-2" /> Visit Store
+            {store.url && (
+              <DropdownMenuItem asChild>
+                <a
+                  href={`https://${store.url}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={e => e.stopPropagation()}
+                >
+                  <ExternalLink className="h-3.5 w-3.5 mr-2" /> Visit Store
+                </a>
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuItem onClick={e => { e.stopPropagation(); navigate(`/stores/${store.id}`); }}>
+              <BarChart2 className="h-3.5 w-3.5 mr-2" /> View Analytics
             </DropdownMenuItem>
-            <DropdownMenuItem>View Analytics</DropdownMenuItem>
-            <DropdownMenuItem>Edit Store</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive focus:text-destructive">Unpublish</DropdownMenuItem>
+            <DropdownMenuItem onClick={e => { e.stopPropagation(); navigate(`/stores/${store.id}`); }}>
+              Edit Store
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={e => e.stopPropagation()}>
+              Unpublish
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
