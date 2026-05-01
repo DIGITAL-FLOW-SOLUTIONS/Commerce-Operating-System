@@ -1,4 +1,16 @@
 export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+export type PayoutMethodType = "till" | "paybill" | "bank";
+
+export interface StorePayout {
+  id: string;
+  type: PayoutMethodType;
+  label: string;
+  details: Record<string, string>;
+  isDefault: boolean;
+  totalProcessed: number;
+  lastPayoutAmount: number;
+  lastPayoutDate: string;
+}
 
 export interface StoreProduct {
   id: string;
@@ -68,6 +80,7 @@ export interface StoreDetailData {
   recentOrders: StoreOrder[];
   allOrders: StoreOrder[];
   allCustomers: StoreCustomer[];
+  payouts: StorePayout[];
 }
 
 function genRevenue(): RevenuePoint[] {
@@ -125,6 +138,29 @@ const CUSTOMERS_S2: StoreCustomer[] = [
 
 const REVENUE_CHART = genRevenue();
 
+const PAYOUTS_S2: StorePayout[] = [
+  {
+    id: "pay1",
+    type: "till",
+    label: "M-Pesa Till",
+    details: { "Till Number": "987654", "Account Name": "Aisha's Collection" },
+    isDefault: true,
+    totalProcessed: 198400,
+    lastPayoutAmount: 8200,
+    lastPayoutDate: "Today, 6:00 AM",
+  },
+  {
+    id: "pay2",
+    type: "bank",
+    label: "Bank Account",
+    details: { "Bank": "Equity Bank", "Account Number": "••••••4821", "Account Name": "Aisha Kamau", "Branch": "Westlands, Nairobi" },
+    isDefault: false,
+    totalProcessed: 46600,
+    lastPayoutAmount: 12000,
+    lastPayoutDate: "3 days ago",
+  },
+];
+
 export const STORE_DETAIL_DATA: Record<string, StoreDetailData> = {
   s2: {
     revenue: { today: 8200, thisWeek: 38400, thisMonth: 142000, total: 245000, avgOrderValue: 595, growth: 12.4 },
@@ -142,6 +178,7 @@ export const STORE_DETAIL_DATA: Record<string, StoreDetailData> = {
     recentOrders: ORDERS_S2.slice(0, 5),
     allOrders: ORDERS_S2,
     allCustomers: CUSTOMERS_S2,
+    payouts: PAYOUTS_S2,
   },
 };
 
@@ -158,5 +195,6 @@ export function getStoreDetail(storeId: string): StoreDetailData {
     recentOrders: [],
     allOrders: [],
     allCustomers: [],
+    payouts: [],
   };
 }

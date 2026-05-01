@@ -6,6 +6,7 @@ import {
   AlertTriangle, RefreshCw, Store, MapPin, Phone, Clock, Bell,
   ChevronRight, Download, Upload, Filter, MoreHorizontal, X, Check,
   Truck, CircleDot, CheckCircle2, XCircle, Loader2, ArrowUpRight,
+  Smartphone, Landmark, Building2, Wallet, Star, Pencil, Trash2,
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -22,10 +23,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useData } from "@/lib/mock-data";
-import { getStoreDetail, OrderStatus, StoreProduct } from "@/lib/store-detail-data";
+import { getStoreDetail, OrderStatus, StoreProduct, StorePayout, PayoutMethodType } from "@/lib/store-detail-data";
 import { cn } from "@/lib/utils";
 
-type Tab = "overview" | "orders" | "inventory" | "customers" | "settings";
+type Tab = "overview" | "payout" | "orders" | "inventory" | "customers" | "settings";
 
 const fmt = (n: number) => `KES ${n.toLocaleString()}`;
 
@@ -595,6 +596,306 @@ function CustomersTab({ data }: { data: ReturnType<typeof getStoreDetail> }) {
   );
 }
 
+const PAYOUT_TYPE_CONFIG: Record<PayoutMethodType, {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  fields: { key: string; label: string; placeholder: string; type?: string }[];
+}> = {
+  till: {
+    label: "M-Pesa Till",
+    icon: Smartphone,
+    color: "text-emerald-600 bg-emerald-500/10 dark:text-emerald-400",
+    fields: [
+      { key: "Till Number", label: "Till Number", placeholder: "e.g. 987654" },
+      { key: "Account Name", label: "Account Name", placeholder: "e.g. Aisha's Collection" },
+    ],
+  },
+  paybill: {
+    label: "M-Pesa Paybill",
+    icon: Building2,
+    color: "text-blue-600 bg-blue-500/10 dark:text-blue-400",
+    fields: [
+      { key: "Business Number", label: "Business Number", placeholder: "e.g. 400200" },
+      { key: "Account Number", label: "Account Number", placeholder: "e.g. STORE001" },
+      { key: "Account Name", label: "Account Name", placeholder: "e.g. Aisha's Collection" },
+    ],
+  },
+  bank: {
+    label: "Bank Account",
+    icon: Landmark,
+    color: "text-violet-600 bg-violet-500/10 dark:text-violet-400",
+    fields: [
+      { key: "Bank", label: "Bank Name", placeholder: "e.g. Equity Bank" },
+      { key: "Account Number", label: "Account Number", placeholder: "e.g. 0123456789" },
+      { key: "Account Name", label: "Account Name", placeholder: "e.g. Aisha Kamau" },
+      { key: "Branch", label: "Branch", placeholder: "e.g. Westlands, Nairobi" },
+    ],
+  },
+};
+
+function PayoutMethodDialog({
+  open,
+  onClose,
+  editing,
+}: {
+  open: boolean;
+  onClose: () => void;
+  editing?: StorePayout | null;
+}) {
+  const [selectedType, setSelectedType] = useState<PayoutMethodType>(editing?.type ?? "till");
+  const [isDefault, setIsDefault] = useState(editing?.isDefault ?? false);
+  const cfg = PAYOUT_TYPE_CONFIG[selectedType];
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{editing ? "Edit Payout Method" : "Add Payout Method"}</DialogTitle>
+          <DialogDescription>
+            {editing
+              ? "Update the details for this payout method."
+              : "Choose how you'd like to receive payments for this store."}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-1">
+          {!editing && (
+            <div>
+              <Label className="mb-2 block">Payment type</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {(["till", "paybill", "bank"] as PayoutMethodType[]).map(type => {
+                  const c = PAYOUT_TYPE_CONFIG[type];
+                  const Icon = c.icon;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={cn(
+                        "flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 text-center transition-all",
+                        selectedType === type
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-border/80"
+                      )}
+                    >
+                      <div className={cn("rounded-lg p-2", c.color)}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <span className="text-[11px] font-semibold leading-tight">{c.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-3">
+            {cfg.fields.map(field => (
+              <div key={field.key} className="space-y-1.5">
+                <Label>{field.label}</Label>
+                <Input
+                  placeholder={field.placeholder}
+                  defaultValue={editing?.details[field.key] ?? ""}
+                  type={field.type ?? "text"}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 px-4 py-3">
+            <div>
+              <p className="text-sm font-medium">Set as default</p>
+              <p className="text-xs text-muted-foreground">Payments go here automatically</p>
+            </div>
+            <button
+              onClick={() => setIsDefault(v => !v)}
+              className={cn(
+                "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors",
+                isDefault ? "bg-primary" : "bg-muted"
+              )}
+            >
+              <span className={cn("pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform",
+                isDefault ? "translate-x-4" : "translate-x-0")} />
+            </button>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={onClose}>
+            <Check className="h-4 w-4 mr-1.5" />
+            {editing ? "Save Changes" : "Add Method"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function PayoutMethodCard({
+  payout,
+  onEdit,
+}: {
+  payout: StorePayout;
+  onEdit: (p: StorePayout) => void;
+}) {
+  const cfg = PAYOUT_TYPE_CONFIG[payout.type];
+  const Icon = cfg.icon;
+
+  return (
+    <Card className={cn("relative overflow-hidden transition-all hover:shadow-sm", payout.isDefault && "border-primary/30 bg-primary/[0.02]")}>
+      {payout.isDefault && (
+        <div className="absolute top-3 right-3">
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary">
+            <Star className="h-2.5 w-2.5 fill-primary" />Default
+          </span>
+        </div>
+      )}
+      <CardContent className="p-4 sm:p-5">
+        <div className="flex items-start gap-4">
+          <div className={cn("rounded-xl p-3 shrink-0", cfg.color)}>
+            <Icon className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0 space-y-3">
+            <div>
+              <p className="font-semibold text-sm">{payout.label}</p>
+              <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
+                {Object.entries(payout.details).map(([k, v]) => (
+                  <div key={k} className="flex items-center gap-1.5">
+                    <span className="text-[11px] text-muted-foreground">{k}:</span>
+                    <span className="text-[11px] font-medium">{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 rounded-lg bg-muted/40 p-3">
+              <div>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-medium">Total Processed</p>
+                <p className="text-base font-bold mt-0.5">{fmt(payout.totalProcessed)}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-medium">Last Payout</p>
+                <p className="text-base font-bold mt-0.5">{fmt(payout.lastPayoutAmount)}</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{payout.lastPayoutDate}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-1.5 h-8 text-xs"
+                onClick={() => onEdit(payout)}
+              >
+                <Pencil className="h-3 w-3" />Edit
+              </Button>
+              {!payout.isDefault && (
+                <Button variant="ghost" size="sm" className="gap-1.5 h-8 text-xs text-muted-foreground hover:text-foreground">
+                  <Star className="h-3 w-3" />Set as default
+                </Button>
+              )}
+              {!payout.isDefault && (
+                <Button variant="ghost" size="sm" className="gap-1.5 h-8 text-xs text-destructive hover:text-destructive ml-auto">
+                  <Trash2 className="h-3 w-3" />Remove
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function PayoutTab({ data }: { data: ReturnType<typeof getStoreDetail> }) {
+  const [addOpen, setAddOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<StorePayout | null>(null);
+  const [payouts, setPayouts] = useState<StorePayout[]>(data.payouts);
+
+  const totalProcessed = payouts.reduce((sum, p) => sum + p.totalProcessed, 0);
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-base font-semibold">Payout Methods</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Revenue collected in this store is sent to these accounts
+          </p>
+        </div>
+        <Button size="sm" className="gap-1.5 shrink-0" onClick={() => setAddOpen(true)}>
+          <Plus className="h-4 w-4" />Add Method
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Total Processed</p>
+            <p className="text-2xl font-bold mt-1">{fmt(totalProcessed)}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Across all methods</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Active Methods</p>
+            <p className="text-2xl font-bold mt-1">{payouts.length}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{payouts.filter(p => p.isDefault).length} default</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Next Payout</p>
+            <p className="text-2xl font-bold mt-1">Daily</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Auto at 6:00 AM</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {payouts.length === 0 ? (
+        <div className="flex h-52 flex-col items-center justify-center rounded-xl border border-dashed gap-3 text-center px-4">
+          <div className="rounded-full bg-muted p-4">
+            <Wallet className="h-7 w-7 text-muted-foreground" />
+          </div>
+          <div>
+            <p className="font-semibold">No payout methods yet</p>
+            <p className="text-sm text-muted-foreground mt-0.5">Add a Till, Paybill, or Bank account to receive payments</p>
+          </div>
+          <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5">
+            <Plus className="h-4 w-4" />Add Payout Method
+          </Button>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {payouts.map(payout => (
+            <PayoutMethodCard
+              key={payout.id}
+              payout={payout}
+              onEdit={p => setEditTarget(p)}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className="rounded-xl border border-border bg-muted/30 p-4 flex items-start gap-3">
+        <div className="rounded-full bg-primary/10 p-1.5 shrink-0 mt-0.5">
+          <Bell className="h-3.5 w-3.5 text-primary" />
+        </div>
+        <div>
+          <p className="text-sm font-medium">Daily payouts enabled</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Revenue collected is automatically sent to your default payout method every morning at 6:00 AM. You can change the schedule in Settings.
+          </p>
+        </div>
+      </div>
+
+      <PayoutMethodDialog open={addOpen} onClose={() => setAddOpen(false)} />
+      <PayoutMethodDialog open={!!editTarget} onClose={() => setEditTarget(null)} editing={editTarget} />
+    </div>
+  );
+}
+
 function SettingsTab({ storeName, storeUrl }: { storeName: string; storeUrl?: string }) {
   return (
     <div className="space-y-6 max-w-2xl">
@@ -674,6 +975,7 @@ function SettingsTab({ storeName, storeUrl }: { storeName: string; storeUrl?: st
 
 const TABS: { id: Tab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: "overview",   label: "Overview",   icon: BarChart3 },
+  { id: "payout",     label: "Payout",     icon: Wallet },
   { id: "orders",     label: "Orders",     icon: ShoppingBag },
   { id: "inventory",  label: "Inventory",  icon: Package },
   { id: "customers",  label: "Customers",  icon: Users },
@@ -779,6 +1081,7 @@ export default function StoreDetail() {
 
       <div>
         {activeTab === "overview"  && <OverviewTab data={data} storeName={store.name} />}
+        {activeTab === "payout"    && <PayoutTab data={data} />}
         {activeTab === "orders"    && <OrdersTab data={data} />}
         {activeTab === "inventory" && <InventoryTab data={data} />}
         {activeTab === "customers" && <CustomersTab data={data} />}
