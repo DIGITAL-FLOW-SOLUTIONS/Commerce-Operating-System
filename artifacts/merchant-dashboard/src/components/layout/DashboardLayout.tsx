@@ -170,7 +170,7 @@ function PlanWidget() {
         className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold gap-1.5"
         asChild
       >
-        <Link href="/upgrade">
+        <Link href="/subscriptions?plans=true">
           <Zap className="h-3.5 w-3.5 fill-current" />
           Upgrade to Sokoa Pro
         </Link>
