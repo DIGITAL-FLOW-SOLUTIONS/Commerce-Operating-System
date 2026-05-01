@@ -34,18 +34,20 @@ import { cn } from "@/lib/utils";
 import { SokoaLogo } from "@/components/SokoaLogo";
 
 const ANIMATED_PHRASES = [
-  "Enter your business name or describe what you sell...",
-  "Customer payments go directly to your till/paybill/bank",
+  "Enter your business name or what you sell...",
+  "Customer payments go directly to your Till/Paybill/Bank",
 ];
 
 function useTypingPlaceholder(
   phrases: string[],
-  { typingMs = 45, erasingMs = 22, pauseMs = 2200 } = {}
+  { typingMs = 45, erasingMs = 22, pauseMs = 2200 } = {},
 ) {
   const [displayed, setDisplayed] = useState("");
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     const phrase = phrases[phraseIdx];
@@ -53,7 +55,7 @@ function useTypingPlaceholder(
       if (displayed.length < phrase.length) {
         timeoutRef.current = setTimeout(
           () => setDisplayed(phrase.slice(0, displayed.length + 1)),
-          typingMs
+          typingMs,
         );
       } else {
         timeoutRef.current = setTimeout(() => setIsTyping(false), pauseMs);
@@ -62,7 +64,7 @@ function useTypingPlaceholder(
       if (displayed.length > 0) {
         timeoutRef.current = setTimeout(
           () => setDisplayed((d) => d.slice(0, -1)),
-          erasingMs
+          erasingMs,
         );
       } else {
         setPhraseIdx((i) => (i + 1) % phrases.length);
@@ -124,10 +126,7 @@ function StoreTypeIcon({
         className="w-14 h-14 rounded-2xl bg-muted border border-border flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md"
         style={color ? { borderColor: `${color}33` } : undefined}
       >
-        <Icon
-          className="w-6 h-6"
-          style={{ color: color ?? undefined }}
-        />
+        <Icon className="w-6 h-6" style={{ color: color ?? undefined }} />
       </div>
       <span className="text-xs text-muted-foreground group-hover:text-foreground font-medium text-center leading-tight transition-colors">
         {label}
@@ -139,7 +138,8 @@ function StoreTypeIcon({
 function HeroCreateSection() {
   const { user, appState, setAppState } = useData();
   const [mode, setMode] = useState<InputMode>("business");
-  const [socialPlatform, setSocialPlatform] = useState<SocialPlatform>("instagram");
+  const [socialPlatform, setSocialPlatform] =
+    useState<SocialPlatform>("instagram");
   const [inputValue, setInputValue] = useState("");
   const [suggestionSeed, setSuggestionSeed] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
@@ -147,22 +147,29 @@ function HeroCreateSection() {
 
   const shownSuggestions = BUSINESS_SUGGESTIONS.slice(
     suggestionSeed % BUSINESS_SUGGESTIONS.length,
-    (suggestionSeed % BUSINESS_SUGGESTIONS.length) + 3
-  ).concat(
-    BUSINESS_SUGGESTIONS.slice(
-      0,
-      Math.max(0, 3 - (BUSINESS_SUGGESTIONS.length - (suggestionSeed % BUSINESS_SUGGESTIONS.length)))
+    (suggestionSeed % BUSINESS_SUGGESTIONS.length) + 3,
+  )
+    .concat(
+      BUSINESS_SUGGESTIONS.slice(
+        0,
+        Math.max(
+          0,
+          3 -
+            (BUSINESS_SUGGESTIONS.length -
+              (suggestionSeed % BUSINESS_SUGGESTIONS.length)),
+        ),
+      ),
     )
-  ).slice(0, 3);
+    .slice(0, 3);
 
   const placeholder =
     mode === "business"
       ? "Enter your business name or describe what you sell..."
       : mode === "tiktok"
-      ? "@your_tiktok_handle"
-      : socialPlatform === "instagram"
-      ? "@your_instagram_handle"
-      : "facebook.com/your-page";
+        ? "@your_tiktok_handle"
+        : socialPlatform === "instagram"
+          ? "@your_instagram_handle"
+          : "facebook.com/your-page";
 
   const handleStoreType = (id: string) => {
     if (id === "tiktok") setMode("tiktok");
@@ -189,28 +196,33 @@ function HeroCreateSection() {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center" className="w-52">
-          <DropdownMenuItem className="text-xs text-muted-foreground cursor-default" disabled>
+          <DropdownMenuItem
+            className="text-xs text-muted-foreground cursor-default"
+            disabled
+          >
             Demo State
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {(["both", "tiktok_only", "boutique_only", "none"] as AppState[]).map((state) => (
-            <DropdownMenuItem
-              key={state}
-              onClick={() => setAppState(state)}
-              className={cn(
-                "text-sm cursor-pointer",
-                appState === state && "font-semibold text-primary"
-              )}
-            >
-              {state === "both"
-                ? "Both Stores"
-                : state === "tiktok_only"
-                ? "TikTok Only"
-                : state === "boutique_only"
-                ? "Boutique Only"
-                : "No Stores"}
-            </DropdownMenuItem>
-          ))}
+          {(["both", "tiktok_only", "boutique_only", "none"] as AppState[]).map(
+            (state) => (
+              <DropdownMenuItem
+                key={state}
+                onClick={() => setAppState(state)}
+                className={cn(
+                  "text-sm cursor-pointer",
+                  appState === state && "font-semibold text-primary",
+                )}
+              >
+                {state === "both"
+                  ? "Both Stores"
+                  : state === "tiktok_only"
+                    ? "TikTok Only"
+                    : state === "boutique_only"
+                      ? "Boutique Only"
+                      : "No Stores"}
+              </DropdownMenuItem>
+            ),
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -254,10 +266,12 @@ function HeroCreateSection() {
                 className="pointer-events-none absolute inset-0 px-5 pt-5 pb-2 text-base text-muted-foreground leading-relaxed select-none"
               >
                 {animatedPlaceholder}
-                <span className={cn(
-                  "inline-block w-[2px] h-[1.1em] bg-muted-foreground align-middle ml-[1px] translate-y-[-1px]",
-                  isFocused ? "animate-pulse" : "opacity-70 animate-pulse"
-                )} />
+                <span
+                  className={cn(
+                    "inline-block w-[2px] h-[1.1em] bg-muted-foreground align-middle ml-[1px] translate-y-[-1px]",
+                    isFocused ? "animate-pulse" : "opacity-70 animate-pulse",
+                  )}
+                />
               </div>
             )}
           </div>
@@ -284,7 +298,7 @@ function HeroCreateSection() {
                     "px-3 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap",
                     mode === tab.id
                       ? "bg-background text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {tab.label}
@@ -316,9 +330,24 @@ function HeroCreateSection() {
                 <div className="flex items-center gap-1 px-3 py-2 bg-muted/40">
                   {(
                     [
-                      { id: "instagram", label: "Instagram", Icon: SiInstagram, color: "#E4405F" },
-                      { id: "facebook", label: "Facebook", Icon: SiFacebook, color: "#1877F2" },
-                    ] as { id: SocialPlatform; label: string; Icon: React.ElementType; color: string }[]
+                      {
+                        id: "instagram",
+                        label: "Instagram",
+                        Icon: SiInstagram,
+                        color: "#E4405F",
+                      },
+                      {
+                        id: "facebook",
+                        label: "Facebook",
+                        Icon: SiFacebook,
+                        color: "#1877F2",
+                      },
+                    ] as {
+                      id: SocialPlatform;
+                      label: string;
+                      Icon: React.ElementType;
+                      color: string;
+                    }[]
                   ).map(({ id, label, Icon, color }) => (
                     <button
                       key={id}
@@ -328,11 +357,15 @@ function HeroCreateSection() {
                         "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
                         socialPlatform === id
                           ? "bg-background shadow-sm border border-border"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       <Icon className="w-3.5 h-3.5" style={{ color }} />
-                      <span style={socialPlatform === id ? { color } : undefined}>{label}</span>
+                      <span
+                        style={socialPlatform === id ? { color } : undefined}
+                      >
+                        {label}
+                      </span>
                     </button>
                   ))}
                   <p className="ml-auto text-[10px] text-muted-foreground">
@@ -424,9 +457,15 @@ function SmallStoreCard({ store }: { store: Store }) {
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium text-foreground">
               {formatCurrency(store.revenueToday || 0)}{" "}
-              <span className="text-muted-foreground font-normal text-xs ml-1">today</span>
+              <span className="text-muted-foreground font-normal text-xs ml-1">
+                today
+              </span>
             </span>
-            <Button size="sm" variant="link" className="h-auto p-0 text-primary">
+            <Button
+              size="sm"
+              variant="link"
+              className="h-auto p-0 text-primary"
+            >
               Open
             </Button>
           </div>
