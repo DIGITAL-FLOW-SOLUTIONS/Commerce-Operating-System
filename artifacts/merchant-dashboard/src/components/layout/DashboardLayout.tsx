@@ -274,7 +274,7 @@ function Topbar() {
 function DesktopLogo() {
   const { resolvedTheme } = useTheme();
   return (
-    <div className="hidden md:flex items-start mb-6">
+    <div className="hidden md:flex items-start justify-end mb-6">
       <Link href="/" aria-label="Sokoa home">
         <SokoaLogo
           variant="horizontal"
