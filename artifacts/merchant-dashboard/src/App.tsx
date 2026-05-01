@@ -7,6 +7,8 @@ import NotFound from "@/pages/not-found";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Dashboard from "@/pages/dashboard";
 import Payouts from "@/pages/payouts";
+import MyStores from "@/pages/stores";
+import PublishedStores from "@/pages/published";
 import { DataProvider } from "@/lib/mock-data";
 
 const queryClient = new QueryClient();
@@ -31,12 +33,8 @@ function Router() {
     <DashboardLayout>
       <Switch>
         <Route path="/" component={Dashboard} />
-        <Route path="/stores">
-          <Placeholder title="My Stores" />
-        </Route>
-        <Route path="/published">
-          <Placeholder title="Published Stores" />
-        </Route>
+        <Route path="/stores" component={MyStores} />
+        <Route path="/published" component={PublishedStores} />
         <Route path="/payouts" component={Payouts} />
         <Route path="/subscriptions">
           <Placeholder title="Subscriptions" />

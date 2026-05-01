@@ -13,6 +13,8 @@ export interface Store {
   ordersCount?: number;
   url?: string;
   activeSession?: boolean;
+  thumbnailUrl?: string;
+  updatedAt?: string;
 }
 
 export interface User {
@@ -112,7 +114,9 @@ const STORES_BOTH: Store[] = [
     revenueToday: 15400,
     totalRevenue: 245000,
     activeSession: true,
-    url: "tiktok.com/@aisha_live",
+    url: "aisha-live.sokoa.shop",
+    thumbnailUrl: ASSET("templates/tiktok-live.png"),
+    updatedAt: "20 hours ago",
   },
   {
     id: "s2",
@@ -122,6 +126,8 @@ const STORES_BOTH: Store[] = [
     revenueToday: 8200,
     ordersCount: 412,
     url: "aishacollection.sokoa.shop",
+    thumbnailUrl: ASSET("templates/boutique.png"),
+    updatedAt: "2 days ago",
   },
   {
     id: "s3",
@@ -130,7 +136,40 @@ const STORES_BOTH: Store[] = [
     status: "draft",
     revenueToday: 0,
     ordersCount: 0,
-  }
+    thumbnailUrl: ASSET("templates/fashion.png"),
+    updatedAt: "5 months ago",
+  },
+  {
+    id: "s4",
+    name: "Nairobi Beads",
+    type: "boutique",
+    status: "active",
+    revenueToday: 3200,
+    ordersCount: 87,
+    url: "nairobibeads.sokoa.shop",
+    thumbnailUrl: ASSET("templates/electronics.png"),
+    updatedAt: "2 weeks ago",
+  },
+  {
+    id: "s5",
+    name: "Kenyanz Clothing",
+    type: "boutique",
+    status: "draft",
+    revenueToday: 0,
+    ordersCount: 0,
+    updatedAt: "2 months ago",
+  },
+  {
+    id: "s6",
+    name: "Aisha Weekend Live",
+    type: "tiktok",
+    status: "active",
+    revenueToday: 6800,
+    totalRevenue: 54000,
+    url: "aisha-weekend.sokoa.shop",
+    thumbnailUrl: ASSET("templates/tiktok-live.png"),
+    updatedAt: "2 days ago",
+  },
 ];
 
 interface DataContextType {
