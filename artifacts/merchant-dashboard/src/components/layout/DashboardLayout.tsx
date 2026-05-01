@@ -17,7 +17,8 @@ import {
   HelpCircle,
   LogOut,
   Moon,
-  Sun
+  Sun,
+  Plus
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -128,6 +129,24 @@ function SidebarContent() {
       <SidebarHeader />
       <div className="flex-1 overflow-auto py-2">
         <nav className="grid gap-1 px-4 text-sm font-medium">
+          {/* Quick-create actions */}
+          <Link
+            href="/tiktok-live"
+            className="flex items-center gap-3 rounded-lg border border-sidebar-border px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:border-primary/40 hover:bg-primary/5"
+          >
+            <Plus className="h-4 w-4 shrink-0" />
+            <span className="flex-1 leading-tight">TikTok Live Selling</span>
+            <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+              new
+            </span>
+          </Link>
+          <Link
+            href="/pre-order"
+            className="flex items-center gap-3 rounded-lg border border-sidebar-border px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:border-primary/40 hover:bg-primary/5 mb-2"
+          >
+            <Plus className="h-4 w-4 shrink-0" />
+            <span className="flex-1 leading-tight">Create Pre-order Store</span>
+          </Link>
           {NAVIGATION.map((item) => {
             const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
             return (
