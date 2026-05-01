@@ -19,7 +19,6 @@ import {
   Moon,
   Sun,
   Plus,
-  BookOpen,
   Smartphone,
   Zap
 } from "lucide-react";
@@ -133,48 +132,37 @@ function PlanWidget() {
   const publishedPct = Math.min(100, (publishedCount / PLAN_PUBLISHED_LIMIT) * 100);
 
   return (
-    <div className="rounded-xl bg-sidebar-accent border border-sidebar-border p-4 space-y-3 text-sidebar-foreground">
+    <div className="space-y-3 text-sidebar-foreground">
       {/* Plan title */}
-      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Your Starter Plan</p>
+      <p className="text-xs font-semibold text-sidebar-foreground">Your Starter Plan</p>
 
       {/* Free Stores */}
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <Store className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-          <span className="text-xs font-medium flex-1">Free Stores</span>
-          <span className="text-xs text-muted-foreground">{createdCount}/{PLAN_STORE_LIMIT} created</span>
-        </div>
-        <div className="h-1.5 w-full rounded-full bg-sidebar-border overflow-hidden">
-          <div
-            className="h-full rounded-full bg-primary transition-all"
-            style={{ width: `${createdPct}%` }}
-          />
+      <div className="space-y-1.5">
+        <div className="flex items-start gap-2.5">
+          <Store className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium leading-tight">Free Stores</p>
+            <p className="text-[11px] text-muted-foreground leading-tight">{createdCount}/{PLAN_STORE_LIMIT} created</p>
+          </div>
+          <div className="h-1.5 w-10 rounded-full bg-sidebar-border overflow-hidden self-center shrink-0">
+            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${createdPct}%` }} />
+          </div>
         </div>
       </div>
 
       {/* Published Stores */}
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <Globe className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-          <span className="text-xs font-medium flex-1">Published Stores</span>
-          <span className="text-xs text-muted-foreground">{publishedCount}/{PLAN_PUBLISHED_LIMIT}</span>
-        </div>
-        <div className="h-1.5 w-full rounded-full bg-sidebar-border overflow-hidden">
-          <div
-            className="h-full rounded-full bg-emerald-500 transition-all"
-            style={{ width: `${publishedPct}%` }}
-          />
+      <div className="space-y-1.5">
+        <div className="flex items-start gap-2.5">
+          <Globe className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium leading-tight">Published Stores</p>
+            <p className="text-[11px] text-muted-foreground leading-tight">{publishedCount}/{PLAN_PUBLISHED_LIMIT} published</p>
+          </div>
+          <div className="h-1.5 w-10 rounded-full bg-sidebar-border overflow-hidden self-center shrink-0">
+            <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${publishedPct}%` }} />
+          </div>
         </div>
       </div>
-
-      {/* Learn link */}
-      <Link
-        href="/learn"
-        className="flex items-center gap-1.5 text-xs text-primary hover:underline w-fit"
-      >
-        <BookOpen className="h-3.5 w-3.5" />
-        Learn how to grow your store
-      </Link>
 
       {/* Upgrade button */}
       <Button
@@ -188,14 +176,12 @@ function PlanWidget() {
         </Link>
       </Button>
 
-      {/* Install + Changelog */}
-      <div className="flex items-center justify-center gap-2 text-[11px] text-muted-foreground">
+      {/* Install link only */}
+      <div className="flex items-center justify-center text-[11px] text-muted-foreground">
         <Link href="/install" className="flex items-center gap-1 hover:text-foreground transition-colors">
-          <Smartphone className="h-3 w-3" />
-          Install Sokoa on mobile
+          Install Sokoa on
+          <Smartphone className="h-3 w-3 mx-0.5" />
         </Link>
-        <span>·</span>
-        <Link href="/changelog" className="hover:text-foreground transition-colors">Changelog</Link>
       </div>
     </div>
   );
