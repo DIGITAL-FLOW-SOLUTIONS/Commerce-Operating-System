@@ -248,7 +248,7 @@ function SidebarContent() {
 
 function Topbar() {
   const { user, notifications } = useData();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
@@ -266,7 +266,7 @@ function Topbar() {
       </Sheet>
 
       <Link href="/" className="md:hidden flex items-center" aria-label="Sokoa home">
-        <SokoaLogo variant="horizontal" theme="light" height={26} />
+        <SokoaLogo variant="horizontal" theme={resolvedTheme === "dark" ? "dark" : "light"} height={26} />
       </Link>
 
       <div className="flex flex-1 items-center gap-4 md:gap-8">
