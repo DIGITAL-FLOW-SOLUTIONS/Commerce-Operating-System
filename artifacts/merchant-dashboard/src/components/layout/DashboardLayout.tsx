@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useUpgradeModal } from "@/contexts/upgrade-modal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -126,6 +127,7 @@ const PLAN_PUBLISHED_LIMIT = 3;
 
 function PlanWidget() {
   const { stores } = useData();
+  const { openUpgradeModal } = useUpgradeModal();
   const createdCount = stores.length;
   const publishedCount = stores.filter((s: { status: string }) => s.status === "published" || s.status === "live").length;
   const createdPct = Math.min(100, (createdCount / PLAN_STORE_LIMIT) * 100);
@@ -168,12 +170,10 @@ function PlanWidget() {
       <Button
         size="sm"
         className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold gap-1.5"
-        asChild
+        onClick={openUpgradeModal}
       >
-        <Link href="/subscriptions?plans=true">
-          <Zap className="h-3.5 w-3.5 fill-current" />
-          Upgrade to Sokoa Pro
-        </Link>
+        <Zap className="h-3.5 w-3.5 fill-current" />
+        Upgrade to Sokoa Pro
       </Button>
 
       {/* Install link only */}

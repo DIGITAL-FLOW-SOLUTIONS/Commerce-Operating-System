@@ -17,6 +17,8 @@ import SubscriptionsPage from "@/pages/subscriptions";
 import HelpPage from "@/pages/help";
 import TemplatesPage from "@/pages/templates";
 import { DataProvider } from "@/lib/mock-data";
+import { UpgradeModalProvider } from "@/contexts/upgrade-modal";
+import UpgradeModal from "@/components/UpgradeModal";
 
 const queryClient = new QueryClient();
 
@@ -65,12 +67,15 @@ function App() {
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
       <QueryClientProvider client={queryClient}>
         <DataProvider>
-          <TooltipProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <Router />
-            </WouterRouter>
-            <Toaster />
-          </TooltipProvider>
+          <UpgradeModalProvider>
+            <TooltipProvider>
+              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                <Router />
+              </WouterRouter>
+              <UpgradeModal />
+              <Toaster />
+            </TooltipProvider>
+          </UpgradeModalProvider>
         </DataProvider>
       </QueryClientProvider>
     </ThemeProvider>
