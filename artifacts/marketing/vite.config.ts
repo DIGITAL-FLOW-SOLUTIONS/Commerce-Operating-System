@@ -5,22 +5,23 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 const rawPort = process.env.PORT;
+const isBuild = process.env.NODE_ENV === "production" || process.argv.includes("build");
 
-if (!rawPort) {
+if (!isBuild && !rawPort) {
   throw new Error(
     "PORT environment variable is required but was not provided.",
   );
 }
 
-const port = Number(rawPort);
+const port = rawPort ? Number(rawPort) : 3000;
 
-if (Number.isNaN(port) || port <= 0) {
+if (!isBuild && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
 const basePath = process.env.BASE_PATH;
 
-if (!basePath) {
+if (!isBuild && !basePath) {
   throw new Error(
     "BASE_PATH environment variable is required but was not provided.",
   );
@@ -31,7 +32,7 @@ const supabaseAnonKey =
   process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_PUBLIC_KEY ?? "";
 
 export default defineConfig({
-  base: basePath,
+  base: basePath ?? "/",
   define: {
     __SUPABASE_URL__: JSON.stringify(supabaseUrl),
     __SUPABASE_ANON_KEY__: JSON.stringify(supabaseAnonKey),
