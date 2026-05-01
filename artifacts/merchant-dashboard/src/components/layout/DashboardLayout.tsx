@@ -20,7 +20,8 @@ import {
   Sun,
   Plus,
   Smartphone,
-  Zap
+  Zap,
+  LayoutTemplate,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,7 @@ export const NAVIGATION = [
   { name: "Subscriptions", href: "/subscriptions", icon: Sparkles },
   { name: "Analytics", href: "/analytics", icon: BarChart },
   { name: "Notifications", href: "/notifications", icon: Bell },
+  { name: "Templates", href: "/templates", icon: LayoutTemplate },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
