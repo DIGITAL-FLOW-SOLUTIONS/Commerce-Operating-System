@@ -271,6 +271,21 @@ function Topbar() {
   );
 }
 
+function DesktopLogo() {
+  const { resolvedTheme } = useTheme();
+  return (
+    <div className="hidden md:flex items-start mb-6">
+      <Link href="/" aria-label="Sokoa home">
+        <SokoaLogo
+          variant="horizontal"
+          theme={resolvedTheme === "dark" ? "dark" : "light"}
+          height={30}
+        />
+      </Link>
+    </div>
+  );
+}
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background md:flex-row">
@@ -280,6 +295,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="flex flex-col sm:gap-4 md:pl-64 flex-1">
         <Topbar />
         <main className="flex-1 p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto">
+          <DesktopLogo />
           {children}
         </main>
       </div>
