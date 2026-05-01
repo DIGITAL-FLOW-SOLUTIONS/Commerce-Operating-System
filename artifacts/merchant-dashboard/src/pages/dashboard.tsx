@@ -45,9 +45,9 @@ type InputMode = "business" | "tiktok" | "socials";
 type SocialPlatform = "instagram" | "facebook";
 
 const STORE_TYPES = [
-  { id: "boutique", label: "Boutique", icon: ShoppingBag, color: undefined },
+  { id: "boutique", label: "Boutique", icon: ShoppingBag, color: "#8B5CF6" },
   { id: "tiktok", label: "TikTok Live", icon: SiTiktok, color: "#010101" },
-  { id: "preorder", label: "Pre-order", icon: Package, color: undefined },
+  { id: "preorder", label: "Pre-order", icon: Package, color: "#F97316" },
   { id: "fb", label: "FB Store", icon: SiFacebook, color: "#1877F2" },
   { id: "ig", label: "IG Store", icon: SiInstagram, color: "#E4405F" },
 ];
