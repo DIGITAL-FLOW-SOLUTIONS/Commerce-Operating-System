@@ -291,3 +291,41 @@
     inset: -1px;
   }
 }
+
+@keyframes gradient-spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.gradient-border-wrap {
+  position: relative;
+  border-radius: 8px;
+  padding: 1px;
+  overflow: hidden;
+}
+
+.gradient-border-wrap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #6366f1 60deg,
+    #8b5cf6 100deg,
+    #a855f7 140deg,
+    #ec4899 180deg,
+    #f43f5e 210deg,
+    transparent 270deg
+  );
+  animation: gradient-spin 3s linear infinite;
+  z-index: 0;
+}
+
+.gradient-border-wrap > * {
+  position: relative;
+  z-index: 1;
+}
