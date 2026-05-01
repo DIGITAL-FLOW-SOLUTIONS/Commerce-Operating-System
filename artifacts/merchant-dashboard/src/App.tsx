@@ -10,6 +10,7 @@ import Payouts from "@/pages/payouts";
 import MyStores from "@/pages/stores";
 import PublishedStores from "@/pages/published";
 import StoreDetail from "@/pages/store-detail";
+import NotificationsPage from "@/pages/notifications";
 import { DataProvider } from "@/lib/mock-data";
 
 const queryClient = new QueryClient();
@@ -45,7 +46,7 @@ function Router() {
           <Placeholder title="Analytics" />
         </Route>
         <Route path="/notifications">
-          <Placeholder title="Notifications" />
+          <NotificationsPage />
         </Route>
         <Route path="/settings">
           <Placeholder title="Settings" />

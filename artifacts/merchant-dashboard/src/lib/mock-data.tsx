@@ -39,12 +39,18 @@ export interface Template {
   theme: string;
 }
 
+export type NotificationCategory = "order" | "stock" | "payout" | "message" | "system";
+
 export interface Notification {
   id: string;
   title: string;
   description: string;
   date: string;
   read: boolean;
+  category: NotificationCategory;
+  storeId?: string;
+  storeName?: string;
+  amount?: number;
 }
 
 export const CURRENT_USER: User = {
@@ -87,20 +93,21 @@ export const MOCK_TEMPLATES: Template[] = [
 ];
 
 export const MOCK_NOTIFICATIONS: Notification[] = [
-  {
-    id: "n1",
-    title: "New order received",
-    description: "Order #1042 for KES 4,500 has been placed.",
-    date: "10 mins ago",
-    read: false,
-  },
-  {
-    id: "n2",
-    title: "Payout successful",
-    description: "Your daily payout of KES 12,000 has been processed.",
-    date: "2 hours ago",
-    read: true,
-  },
+  { id: "n1",  category: "order",   title: "New order received",        description: "Wanjiku Kamau placed order #1042 for 3 items.",      date: "Just now",        read: false, storeId: "s2", storeName: "Aisha's Collection",  amount: 7600  },
+  { id: "n2",  category: "order",   title: "New order received",        description: "Joyce Njoroge placed order #1033 for 2 items.",      date: "8 mins ago",      read: false, storeId: "s2", storeName: "Aisha's Collection",  amount: 4300  },
+  { id: "n3",  category: "stock",   title: "Low stock alert",           description: "Beaded Necklace Set is down to 3 units online.",     date: "32 mins ago",     read: false, storeId: "s2", storeName: "Aisha's Collection"               },
+  { id: "n4",  category: "order",   title: "Order delivered",           description: "Order #1039 for Grace Odhiambo marked as delivered.", date: "1 hour ago",     read: false, storeId: "s2", storeName: "Aisha's Collection",  amount: 2600  },
+  { id: "n5",  category: "payout",  title: "Payout processed",          description: "KES 8,200 sent to your M-Pesa Till · 987654.",       date: "Today, 6:00 AM",  read: true,  storeId: "s2", storeName: "Aisha's Collection",  amount: 8200  },
+  { id: "n6",  category: "stock",   title: "Out of stock",              description: "Linen Kaftan is out of stock online. Restock soon.", date: "Yesterday",       read: true,  storeId: "s2", storeName: "Aisha's Collection"               },
+  { id: "n7",  category: "order",   title: "Order cancelled",           description: "Sharon Otieno cancelled order #1037. KES 1,800 refunded.", date: "3 days ago", read: true, storeId: "s2", storeName: "Aisha's Collection",  amount: 1800  },
+  { id: "n8",  category: "payout",  title: "Payout processed",          description: "KES 12,000 sent to your Equity Bank ····4821.",     date: "3 days ago",      read: true,  storeId: "s2", storeName: "Aisha's Collection",  amount: 12000 },
+  { id: "n9",  category: "message", title: "Customer message",          description: "Amina Hassan: \"Do you have the dress in size 14?\"", date: "4 days ago",     read: true,  storeId: "s2", storeName: "Aisha's Collection"               },
+  { id: "n10", category: "order",   title: "New order received",        description: "Amina Hassan placed order #1041 for 1 item.",        date: "4 days ago",      read: true,  storeId: "s2", storeName: "Aisha's Collection",  amount: 3200  },
+  { id: "n11", category: "system",  title: "Store published",           description: "Aisha Weekend Live is now live at aisha-weekend.sokoa.shop.", date: "5 days ago", read: true, storeId: "s6", storeName: "Aisha Weekend Live"              },
+  { id: "n12", category: "stock",   title: "Physical stock synced",     description: "Inventory updated from physical shop — 6 products refreshed.", date: "6 days ago", read: true, storeId: "s2", storeName: "Aisha's Collection"           },
+  { id: "n13", category: "message", title: "Customer message",          description: "Njeri Mwangi: \"When will you restock the kaftan?\"", date: "1 week ago",     read: true,  storeId: "s2", storeName: "Aisha's Collection"               },
+  { id: "n14", category: "payout",  title: "Payout processed",          description: "KES 38,400 sent to your M-Pesa Till · 987654.",     date: "1 week ago",      read: true,  storeId: "s2", storeName: "Aisha's Collection",  amount: 38400 },
+  { id: "n15", category: "system",  title: "Subscription renewed",      description: "Your Sokoa Starter Plan renewed successfully.",      date: "2 weeks ago",     read: true                                                                    },
 ];
 
 export type AppState = "both" | "tiktok_only" | "boutique_only" | "none";
@@ -179,6 +186,8 @@ interface DataContextType {
   stores: Store[];
   templates: Template[];
   notifications: Notification[];
+  markAsRead: (id: string) => void;
+  markAllAsRead: () => void;
   payoutMethods: PayoutMethod[];
   addPayoutMethod: (method: Omit<PayoutMethod, "id">) => void;
   removePayoutMethod: (id: string) => void;
@@ -188,6 +197,7 @@ const DataContext = createContext<DataContextType | null>(null);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [appState, setAppState] = useState<AppState>("both");
+  const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
   const [payoutMethods, setPayoutMethods] = useState<PayoutMethod[]>([]);
 
   let stores: Store[] = [];
@@ -201,7 +211,13 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setAppState,
     stores,
     templates: MOCK_TEMPLATES,
-    notifications: MOCK_NOTIFICATIONS,
+    notifications,
+    markAsRead: (id: string) => {
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    },
+    markAllAsRead: () => {
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    },
     payoutMethods,
     addPayoutMethod: (method: Omit<PayoutMethod, "id">) => {
       setPayoutMethods(prev => [...prev, { ...method, id: Math.random().toString(36).substr(2, 9) }]);
