@@ -12,6 +12,7 @@ import PublishedStores from "@/pages/published";
 import StoreDetail from "@/pages/store-detail";
 import NotificationsPage from "@/pages/notifications";
 import AnalyticsPage from "@/pages/analytics";
+import SettingsPage from "@/pages/settings";
 import { DataProvider } from "@/lib/mock-data";
 
 const queryClient = new QueryClient();
@@ -49,9 +50,7 @@ function Router() {
         <Route path="/notifications">
           <NotificationsPage />
         </Route>
-        <Route path="/settings">
-          <Placeholder title="Settings" />
-        </Route>
+        <Route path="/settings" component={SettingsPage} />
         <Route path="/help">
           <Placeholder title="Help Center" />
         </Route>
