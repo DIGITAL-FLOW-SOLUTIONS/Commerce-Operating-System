@@ -14,6 +14,7 @@ import NotificationsPage from "@/pages/notifications";
 import AnalyticsPage from "@/pages/analytics";
 import SettingsPage from "@/pages/settings";
 import SubscriptionsPage from "@/pages/subscriptions";
+import HelpPage from "@/pages/help";
 import { DataProvider } from "@/lib/mock-data";
 
 const queryClient = new QueryClient();
@@ -50,9 +51,7 @@ function Router() {
           <NotificationsPage />
         </Route>
         <Route path="/settings" component={SettingsPage} />
-        <Route path="/help">
-          <Placeholder title="Help Center" />
-        </Route>
+        <Route path="/help" component={HelpPage} />
         <Route path="/templates">
           <Placeholder title="Templates" />
         </Route>
