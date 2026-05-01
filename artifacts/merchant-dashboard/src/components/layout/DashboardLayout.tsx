@@ -18,7 +18,10 @@ import {
   LogOut,
   Moon,
   Sun,
-  Plus
+  Plus,
+  BookOpen,
+  Smartphone,
+  Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -119,6 +122,85 @@ function SidebarHeader() {
   );
 }
 
+const PLAN_STORE_LIMIT = 3;
+const PLAN_PUBLISHED_LIMIT = 3;
+
+function PlanWidget() {
+  const { stores } = useData();
+  const createdCount = stores.length;
+  const publishedCount = stores.filter((s: { status: string }) => s.status === "published" || s.status === "live").length;
+  const createdPct = Math.min(100, (createdCount / PLAN_STORE_LIMIT) * 100);
+  const publishedPct = Math.min(100, (publishedCount / PLAN_PUBLISHED_LIMIT) * 100);
+
+  return (
+    <div className="rounded-xl bg-sidebar-accent border border-sidebar-border p-4 space-y-3 text-sidebar-foreground">
+      {/* Plan title */}
+      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Your Starter Plan</p>
+
+      {/* Free Stores */}
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <Store className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+          <span className="text-xs font-medium flex-1">Free Stores</span>
+          <span className="text-xs text-muted-foreground">{createdCount}/{PLAN_STORE_LIMIT} created</span>
+        </div>
+        <div className="h-1.5 w-full rounded-full bg-sidebar-border overflow-hidden">
+          <div
+            className="h-full rounded-full bg-primary transition-all"
+            style={{ width: `${createdPct}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Published Stores */}
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <Globe className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+          <span className="text-xs font-medium flex-1">Published Stores</span>
+          <span className="text-xs text-muted-foreground">{publishedCount}/{PLAN_PUBLISHED_LIMIT}</span>
+        </div>
+        <div className="h-1.5 w-full rounded-full bg-sidebar-border overflow-hidden">
+          <div
+            className="h-full rounded-full bg-emerald-500 transition-all"
+            style={{ width: `${publishedPct}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Learn link */}
+      <Link
+        href="/learn"
+        className="flex items-center gap-1.5 text-xs text-primary hover:underline w-fit"
+      >
+        <BookOpen className="h-3.5 w-3.5" />
+        Learn how to grow your store
+      </Link>
+
+      {/* Upgrade button */}
+      <Button
+        size="sm"
+        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold gap-1.5"
+        asChild
+      >
+        <Link href="/upgrade">
+          <Zap className="h-3.5 w-3.5 fill-current" />
+          Upgrade to Sokoa Pro
+        </Link>
+      </Button>
+
+      {/* Install + Changelog */}
+      <div className="flex items-center justify-center gap-2 text-[11px] text-muted-foreground">
+        <Link href="/install" className="flex items-center gap-1 hover:text-foreground transition-colors">
+          <Smartphone className="h-3 w-3" />
+          Install Sokoa on mobile
+        </Link>
+        <span>·</span>
+        <Link href="/changelog" className="hover:text-foreground transition-colors">Changelog</Link>
+      </div>
+    </div>
+  );
+}
+
 function SidebarContent() {
   const [location] = useLocation();
   const { notifications } = useData();
@@ -168,14 +250,9 @@ function SidebarContent() {
           })}
         </nav>
       </div>
-      <div className="p-4 mt-auto">
-        <div className="rounded-xl bg-sidebar-accent p-4">
-          <div className="text-sm font-semibold mb-1 text-sidebar-accent-foreground">Need help?</div>
-          <div className="text-xs text-muted-foreground mb-3">Check our docs or contact support.</div>
-          <Button variant="outline" size="sm" className="w-full bg-transparent border-sidebar-border" asChild>
-            <Link href="/help">Help Center</Link>
-          </Button>
-        </div>
+      <div className="p-4 mt-auto space-y-3">
+        {/* Plan widget */}
+        <PlanWidget />
       </div>
     </div>
   );
