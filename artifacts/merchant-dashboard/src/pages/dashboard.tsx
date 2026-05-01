@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useData, Store, StoreType, AppState, Template } from "@/lib/mock-data";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
@@ -32,6 +32,48 @@ import {
 import { SiTiktok, SiInstagram, SiFacebook } from "react-icons/si";
 import { cn } from "@/lib/utils";
 import { SokoaLogo } from "@/components/SokoaLogo";
+
+const ANIMATED_PHRASES = [
+  "Enter your business name or describe what you sell...",
+  "Customer payments go directly to your till/paybill/bank",
+];
+
+function useTypingPlaceholder(
+  phrases: string[],
+  { typingMs = 45, erasingMs = 22, pauseMs = 2200 } = {}
+) {
+  const [displayed, setDisplayed] = useState("");
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    const phrase = phrases[phraseIdx];
+    if (isTyping) {
+      if (displayed.length < phrase.length) {
+        timeoutRef.current = setTimeout(
+          () => setDisplayed(phrase.slice(0, displayed.length + 1)),
+          typingMs
+        );
+      } else {
+        timeoutRef.current = setTimeout(() => setIsTyping(false), pauseMs);
+      }
+    } else {
+      if (displayed.length > 0) {
+        timeoutRef.current = setTimeout(
+          () => setDisplayed((d) => d.slice(0, -1)),
+          erasingMs
+        );
+      } else {
+        setPhraseIdx((i) => (i + 1) % phrases.length);
+        setIsTyping(true);
+      }
+    }
+    return () => clearTimeout(timeoutRef.current);
+  }, [displayed, isTyping, phraseIdx, phrases, typingMs, erasingMs, pauseMs]);
+
+  return displayed;
+}
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("en-KE", {
@@ -100,6 +142,8 @@ function HeroCreateSection() {
   const [socialPlatform, setSocialPlatform] = useState<SocialPlatform>("instagram");
   const [inputValue, setInputValue] = useState("");
   const [suggestionSeed, setSuggestionSeed] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
+  const animatedPlaceholder = useTypingPlaceholder(ANIMATED_PHRASES);
 
   const shownSuggestions = BUSINESS_SUGGESTIONS.slice(
     suggestionSeed % BUSINESS_SUGGESTIONS.length,
@@ -188,19 +232,35 @@ function HeroCreateSection() {
         className="w-full max-w-2xl"
       >
         <div className="rounded-2xl border-2 border-border bg-background shadow-sm focus-within:border-primary/60 focus-within:shadow-md transition-all overflow-hidden">
-          {/* Text area */}
-          <textarea
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder={placeholder}
-            rows={2}
-            className="w-full resize-none px-5 pt-5 pb-2 text-base text-foreground placeholder:text-muted-foreground bg-transparent focus:outline-none leading-relaxed"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-              }
-            }}
-          />
+          {/* Text area with animated placeholder overlay */}
+          <div className="relative">
+            <textarea
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder={mode !== "business" ? placeholder : ""}
+              rows={2}
+              className="w-full resize-none px-5 pt-5 pb-2 text-base text-foreground bg-transparent focus:outline-none leading-relaxed relative z-10"
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                }
+              }}
+            />
+            {mode === "business" && !inputValue && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 px-5 pt-5 pb-2 text-base text-muted-foreground leading-relaxed select-none"
+              >
+                {animatedPlaceholder}
+                <span className={cn(
+                  "inline-block w-[2px] h-[1.1em] bg-muted-foreground align-middle ml-[1px] translate-y-[-1px]",
+                  isFocused ? "animate-pulse" : "opacity-70 animate-pulse"
+                )} />
+              </div>
+            )}
+          </div>
 
           {/* Bottom toolbar */}
           <div className="flex items-center justify-between px-3 pb-3 pt-1 gap-3">
