@@ -8,7 +8,6 @@ import {
   Rocket,
   Store,
   CreditCard,
-  Video,
   ShoppingBag,
   UserCircle,
   ChevronDown,
@@ -16,6 +15,7 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import {
   Accordion,
   AccordionContent,
@@ -57,7 +57,7 @@ const CATEGORIES: Category[] = [
   { id: "getting-started", label: "Getting started", icon: <Rocket className="h-3.5 w-3.5" /> },
   { id: "stores",          label: "Stores",          icon: <Store className="h-3.5 w-3.5" /> },
   { id: "payments",        label: "Payments",        icon: <CreditCard className="h-3.5 w-3.5" /> },
-  { id: "tiktok-live",     label: "TikTok Live",     icon: <Video className="h-3.5 w-3.5" /> },
+  { id: "tiktok-live",     label: "TikTok Live",     icon: <SiTiktok className="h-3.5 w-3.5" /> },
   { id: "boutique",        label: "Boutique",        icon: <ShoppingBag className="h-3.5 w-3.5" /> },
   { id: "account",         label: "Account",         icon: <UserCircle className="h-3.5 w-3.5" /> },
 ];

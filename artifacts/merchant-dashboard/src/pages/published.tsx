@@ -6,13 +6,13 @@ import {
   Search,
   Globe,
   ShoppingBag,
-  Video,
   ExternalLink,
   MoreHorizontal,
   ChevronDown,
   Rocket,
   BarChart2,
 } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +48,7 @@ function StoreThumbnail({ store, className }: { store: Store; className?: string
       ) : (
         <div className={cn("h-full w-full bg-gradient-to-br flex items-center justify-center", gradients[store.type])}>
           {store.type === "tiktok" ? (
-            <Video className="h-10 w-10 text-white/30" />
+            <SiTiktok className="h-10 w-10 text-white/30" />
           ) : (
             <ShoppingBag className="h-10 w-10 text-white/30" />
           )}

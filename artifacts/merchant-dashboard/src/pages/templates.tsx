@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import {
   LayoutGrid,
-  Video,
   ShoppingBag,
   Package,
   Eye,
@@ -14,6 +13,7 @@ import {
   Star,
   Zap,
 } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -175,7 +175,7 @@ const TEMPLATES: Template[] = [
 
 const FILTERS: { id: FilterId; label: string; icon: React.ReactNode }[] = [
   { id: "all",      label: "All templates", icon: <LayoutGrid className="h-3.5 w-3.5" /> },
-  { id: "tiktok",   label: "TikTok Live",   icon: <Video className="h-3.5 w-3.5" /> },
+  { id: "tiktok",   label: "TikTok Live",   icon: <SiTiktok className="h-3.5 w-3.5" /> },
   { id: "boutique", label: "Boutique",       icon: <ShoppingBag className="h-3.5 w-3.5" /> },
   { id: "preorder", label: "Pre-order",      icon: <Package className="h-3.5 w-3.5" /> },
 ];
@@ -193,7 +193,7 @@ const KIND_COLOR: Record<StoreKind, string> = {
 };
 
 const KIND_ICON: Record<StoreKind, React.ReactNode> = {
-  tiktok:   <Video className="h-3 w-3" />,
+  tiktok:   <SiTiktok className="h-3 w-3" />,
   boutique: <ShoppingBag className="h-3 w-3" />,
   preorder: <Package className="h-3 w-3" />,
 };

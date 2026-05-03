@@ -26,7 +26,6 @@ import {
   RefreshCw,
   Send,
   ShoppingBag,
-  Video,
   Package,
 } from "lucide-react";
 import { SiTiktok, SiInstagram, SiFacebook } from "react-icons/si";
@@ -433,7 +432,7 @@ function HeroCreateSection() {
 
 function SmallStoreCard({ store }: { store: Store }) {
   const isTiktok = store.type === "tiktok";
-  const Icon = isTiktok ? Video : ShoppingBag;
+  const Icon = isTiktok ? SiTiktok : ShoppingBag;
 
   return (
     <Card className="flex flex-col min-w-[280px] w-full md:w-auto overflow-hidden hover:border-primary/50 transition-colors">

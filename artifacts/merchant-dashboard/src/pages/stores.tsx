@@ -9,11 +9,11 @@ import {
   Globe,
   Lock,
   ShoppingBag,
-  Video,
   ExternalLink,
   MoreHorizontal,
   ChevronDown,
 } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -61,7 +61,7 @@ function StoreThumbnail({ store, className }: { store: Store; className?: string
       ) : (
         <div className={cn("h-full w-full bg-gradient-to-br flex items-center justify-center", gradients[store.type])}>
           {store.type === "tiktok" ? (
-            <Video className="h-10 w-10 text-white/30" />
+            <SiTiktok className="h-10 w-10 text-white/30" />
           ) : (
             <ShoppingBag className="h-10 w-10 text-white/30" />
           )}
