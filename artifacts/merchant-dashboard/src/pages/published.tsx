@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 type ViewMode = "grid" | "list";
 
 const TYPE_LABELS: Record<StoreType, string> = {
-  tiktok: "TikTok Live",
+  tiktok: "TikTok Live Store",
   boutique: "Boutique",
 };
 
@@ -312,7 +312,7 @@ export default function PublishedStores() {
           onChange={setTypeFilter}
           options={[
             { label: "Any type", value: "any" },
-            { label: "TikTok Live", value: "tiktok" },
+            { label: "TikTok Live Store", value: "tiktok" },
             { label: "Boutique", value: "boutique" },
           ]}
         />

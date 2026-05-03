@@ -89,7 +89,7 @@ type SocialPlatform = "instagram" | "facebook";
 
 const STORE_TYPES = [
   { id: "boutique", label: "Boutique", icon: ShoppingBag, color: "#8B5CF6" },
-  { id: "tiktok", label: "TikTok Live", icon: SiTiktok, color: "#010101" },
+  { id: "tiktok", label: "TikTok Live Store", icon: SiTiktok, color: "#010101" },
   { id: "preorder", label: "Pre-order", icon: Package, color: "#F97316" },
   { id: "fb", label: "FB Store", icon: SiFacebook, color: "#1877F2" },
   { id: "ig", label: "IG Store", icon: SiInstagram, color: "#E4405F" },
@@ -282,7 +282,7 @@ function HeroCreateSection() {
               {(
                 [
                   { id: "business", label: "Business Name" },
-                  { id: "tiktok", label: "TikTok Live" },
+                  { id: "tiktok", label: "TikTok Live Store" },
                   { id: "socials", label: "Socials" },
                 ] as { id: InputMode; label: string }[]
               ).map((tab) => (
@@ -451,7 +451,7 @@ function SmallStoreCard({ store }: { store: Store }) {
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground mb-3">
-            {isTiktok ? "TikTok Live" : "Boutique"}
+            {isTiktok ? "TikTok Live Store" : "Boutique"}
           </p>
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium text-foreground">

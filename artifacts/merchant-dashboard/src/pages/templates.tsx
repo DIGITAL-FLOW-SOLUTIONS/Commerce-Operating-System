@@ -175,13 +175,13 @@ const TEMPLATES: Template[] = [
 
 const FILTERS: { id: FilterId; label: string; icon: React.ReactNode }[] = [
   { id: "all",      label: "All templates", icon: <LayoutGrid className="h-3.5 w-3.5" /> },
-  { id: "tiktok",   label: "TikTok Live",   icon: <SiTiktok className="h-3.5 w-3.5" /> },
+  { id: "tiktok",   label: "TikTok Live Store",   icon: <SiTiktok className="h-3.5 w-3.5" /> },
   { id: "boutique", label: "Boutique",       icon: <ShoppingBag className="h-3.5 w-3.5" /> },
   { id: "preorder", label: "Pre-order",      icon: <Package className="h-3.5 w-3.5" /> },
 ];
 
 const KIND_LABEL: Record<StoreKind, string> = {
-  tiktok:   "TikTok Live",
+  tiktok:   "TikTok Live Store",
   boutique: "Boutique",
   preorder: "Pre-order",
 };

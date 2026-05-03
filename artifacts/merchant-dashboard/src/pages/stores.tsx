@@ -34,7 +34,7 @@ const STATUS_LABELS: Record<StoreStatus, string> = {
 };
 
 const TYPE_LABELS: Record<StoreType, string> = {
-  tiktok: "TikTok Live",
+  tiktok: "TikTok Live Store",
   boutique: "Boutique",
 };
 
@@ -292,7 +292,7 @@ export default function MyStores() {
           onChange={setTypeFilter}
           options={[
             { label: "Any type", value: "any" },
-            { label: "TikTok Live", value: "tiktok" },
+            { label: "TikTok Live Store", value: "tiktok" },
             { label: "Boutique", value: "boutique" },
           ]}
         />

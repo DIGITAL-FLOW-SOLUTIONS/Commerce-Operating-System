@@ -1049,7 +1049,7 @@ export default function StoreDetail() {
           )}
           <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
             <span>Updated {store.updatedAt}</span>
-            {store.type === "tiktok" ? <span className="font-medium text-pink-600 dark:text-pink-400">TikTok Live</span> : <span>Boutique</span>}
+            {store.type === "tiktok" ? <span className="font-medium text-pink-600 dark:text-pink-400">TikTok Live Store</span> : <span>Boutique</span>}
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
