@@ -49,10 +49,10 @@ export default function Socials() {
       {
         onSuccess: (data) => {
           localStorage.setItem("sokoa_session_token", data.sessionToken);
-          setLocation(`/build?input=${encodeURIComponent(handle)}`);
+          window.location.href = `/build/?input=${encodeURIComponent(handle)}`;
         },
         onError: () => {
-          setLocation(`/build?input=${encodeURIComponent(handle)}`);
+          window.location.href = `/build/?input=${encodeURIComponent(handle)}`;
         },
       }
     );

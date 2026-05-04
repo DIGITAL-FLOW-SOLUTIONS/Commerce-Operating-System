@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, MapPin, Sparkles, Star, Users } from "lucide-react";
+import { ArrowRight, CheckCircle2, MapPin, ShoppingBag, Star, Users } from "lucide-react";
 import { SiTiktok, SiFacebook, SiInstagram } from "react-icons/si";
 import { loadStore, clearSession } from "@/lib/cache";
 import type { ExtractedProduct, ExtractedStore, Platform } from "@/lib/types";
@@ -11,42 +11,62 @@ import { Badge } from "@/components/ui/badge";
 const PLATFORM_META: Record<Platform, { label: string; icon: React.ReactNode; color: string; bg: string }> = {
   facebook: { label: "Facebook", icon: <SiFacebook className="size-3.5" />, color: "text-blue-700", bg: "bg-blue-50 border-blue-200" },
   instagram: { label: "Instagram", icon: <SiInstagram className="size-3.5" />, color: "text-pink-600", bg: "bg-pink-50 border-pink-200" },
-  tiktok: { label: "TikTok", icon: <SiTiktok className="size-3.5" />, color: "text-foreground", bg: "bg-zinc-50 border-zinc-200" },
-  manual: { label: "Manual", icon: <Sparkles className="size-3.5" />, color: "text-primary", bg: "bg-accent border-primary/20" },
+  tiktok: { label: "TikTok", icon: <SiTiktok className="size-3.5" />, color: "text-foreground", bg: "bg-zinc-100 border-zinc-200" },
+  manual: { label: "Manual", icon: <ShoppingBag className="size-3.5" />, color: "text-primary", bg: "bg-accent border-primary/20" },
 };
 
+const PRODUCT_PALETTES = [
+  { from: "#f0fdf4", to: "#dcfce7", accent: "#16a34a" },
+  { from: "#fff7ed", to: "#ffedd5", accent: "#ea580c" },
+  { from: "#faf5ff", to: "#f3e8ff", accent: "#9333ea" },
+  { from: "#eff6ff", to: "#dbeafe", accent: "#2563eb" },
+  { from: "#fdf2f8", to: "#fce7f3", accent: "#db2777" },
+  { from: "#fefce8", to: "#fef9c3", accent: "#ca8a04" },
+  { from: "#f0fdfa", to: "#ccfbf1", accent: "#0d9488" },
+  { from: "#fef2f2", to: "#fee2e2", accent: "#dc2626" },
+];
+
 function ProductCard({ product, index }: { product: ExtractedProduct; index: number }) {
-  const BG_COLORS = [
-    "from-emerald-50 to-teal-50",
-    "from-orange-50 to-amber-50",
-    "from-purple-50 to-pink-50",
-    "from-blue-50 to-cyan-50",
-    "from-rose-50 to-red-50",
-    "from-yellow-50 to-lime-50",
-  ];
-  const bg = BG_COLORS[index % BG_COLORS.length];
+  const palette = PRODUCT_PALETTES[index % PRODUCT_PALETTES.length];
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.05 * index, duration: 0.35 }}
-      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col"
+      transition={{ delay: 0.04 * index, duration: 0.3 }}
+      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group cursor-pointer hover:shadow-md transition-shadow"
     >
-      <div className={`bg-gradient-to-br ${bg} h-28 flex items-center justify-center`}>
-        <span className="text-4xl">{product.emoji}</span>
+      <div
+        className="relative h-40 flex flex-col items-center justify-center overflow-hidden"
+        style={{ background: `linear-gradient(135deg, ${palette.from} 0%, ${palette.to} 100%)` }}
+      >
+        <span className="text-5xl mb-1 drop-shadow-sm group-hover:scale-110 transition-transform duration-300">
+          {product.emoji}
+        </span>
+        <div
+          className="absolute bottom-0 left-0 right-0 h-16 opacity-30"
+          style={{ background: `linear-gradient(to top, ${palette.accent}40, transparent)` }}
+        />
+        {!product.inStock && (
+          <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+            Sold out
+          </div>
+        )}
       </div>
+
       <div className="p-3 flex-1 flex flex-col">
-        <p className="text-xs text-muted-foreground mb-1">{product.category}</p>
-        <h3 className="text-sm font-semibold leading-snug mb-1 line-clamp-2">{product.name}</h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 flex-1 mb-2">{product.description}</p>
-        <div className="flex items-center justify-between mt-auto">
-          <p className="text-sm font-bold text-primary">
-            KES {product.priceKes.toLocaleString()}
-          </p>
-          {!product.inStock && (
-            <Badge variant="outline" className="text-xs text-muted-foreground">Out of stock</Badge>
-          )}
+        <p className="text-[10px] uppercase tracking-wide font-semibold mb-1" style={{ color: palette.accent }}>
+          {product.category}
+        </p>
+        <h3 className="text-sm font-semibold leading-snug mb-1.5 line-clamp-2 flex-1">{product.name}</h3>
+        <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/60">
+          <p className="text-sm font-bold">KES {product.priceKes.toLocaleString()}</p>
+          <button
+            className="text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white transition-all"
+            style={{ backgroundColor: product.inStock ? palette.accent : "#9ca3af" }}
+          >
+            {product.inStock ? "Add to bag" : "Notify me"}
+          </button>
         </div>
       </div>
     </motion.div>
@@ -56,41 +76,46 @@ function ProductCard({ product, index }: { product: ExtractedProduct; index: num
 function StoreHeader({ store }: { store: ExtractedStore }) {
   const meta = PLATFORM_META[store.platform];
   return (
-    <div className="bg-card border border-border rounded-2xl p-5 mb-5">
-      <div className="flex items-start gap-4">
-        <div className="size-14 rounded-2xl bg-accent flex items-center justify-center flex-shrink-0">
-          <span className="text-3xl">{store.coverEmoji}</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <h2 className="font-display font-bold text-lg leading-tight">{store.name}</h2>
-            <Badge variant="outline" className={`text-xs gap-1 ${meta.bg} ${meta.color} border`}>
-              {meta.icon} {meta.label}
-            </Badge>
+    <div className="bg-card border border-border rounded-2xl overflow-hidden mb-5">
+      <div
+        className="h-24 relative"
+        style={{ background: "linear-gradient(135deg, hsl(160 84% 39% / 0.15) 0%, hsl(25 95% 53% / 0.1) 100%)" }}
+      >
+        <div className="absolute bottom-0 left-5 translate-y-1/2">
+          <div className="size-16 rounded-2xl bg-card border-2 border-border shadow-md flex items-center justify-center text-3xl">
+            {store.coverEmoji}
           </div>
-          <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
-            <span className="flex items-center gap-1">
-              <MapPin className="size-3" />{store.city}, {store.country}
-            </span>
-            <span className="flex items-center gap-1">
-              <Users className="size-3" />{store.followers.toLocaleString()} followers
-            </span>
-          </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{store.bio}</p>
         </div>
       </div>
-      <div className="mt-4 pt-4 border-t border-border grid grid-cols-3 gap-3 text-center">
-        <div>
-          <p className="text-base font-bold font-display text-primary">{store.products.length}</p>
-          <p className="text-xs text-muted-foreground">Products found</p>
+      <div className="px-5 pt-10 pb-5">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <h2 className="font-display font-bold text-lg leading-tight">{store.name}</h2>
+          <Badge variant="outline" className={`text-xs gap-1 flex-shrink-0 ${meta.bg} ${meta.color} border`}>
+            {meta.icon} {meta.label}
+          </Badge>
         </div>
-        <div>
-          <p className="text-base font-bold font-display text-primary">{store.confidence}%</p>
-          <p className="text-xs text-muted-foreground">Confidence</p>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2 flex-wrap">
+          <span className="flex items-center gap-1">
+            <MapPin className="size-3" />{store.city}, {store.country}
+          </span>
+          <span className="flex items-center gap-1">
+            <Users className="size-3" />{store.followers.toLocaleString()} followers
+          </span>
         </div>
-        <div>
-          <p className="text-base font-bold font-display text-primary">Free</p>
-          <p className="text-xs text-muted-foreground">To claim</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{store.bio}</p>
+        <div className="mt-4 pt-4 border-t border-border grid grid-cols-3 gap-3 text-center">
+          <div>
+            <p className="text-base font-bold font-display text-primary">{store.products.length}</p>
+            <p className="text-xs text-muted-foreground">Products</p>
+          </div>
+          <div>
+            <p className="text-base font-bold font-display text-primary">{store.confidence}%</p>
+            <p className="text-xs text-muted-foreground">Confidence</p>
+          </div>
+          <div>
+            <p className="text-base font-bold font-display text-primary">Free</p>
+            <p className="text-xs text-muted-foreground">To claim</p>
+          </div>
         </div>
       </div>
     </div>
@@ -100,9 +125,7 @@ function StoreHeader({ store }: { store: ExtractedStore }) {
 function CTA({ store }: { store: ExtractedStore }) {
   const [, setLocation] = useLocation();
 
-  const continuationPath = store.platform === "tiktok"
-    ? "/tiktok"
-    : "/dashboard";
+  const continuationPath = store.platform === "tiktok" ? "/tiktok" : "/~/";
 
   const handleClaim = () => {
     clearSession();
@@ -118,15 +141,15 @@ function CTA({ store }: { store: ExtractedStore }) {
     >
       <div className="flex items-start gap-3 mb-4">
         <div className="size-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-          <Sparkles className="size-4 text-primary" />
+          <Star className="size-4 text-primary fill-primary/30" />
         </div>
         <div>
           <h3 className="font-display font-bold text-base mb-0.5">This store is yours — claim it free</h3>
-          <p className="text-xs text-muted-foreground">No credit card needed. Start selling in minutes.</p>
+          <p className="text-xs text-muted-foreground">No credit card. Start selling in minutes.</p>
         </div>
       </div>
       <ul className="space-y-1.5 mb-4">
-        {["Custom domain & storefront", "Mpesa, card & bank payments", "Delivery & inventory tools", "Sales analytics dashboard"].map((f) => (
+        {["Custom storefront & domain", "M-Pesa, card & bank payments", "Delivery & inventory tracking", "Real-time sales analytics"].map((f) => (
           <li key={f} className="flex items-center gap-2 text-xs text-muted-foreground">
             <CheckCircle2 className="size-3.5 text-primary flex-shrink-0" />
             {f}
@@ -134,15 +157,15 @@ function CTA({ store }: { store: ExtractedStore }) {
         ))}
       </ul>
       <Button className="w-full gap-2 rounded-xl h-11 text-sm font-semibold" onClick={handleClaim}>
-        <Star className="size-4" />
-        Claim {store.name} free
+        <ShoppingBag className="size-4" />
+        Claim {store.name} — it's free
         <ArrowRight className="size-4 ml-auto" />
       </Button>
       <button
-        onClick={() => setLocation("/")}
+        onClick={() => setLocation("/manual")}
         className="w-full text-center text-xs text-muted-foreground hover:text-foreground mt-3 transition-colors underline underline-offset-2"
       >
-        Try a different page instead
+        Edit store details first
       </button>
     </motion.div>
   );
@@ -163,15 +186,12 @@ export default function PreviewPage() {
 
   if (!store) return null;
 
+  const inStockCount = store.products.filter((p) => p.inStock).length;
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <div className="size-6 rounded-md bg-primary flex items-center justify-center">
-            <Sparkles className="size-3.5 text-primary-foreground" />
-          </div>
-          <span className="font-display font-bold text-sm">Sokoa</span>
-        </div>
+        <img src="/logos/sokoa-horizontal.svg" alt="Sokoa" className="h-6" />
         <Badge variant="outline" className="text-xs bg-accent text-primary border-primary/20">
           Store preview
         </Badge>
@@ -183,8 +203,9 @@ export default function PreviewPage() {
         </motion.div>
 
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-display font-semibold text-sm">Products extracted ({store.products.length})</h3>
-          <p className="text-xs text-muted-foreground">AI-inferred from your posts</p>
+          <h3 className="font-display font-semibold text-sm">
+            Products <span className="text-muted-foreground font-normal">({store.products.length} found · {inStockCount} in stock)</span>
+          </h3>
         </div>
 
         <div className="grid grid-cols-2 gap-3 mb-6">

@@ -43,11 +43,10 @@ export default function Home() {
     }, {
       onSuccess: (data) => {
         localStorage.setItem("sokoa_session_token", data.sessionToken);
-        setLocation(`/build?input=${encodeURIComponent(inputValue)}`);
+        window.location.href = `/build/?input=${encodeURIComponent(inputValue)}`;
       },
       onError: () => {
-        // Fallback navigation even on error
-        setLocation(`/build?input=${encodeURIComponent(inputValue)}`);
+        window.location.href = `/build/?input=${encodeURIComponent(inputValue)}`;
       }
     });
   };

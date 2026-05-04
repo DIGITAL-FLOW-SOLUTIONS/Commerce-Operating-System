@@ -48,10 +48,10 @@ export default function TikTok() {
       {
         onSuccess: (data) => {
           localStorage.setItem("sokoa_session_token", data.sessionToken);
-          setLocation("/signup?intent=tiktok");
+          window.location.href = `/build/?input=${encodeURIComponent(`@${handle}`)}`;
         },
         onError: () => {
-          setLocation("/signup?intent=tiktok");
+          window.location.href = `/build/?input=${encodeURIComponent(`@${handle}`)}`;
         },
       }
     );

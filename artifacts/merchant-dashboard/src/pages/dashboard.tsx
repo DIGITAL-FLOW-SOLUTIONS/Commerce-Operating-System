@@ -310,6 +310,10 @@ function HeroCreateSection() {
               size="sm"
               className="rounded-full h-8 w-8 p-0 shrink-0 bg-primary hover:bg-primary/90 shadow-sm"
               disabled={!inputValue.trim()}
+              onClick={() => {
+                if (!inputValue.trim()) return;
+                window.location.href = `/build/?input=${encodeURIComponent(inputValue.trim())}`;
+              }}
             >
               <Send className="w-3.5 h-3.5" />
               <span className="sr-only">Create</span>
