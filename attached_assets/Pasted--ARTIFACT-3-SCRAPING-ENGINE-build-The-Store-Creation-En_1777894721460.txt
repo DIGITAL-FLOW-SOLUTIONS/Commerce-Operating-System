@@ -1,0 +1,295 @@
+🔵 ARTIFACT 3 — SCRAPING ENGINE (/build)
+“The Store Creation Engine”
+🧠 🎯 PRIMARY PURPOSE
+
+The Scraping Engine is:
+
+The system that transforms unstructured social media presence into structured e-commerce data, ready to power a store instantly.
+
+⚠️ CRITICAL UNDERSTANDING
+
+This artifact must handle 4 entry types:
+
+Input Type	Example	Behavior
+Facebook Page Link	fb.com/shop	Scrape
+Instagram Handle/Link	@boutique	Scrape
+TikTok Handle	@seller	Lightweight extraction
+Business Name	“Mary’s Boutique”	No scraping
+🧩 SYSTEM FLOW OVERVIEW
+User Input → Input Detection → Extraction Strategy → Data Structuring → Cache Storage → Preview → Continue to Templates
+🟡 1. ENTRY POINT (/build)
+🧠 Purpose:
+Receive user intent
+Start ingestion process
+Show real-time feedback
+🧱 UI STRUCTURE
+SECTION 1 — HEADER
+“Building Your Store…”
+SECTION 2 — INPUT DISPLAY
+Show what user entered:
+“Extracting from: facebook.com/xyz”
+SECTION 3 — PROGRESS STATE
+
+Dynamic states:
+
+Detecting source
+Fetching data
+Extracting products
+Structuring store
+Preparing preview
+🤖 AI PROMPT — BUILD PAGE UI
+Design the /build page:
+
+- Show loading states:
+  - Detecting source
+  - Fetching data
+  - Extracting products
+  - Structuring store
+- Display user input clearly
+- Include fallback UI if extraction fails
+- Mobile-first, smooth transitions
+
+This must feel fast and intelligent.
+🧠 2. INPUT DETECTION ENGINE
+🎯 Purpose:
+
+Identify what the user entered
+
+📦 Model: BuildSession
+Fields:
+id
+user_id (nullable)
+input_value
+input_type (facebook, instagram, tiktok, manual)
+status (processing, completed, failed)
+extracted_data (JSON)
+created_at
+⚙️ Detection Logic
+Condition	Type
+contains “facebook.com”	Facebook
+contains “instagram.com” or “@”	Instagram
+contains “tiktok.com” or “@”	TikTok
+else	Business Name
+🤖 AI PROMPT
+Design an input detection system:
+
+- Accept raw input string
+- Classify into:
+  facebook, instagram, tiktok, manual
+- Store result in BuildSession
+- Ensure fast execution and accuracy
+🔵 3. EXTRACTION ENGINE (CORE LOGIC)
+🎯 Purpose:
+
+Convert social content → structured data
+
+⚠️ STRATEGY (IMPORTANT)
+
+Do NOT rely on one method.
+
+Use layered approach:
+
+Public scraping
+Pattern extraction
+Fallback manual entry
+📦 Extracted Data Structure
+{
+  "business_name": "",
+  "logo": "",
+  "location": "",
+  "products": [
+    {
+      "name": "",
+      "price": "",
+      "image": "",
+      "description": ""
+    }
+  ]
+}
+🔵 FACEBOOK STRATEGY
+
+Extract:
+
+Page name
+Profile image
+Posts → images + captions
+🟣 INSTAGRAM STRATEGY
+
+Extract:
+
+Username
+Bio
+Posts
+⚫ TIKTOK STRATEGY
+
+⚠️ Lightweight:
+
+Username
+Profile
+No heavy product extraction
+⚪ BUSINESS NAME (NO SCRAPING)
+Store name only
+Skip extraction
+Redirect immediately
+🤖 AI PROMPT — EXTRACTION ENGINE
+Design a social extraction engine:
+
+- Accept input type (facebook, instagram, tiktok)
+- Extract:
+  - Business name
+  - Profile image
+  - Posts (images + captions)
+- Convert posts into product-like objects
+
+Include:
+- Error handling
+- Fallback if no data found
+- Non-blocking execution
+
+Return structured JSON.
+🟢 4. PRODUCT INFERENCE ENGINE (VERY IMPORTANT)
+🎯 Purpose:
+
+Turn posts into products
+
+⚙️ Logic
+
+From caption:
+
+Detect product name
+Detect price (KES patterns like “KSh 1500”)
+Use image as product image
+Example:
+
+Caption:
+
+“New heels KSh 2500 available”
+
+→ becomes:
+
+name: “New heels”
+price: 2500
+🤖 AI PROMPT
+Design a product inference system:
+
+- Input: post caption + image
+- Extract:
+  - Product name
+  - Price (KES detection)
+  - Description
+- Handle missing price gracefully
+- Generate clean product objects
+🟡 5. CACHE STORAGE SYSTEM
+🎯 Purpose:
+
+Store temporary data before authentication
+
+⚠️ REQUIREMENTS
+Fast access
+Short-lived (e.g., 30–60 minutes)
+Linkable to user later
+📦 Model: BuildCache
+id
+session_id
+data (JSON)
+expires_at
+⚙️ Behavior:
+Save extracted data
+Attach to user after login
+🤖 AI PROMPT
+Design a temporary cache system:
+
+- Store extracted build data
+- Expire automatically after time
+- Link to session or user
+- Ensure fast retrieval
+🔵 6. PREVIEW STORE SYSTEM
+🎯 Purpose:
+
+Let user SEE the store before committing
+
+🧱 UI:
+Store name
+Product grid
+Basic storefront layout
+⚙️ Behavior:
+Use cached data
+No database persistence yet
+🤖 AI PROMPT
+Design a preview store system:
+
+- Render store using extracted data
+- Show products, images, names
+- No permanent save yet
+- Include CTA: "Continue to customize"
+🔴 7. FAILURE & FALLBACK FLOW
+🎯 Must handle:
+Scenario	Behavior
+No data scraped	Ask user to continue manually
+Partial data	Show editable preview
+Error	Retry option
+UI Message:
+
+“We couldn’t fully extract your store. Let’s set it up manually in seconds.”
+
+🤖 AI PROMPT
+Design fallback behavior:
+
+- If scraping fails:
+  - Show message
+  - Allow manual continuation
+- Preserve user input
+- Ensure no dead-end
+🟣 8. CONTINUATION FLOW
+🎯 After preview:
+
+User clicks:
+
+👉 “Continue”
+
+Routes:
+Input Type	Destination
+Facebook/IG	/~/templates
+TikTok	/tiktok
+Manual	/~/templates
+🔐 9. AUTH INTEGRATION
+⚙️ Behavior:
+
+If not logged in:
+
+Redirect to login/signup
+Preserve session
+Resume after auth
+🧪 EDGE CASES (CRITICAL)
+Invalid URL
+Private account
+Empty posts
+No prices detected
+Slow extraction
+Duplicate sessions
+⚡ PERFORMANCE RULES
+Extraction must be async
+UI must not freeze
+Use progress states
+🎯 FINAL MASTER PROMPT
+You are building the Scraping Engine (/build) for a Multi-Surface Commerce Operating System.
+
+This system converts social media input into structured store data.
+
+Implement:
+
+- Input detection (facebook, instagram, tiktok, manual)
+- Extraction engine for each type
+- Product inference system from posts
+- Temporary cache storage
+- Preview store rendering
+- Fallback flows for failed extraction
+- Continuation routing to next steps
+
+Ensure:
+- Fast and responsive UI
+- Non-blocking extraction
+- Clean structured output
+- Mobile-first experience
+
+This is the core differentiator of the platform and must feel intelligent, fast, and seamless.
