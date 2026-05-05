@@ -31,25 +31,28 @@ import SocialTrackPage from "@/pages/social/track";
 import BoutiqueHomePage from "@/pages/boutique/index";
 import BoutiqueProductsPage from "@/pages/boutique/products";
 import BoutiqueProductDetailPage from "@/pages/boutique/product-detail";
+import BoutiqueCategoriesPage from "@/pages/boutique/categories";
 import BoutiqueCartPage from "@/pages/boutique/cart";
 import BoutiqueCheckoutPage from "@/pages/boutique/checkout";
 import BoutiqueSuccessPage from "@/pages/boutique/success";
 import BoutiqueErrorPage from "@/pages/boutique/error";
-import BoutiqueAccountPage from "@/pages/boutique/account";
+import BoutiqueAccountRedirect from "@/pages/boutique/account";
+import BoutiqueLoginPage from "@/pages/boutique/login";
+import BoutiqueDashboardPage from "@/pages/boutique/dashboard";
+import BoutiqueProfilePage from "@/pages/boutique/profile";
 import BoutiqueOrdersPage from "@/pages/boutique/orders";
 import BoutiqueWishlistPage from "@/pages/boutique/wishlist";
 import BoutiqueTrackPage from "@/pages/boutique/track";
 
+// Store customization
+import CustomizePage from "@/pages/customize/index";
+
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 30_000,
-    },
+    queries: { retry: 1, staleTime: 30_000 },
   },
 });
 
-// Context wrappers that extract storeId from route params
 function TikTokWrapper({ children }: { children: React.ReactNode }) {
   const { storeId } = useParams<{ storeId: string }>();
   return <CartProvider storeId={storeId}>{children}</CartProvider>;
@@ -59,9 +62,7 @@ function SocialWrapper({ children }: { children: React.ReactNode }) {
   const { storeId } = useParams<{ storeId: string }>();
   return (
     <CartProvider storeId={storeId}>
-      <CustomerProvider storeId={storeId}>
-        {children}
-      </CustomerProvider>
+      <CustomerProvider storeId={storeId}>{children}</CustomerProvider>
     </CartProvider>
   );
 }
@@ -71,9 +72,7 @@ function BoutiqueWrapper({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider storeId={storeId}>
       <CustomerProvider storeId={storeId}>
-        <FavoritesProvider storeId={storeId}>
-          {children}
-        </FavoritesProvider>
+        <FavoritesProvider storeId={storeId}>{children}</FavoritesProvider>
       </CustomerProvider>
     </CartProvider>
   );
@@ -85,9 +84,14 @@ function Router() {
       {/* Template selection */}
       <Route path="/" component={TemplateSelectionPage} />
 
+      {/* Store customization (works for any store type) */}
+      <Route path="/customize/:storeId">
+        {() => <CustomizePage />}
+      </Route>
+
       {/* ─── TikTok Store ─────────────────────────────────── */}
       <Route path="/tiktok/:storeId">
-        {(params) => <TikTokWrapper><TikTokProductPage /></TikTokWrapper>}
+        {() => <TikTokWrapper><TikTokProductPage /></TikTokWrapper>}
       </Route>
       <Route path="/tiktok/:storeId/checkout">
         {() => <TikTokWrapper><TikTokCheckoutPage /></TikTokWrapper>}
@@ -138,6 +142,9 @@ function Router() {
       <Route path="/boutique/:storeId/products/:productId">
         {() => <BoutiqueWrapper><BoutiqueProductDetailPage /></BoutiqueWrapper>}
       </Route>
+      <Route path="/boutique/:storeId/categories">
+        {() => <BoutiqueWrapper><BoutiqueCategoriesPage /></BoutiqueWrapper>}
+      </Route>
       <Route path="/boutique/:storeId/cart">
         {() => <BoutiqueWrapper><BoutiqueCartPage /></BoutiqueWrapper>}
       </Route>
@@ -150,8 +157,21 @@ function Router() {
       <Route path="/boutique/:storeId/error">
         {() => <BoutiqueWrapper><BoutiqueErrorPage /></BoutiqueWrapper>}
       </Route>
+      {/* account → redirects to login or dashboard */}
       <Route path="/boutique/:storeId/account">
-        {() => <BoutiqueWrapper><BoutiqueAccountPage /></BoutiqueWrapper>}
+        {() => <BoutiqueWrapper><BoutiqueAccountRedirect /></BoutiqueWrapper>}
+      </Route>
+      {/* Login (phone entry) */}
+      <Route path="/boutique/:storeId/login">
+        {() => <BoutiqueWrapper><BoutiqueLoginPage /></BoutiqueWrapper>}
+      </Route>
+      {/* User dashboard */}
+      <Route path="/boutique/:storeId/dashboard">
+        {() => <BoutiqueWrapper><BoutiqueDashboardPage /></BoutiqueWrapper>}
+      </Route>
+      {/* Profile settings */}
+      <Route path="/boutique/:storeId/profile">
+        {() => <BoutiqueWrapper><BoutiqueProfilePage /></BoutiqueWrapper>}
       </Route>
       <Route path="/boutique/:storeId/orders">
         {() => <BoutiqueWrapper><BoutiqueOrdersPage /></BoutiqueWrapper>}

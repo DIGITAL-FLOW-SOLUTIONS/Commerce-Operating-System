@@ -7,7 +7,7 @@ import { ProductImage } from "@/components/ui/product-image";
 import { PriceBadge } from "@/components/ui/price-badge";
 import { useCart } from "@/lib/cart-context";
 import { useCustomer } from "@/lib/customer-context";
-import { ArrowRight, Star, Sparkles, User } from "lucide-react";
+import { ArrowRight, Star, Sparkles, User, Grid3X3 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function BoutiqueHomePage() {
@@ -62,7 +62,7 @@ export default function BoutiqueHomePage() {
         <p className="text-sm text-muted-foreground">
           {session ? `Welcome back, ${session.name ?? session.phone}` : "Create an account for faster checkout"}
         </p>
-        <Link href={session ? `${base}/account` : `${base}/account`}>
+        <Link href={session ? `${base}/dashboard` : `${base}/login`}>
           <button className="flex items-center gap-1.5 text-primary text-xs font-semibold hover:opacity-80 transition-opacity">
             <User size={14} />
             {session ? "My Account" : "Sign In"}
@@ -73,10 +73,17 @@ export default function BoutiqueHomePage() {
       {/* Categories */}
       {categories.length > 0 && (
         <div className="px-4 py-5">
-          <h2 className="font-display font-bold text-lg mb-3">Categories</h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-display font-bold text-lg">Categories</h2>
+            <Link href={`${base}/categories`}>
+              <button className="flex items-center gap-1 text-primary text-xs font-semibold hover:opacity-80 transition-opacity">
+                <Grid3X3 size={13} /> Browse all
+              </button>
+            </Link>
+          </div>
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {categories.map((cat) => (
-              <Link key={cat} href={`${base}/products?category=${cat}`}>
+              <Link key={cat} href={`${base}/products?category=${encodeURIComponent(cat as string)}`}>
                 <button className="shrink-0 px-4 py-2 rounded-full bg-muted text-foreground text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors">
                   {cat}
                 </button>

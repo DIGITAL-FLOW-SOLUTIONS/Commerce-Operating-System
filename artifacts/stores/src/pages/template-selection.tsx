@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Zap, Users, Crown, ArrowRight, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { SokoaLogo } from "@/components/SokoaLogo";
 
 const STORE_TYPES = [
   {
@@ -65,10 +66,8 @@ export default function TemplateSelectionPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
       {/* Header */}
       <div className="bg-white border-b border-border sticky top-0 z-10 backdrop-blur-sm bg-white/95">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white font-display font-bold text-sm">S</span>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
+          <SokoaLogo variant="submark" height={32} />
           <span className="font-display font-bold text-foreground">Sokoa Stores</span>
         </div>
       </div>
