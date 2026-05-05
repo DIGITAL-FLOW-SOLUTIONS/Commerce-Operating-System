@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/stores/"
+title = "Sokoa — Stores System"
+version = "1.0.0"
+id = "artifacts/stores"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/stores/" ]
+localPort = 22158
+
+[services.development]
+run = "pnpm --filter @workspace/stores run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/stores", "run", "build" ]
+publicDir = "artifacts/stores/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22158"
+BASE_PATH = "/stores/"

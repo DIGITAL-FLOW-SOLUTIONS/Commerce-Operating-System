@@ -149,3 +149,247 @@ export interface PricingPlan {
   popular: boolean;
   ctaLabel: string;
 }
+
+export type StoreThemeFontFamily =
+  (typeof StoreThemeFontFamily)[keyof typeof StoreThemeFontFamily];
+
+export const StoreThemeFontFamily = {
+  plus_jakarta: "plus_jakarta",
+  outfit: "outfit",
+  inter: "inter",
+  poppins: "poppins",
+} as const;
+
+export interface StoreTheme {
+  /** Primary brand color (hex) */
+  primaryColor: string;
+  accentColor: string;
+  backgroundColor: string;
+  fontFamily: StoreThemeFontFamily;
+  logoUrl?: string | null;
+  bannerUrl?: string | null;
+  bannerText?: string | null;
+}
+
+export type StoreType = (typeof StoreType)[keyof typeof StoreType];
+
+export const StoreType = {
+  tiktok: "tiktok",
+  social: "social",
+  boutique: "boutique",
+} as const;
+
+export type StoreStatus = (typeof StoreStatus)[keyof typeof StoreStatus];
+
+export const StoreStatus = {
+  draft: "draft",
+  active: "active",
+  paused: "paused",
+  suspended: "suspended",
+} as const;
+
+export interface Store {
+  id: string;
+  tenantId: string;
+  name: string;
+  /** URL-safe identifier (e.g. "amani-beauty") */
+  slug: string;
+  type: StoreType;
+  status: StoreStatus;
+  /** Full store URL path (e.g. "/stores/abc123/amani-beauty") */
+  domain: string;
+  theme: StoreTheme;
+  productCount: number;
+  orderCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type NewStoreType = (typeof NewStoreType)[keyof typeof NewStoreType];
+
+export const NewStoreType = {
+  tiktok: "tiktok",
+  social: "social",
+  boutique: "boutique",
+} as const;
+
+export interface NewStore {
+  tenantId: string;
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  name: string;
+  type: NewStoreType;
+  theme?: StoreTheme;
+}
+
+export type UpdateStoreStatus =
+  (typeof UpdateStoreStatus)[keyof typeof UpdateStoreStatus];
+
+export const UpdateStoreStatus = {
+  draft: "draft",
+  active: "active",
+  paused: "paused",
+  suspended: "suspended",
+} as const;
+
+export interface UpdateStore {
+  name?: string;
+  status?: UpdateStoreStatus;
+  theme?: StoreTheme;
+}
+
+export interface Product {
+  id: string;
+  storeId: string;
+  name: string;
+  description?: string | null;
+  priceKes: number;
+  /** Original price before discount */
+  originalPriceKes?: number | null;
+  imageUrl?: string | null;
+  /** Additional image URLs */
+  images: string[];
+  category?: string | null;
+  /** null means unlimited */
+  stock?: number | null;
+  featured: boolean;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface NewProduct {
+  /** @minLength 1 */
+  name: string;
+  description?: string | null;
+  /** @minimum 0 */
+  priceKes: number;
+  originalPriceKes?: number | null;
+  imageUrl?: string | null;
+  images?: string[];
+  category?: string | null;
+  stock?: number | null;
+  featured?: boolean;
+}
+
+export interface OrderItem {
+  productId: string;
+  productName: string;
+  /** @minimum 1 */
+  quantity: number;
+  unitPriceKes: number;
+  totalKes: number;
+}
+
+export interface DeliveryInfo {
+  country: string;
+  county: string;
+  town: string;
+  email?: string | null;
+  phone: string;
+  notes?: string | null;
+}
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
+
+export const OrderStatus = {
+  pending: "pending",
+  paid: "paid",
+  failed: "failed",
+  processing: "processing",
+  shipped: "shipped",
+  delivered: "delivered",
+  cancelled: "cancelled",
+} as const;
+
+export type OrderPaymentMethod =
+  (typeof OrderPaymentMethod)[keyof typeof OrderPaymentMethod];
+
+export const OrderPaymentMethod = {
+  mpesa: "mpesa",
+  card: "card",
+  cash: "cash",
+} as const;
+
+export interface Order {
+  id: string;
+  storeId: string;
+  customerId?: string | null;
+  phone: string;
+  items: OrderItem[];
+  totalKes: number;
+  status: OrderStatus;
+  paymentMethod: OrderPaymentMethod;
+  delivery?: DeliveryInfo | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type NewOrderItemsItem = {
+  productId: string;
+  /** @minimum 1 */
+  quantity: number;
+};
+
+export type NewOrderPaymentMethod =
+  (typeof NewOrderPaymentMethod)[keyof typeof NewOrderPaymentMethod];
+
+export const NewOrderPaymentMethod = {
+  mpesa: "mpesa",
+  card: "card",
+  cash: "cash",
+} as const;
+
+export interface NewOrder {
+  /**
+   * Customer phone number (M-Pesa number)
+   * @minLength 9
+   */
+  phone: string;
+  /** @minItems 1 */
+  items: NewOrderItemsItem[];
+  paymentMethod?: NewOrderPaymentMethod;
+}
+
+export interface Customer {
+  id: string;
+  storeId: string;
+  phone: string;
+  name?: string | null;
+  email?: string | null;
+  /** Whether the customer has set a password (for boutique accounts) */
+  hasPassword: boolean;
+  orderCount: number;
+  totalSpentKes: number;
+  createdAt: string;
+}
+
+export interface CustomerLookup {
+  /** @minLength 9 */
+  phone: string;
+  /** Optional — used for boutique store login */
+  password?: string | null;
+}
+
+export interface UpdateCustomer {
+  name?: string | null;
+  email?: string | null;
+  /** @minLength 6 */
+  password?: string | null;
+}
+
+export type ListStoresParams = {
+  tenantId?: string;
+};
+
+export type ListProductsParams = {
+  category?: string;
+};
+
+export type ListOrdersParams = {
+  /**
+   * Filter by customer phone number
+   */
+  phone?: string;
+};

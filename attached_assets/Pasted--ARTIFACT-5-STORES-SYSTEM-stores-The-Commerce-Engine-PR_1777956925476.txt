@@ -1,0 +1,349 @@
+🔵 ARTIFACT 5 — STORES SYSTEM (/stores)
+“The Commerce Engine”
+🧠 🎯 PRIMARY PURPOSE
+
+The Stores System is:
+
+A multi-tenant storefront rendering engine that allows each merchant to launch and operate a fully functional e-commerce store based on selected store types (TikTok, Social, Boutique).
+
+⚠️ CRITICAL DESIGN TRUTH
+
+You are NOT building “themes”.
+
+You are building:
+
+3 Different Commerce Experiences (Products)
+
+Each with:
+
+- Different UX
+- Different complexity
+- Different user behavior
+
+🧩 STORE TYPES (SYSTEM DEFINITIONS)
+🟣 1. TIKTOK LIVE STORE (FAST COMMERCE)
+🎯 Purpose:
+
+Ultra-fast conversion during live selling
+
+🧠 Characteristics:
+- No browsing
+- No distractions
+- One goal: BUY NOW
+
+📄 Pages Required:
+1. Product Page (Homepage)
+2. Checkout Page
+3. Success Page
+4. Error Page
+5. Customer Tracking Page (Optional login)
+
+🧱 PAGE BREAKDOWN
+🔴 PRODUCT PAGE (HOME)
+Content:
+- Product image (large)
+- Product name
+- Price (very visible)
+- “Buy Now” button
+
+⚙️ Behavior:
+- Single product focus OR small list
+- Optimized for mobile scrolling
+- Instant CTA
+
+🔵 CHECKOUT PAGE
+Fields:
+- Phone number (REQUIRED)
+- Quantity
+
+⚙️ Behavior:
+- Trigger payment (M-Pesa flow later)
+- Minimal friction
+
+🟢 SUCCESS PAGE
+Content:
+- “Payment Successful 🎉”
+- Delivery form
+
+Delivery Form Fields:
+- Country
+- County
+- Town
+- Email
+- Phone (auto-filled)
+- Additional notes
+
+⚙️ Behavior:
+- Save delivery info
+- Create customer record
+- Link to order
+
+🔴 ERROR PAGE
+- Payment failed
+- Retry button
+
+🟡 CUSTOMER TRACKING SYSTEM
+Flow:
+- User enters phone number
+- System checks orders
+- Optional password creation
+
+⚙️ Behavior:
+- Password optional
+- OTP-based or simple verification
+
+🤖 INSTRUCTIONS — TIKTOK STORE
+Build a TikTok Live Store system:
+
+Pages:
+- Product page (homepage)
+- Checkout page
+- Success page (with delivery form)
+- Error page
+- Customer tracking page
+
+Features:
+- Phone-based checkout
+- Minimal UI (fast conversion)
+- Save delivery info after payment
+- Create customer from phone number
+- Allow optional password creation
+
+Ensure:
+- Mobile-first design
+- Ultra-fast loading
+- Simple UX
+
+
+🔵 2. SOCIAL STORE (FACEBOOK / INSTAGRAM)
+🎯 Purpose:
+
+Convert social browsers into buyers
+
+🧠 Characteristics:
+- Multiple products
+- Light browsing
+- Still simple
+
+📄 Pages:
+1. Homepage
+2. Products page
+3. Product detail
+4. Cart
+5. Checkout
+6. Success
+7. Error
+8. Customer tracking
+
+🧱 BEHAVIOR
+- Pre-filled products from scraping
+- Editable later
+- Mobile-first
+
+🤖 INSTRUCTIONS — SOCIAL STORE
+Build a Social Store system:
+
+Pages:
+- Homepage
+- Products listing
+- Product detail
+- Cart
+- Checkout
+- Success and error pages
+- Customer tracking
+
+Features:
+- Preload products from scraping data
+- Simple cart system
+- Phone-based checkout
+- Delivery info collection
+
+Ensure:
+- Clean design
+- Fast navigation
+- Mobile optimization
+
+🟣 3. BOUTIQUE STORE (FULL COMMERCE)
+🎯 Purpose:
+
+Full business operations
+
+🧠 Characteristics:
+- Full e-commerce
+- Returning customers
+- Branding
+
+📄 Pages:
+1. Homepage
+2. Products
+3. Product detail
+4. Categories
+5. Favorites
+6. Cart
+7. Checkout
+8. User registration
+9. Login
+10. User dashboard
+11. Order history
+12. Profile
+
+⚙️ Features:
+- Full account system
+- Wishlist
+- Persistent cart
+- Customer dashboard
+
+🤖 INSTRUCTIONS — BOUTIQUE STORE
+Build a full Boutique Store system:
+
+Pages:
+- Homepage
+- Product listing and categories
+- Product detail
+- Favorites (wishlist)
+- Cart and checkout
+- User authentication (register/login)
+- User dashboard with order history
+
+Features:
+- Full customer accounts
+- Persistent sessions
+- Order tracking
+- Profile management
+
+Ensure:
+- Premium UI
+- Fast performance
+- Mobile-first design
+
+
+
+🟡 4. STORE ENGINE (MULTI-TENANT CORE)
+🎯 Purpose:
+
+Power all stores dynamically
+
+📦 Model: Store
+Fields:
+- id
+- tenant_id
+- name
+- type (tiktok, social, boutique)
+- theme_id
+- status
+- domain
+
+📦 Model: StoreTheme
+- id
+- type
+- layout_config
+- default_styles
+
+⚙️ Behavior:
+
+When merchant selects template:
+
+1. Create store
+2. Assign type
+3. Import data (from scraping or manual)
+4. Attach theme
+5. Generate URL:
+/stores/{id}/{store-name}
+
+🤖 INSTRUCTIONS — STORE ENGINE
+Design a multi-tenant store engine:
+
+- Create store based on type (tiktok, social, boutique)
+- Assign theme and layout
+- Import merchant data (products, name, branding)
+- Generate store URL
+- Ensure tenant isolation
+
+Support dynamic rendering per store.
+
+
+🟢 5. TEMPLATE SELECTION SYSTEM (/stores)
+🎯 Purpose:
+
+Let merchant choose store type visually
+
+UI:
+
+Reuse /~/templates
+
+Behavior:
+- Click template → create store
+- Preload data
+
+🤖 INSTRUCTIONS
+Design store template selection page:
+
+- Show 3 store types:
+  - TikTok Live
+  - Social Store
+  - Boutique Store
+- Each card has preview and CTA
+
+On selection:
+- Create store
+- Redirect to store URL
+
+
+🎨 6. STORE CUSTOMIZATION SYSTEM
+🎯 Purpose:
+
+Let merchant brand their store
+
+Features:
+- Colors
+- Fonts
+- Logo upload
+- Banner
+
+⚙️ Behavior:
+- Real-time preview
+- Save per store
+
+🤖 INSTRUCTIONS
+Design store customization system:
+
+- Allow editing:
+  - Colors
+  - Fonts
+  - Logo
+  - Branding
+- Apply changes dynamically
+- Save per store
+
+
+🔐 7. CUSTOMER SYSTEM (SHARED LOGIC)
+Key Rules:
+Store Type	Auth
+TikTok	Phone only
+Social	Phone only
+Boutique	Full auth
+
+
+
+🧪 EDGE CASES
+1. No products
+2. Payment fails
+3. Duplicate orders
+4. Empty store
+5. Slow loading
+6. Invalid customization
+
+⚡ PERFORMANCE RULES
+- Stores must load < 2s
+- Images optimized
+- Lazy loading
+
+🚨 BUILD ORDER (IMPORTANT)
+
+YOU MUST:
+
+1. Build TikTok store FULLY
+2. Test it
+3. Move to Social store
+4. Test it
+5. Move to Boutique store

@@ -14,6 +14,14 @@ tags:
     description: Lead capture and intent tracking
   - name: stats
     description: Public marketing stats and social proof
+  - name: stores
+    description: Multi-tenant store engine
+  - name: products
+    description: Store product catalog
+  - name: orders
+    description: Order management and checkout
+  - name: customers
+    description: Customer accounts and tracking
 paths:
   /healthz:
     get:
@@ -120,6 +128,341 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/PricingPlan"
+
+  # ─── Stores ──────────────────────────────────────────────────────────────────
+  /stores:
+    get:
+      operationId: listStores
+      tags: [stores]
+      summary: List all stores (optionally filter by tenantId)
+      parameters:
+        - name: tenantId
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Stores list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Store"
+    post:
+      operationId: createStore
+      tags: [stores]
+      summary: Create a new store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewStore"
+      responses:
+        "201":
+          description: Store created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Store"
+  /stores/{storeId}:
+    get:
+      operationId: getStore
+      tags: [stores]
+      summary: Get a single store by ID
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Store"
+        "404":
+          description: Store not found
+    patch:
+      operationId: updateStore
+      tags: [stores]
+      summary: Update store settings or customization
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateStore"
+      responses:
+        "200":
+          description: Updated store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Store"
+
+  # ─── Products ────────────────────────────────────────────────────────────────
+  /stores/{storeId}/products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List products for a store
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      operationId: createProduct
+      tags: [products]
+      summary: Add a product to a store
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewProduct"
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /stores/{storeId}/products/{productId}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get a single product
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+
+  # ─── Orders & Checkout ───────────────────────────────────────────────────────
+  /stores/{storeId}/orders:
+    get:
+      operationId: listOrders
+      tags: [orders]
+      summary: List orders for a store
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: phone
+          in: query
+          schema:
+            type: string
+          description: Filter by customer phone number
+      responses:
+        "200":
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+    post:
+      operationId: createOrder
+      tags: [orders]
+      summary: Place an order (checkout)
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewOrder"
+      responses:
+        "201":
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+  /stores/{storeId}/orders/{orderId}:
+    get:
+      operationId: getOrder
+      tags: [orders]
+      summary: Get order details
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+  /stores/{storeId}/orders/{orderId}/delivery:
+    post:
+      operationId: submitDeliveryInfo
+      tags: [orders]
+      summary: Submit delivery info after successful payment
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryInfo"
+      responses:
+        "200":
+          description: Delivery info saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  # ─── Customers ───────────────────────────────────────────────────────────────
+  /stores/{storeId}/customers/lookup:
+    post:
+      operationId: lookupCustomer
+      tags: [customers]
+      summary: Look up or create a customer by phone number
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerLookup"
+      responses:
+        "200":
+          description: Customer found or created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /stores/{storeId}/customers/{customerId}:
+    get:
+      operationId: getCustomer
+      tags: [customers]
+      summary: Get customer profile
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Customer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    patch:
+      operationId: updateCustomer
+      tags: [customers]
+      summary: Update customer profile (set password, name, etc.)
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCustomer"
+      responses:
+        "200":
+          description: Updated customer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
 components:
   schemas:
     HealthStatus:
@@ -308,3 +651,315 @@ components:
         - features
         - popular
         - ctaLabel
+
+    # ─── Store Schemas ──────────────────────────────────────────────────────────
+    StoreTheme:
+      type: object
+      properties:
+        primaryColor:
+          type: string
+          description: Primary brand color (hex)
+        accentColor:
+          type: string
+        backgroundColor:
+          type: string
+        fontFamily:
+          type: string
+          enum: [plus_jakarta, outfit, inter, poppins]
+        logoUrl:
+          type: string
+          nullable: true
+        bannerUrl:
+          type: string
+          nullable: true
+        bannerText:
+          type: string
+          nullable: true
+      required: [primaryColor, accentColor, backgroundColor, fontFamily]
+
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+          description: URL-safe identifier (e.g. "amani-beauty")
+        type:
+          type: string
+          enum: [tiktok, social, boutique]
+        status:
+          type: string
+          enum: [draft, active, paused, suspended]
+        domain:
+          type: string
+          description: Full store URL path (e.g. "/stores/abc123/amani-beauty")
+        theme:
+          $ref: "#/components/schemas/StoreTheme"
+        productCount:
+          type: integer
+        orderCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, tenantId, name, slug, type, status, domain, theme, productCount, orderCount, createdAt, updatedAt]
+
+    NewStore:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        type:
+          type: string
+          enum: [tiktok, social, boutique]
+        theme:
+          $ref: "#/components/schemas/StoreTheme"
+      required: [tenantId, name, type]
+
+    UpdateStore:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, paused, suspended]
+        theme:
+          $ref: "#/components/schemas/StoreTheme"
+
+    # ─── Product Schemas ────────────────────────────────────────────────────────
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        storeId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        priceKes:
+          type: number
+        originalPriceKes:
+          type: number
+          nullable: true
+          description: Original price before discount
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+          description: Additional image URLs
+        category:
+          type: string
+          nullable: true
+        stock:
+          type: integer
+          nullable: true
+          description: null means unlimited
+        featured:
+          type: boolean
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, storeId, name, priceKes, featured, active, createdAt, images]
+
+    NewProduct:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          nullable: true
+        priceKes:
+          type: number
+          minimum: 0
+        originalPriceKes:
+          type: number
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+          nullable: true
+        stock:
+          type: integer
+          nullable: true
+        featured:
+          type: boolean
+      required: [name, priceKes]
+
+    # ─── Order Schemas ──────────────────────────────────────────────────────────
+    OrderItem:
+      type: object
+      properties:
+        productId:
+          type: string
+        productName:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        unitPriceKes:
+          type: number
+        totalKes:
+          type: number
+      required: [productId, productName, quantity, unitPriceKes, totalKes]
+
+    DeliveryInfo:
+      type: object
+      properties:
+        country:
+          type: string
+        county:
+          type: string
+        town:
+          type: string
+        email:
+          type: string
+          nullable: true
+        phone:
+          type: string
+        notes:
+          type: string
+          nullable: true
+      required: [country, county, town, phone]
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        storeId:
+          type: string
+        customerId:
+          type: string
+          nullable: true
+        phone:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        totalKes:
+          type: number
+        status:
+          type: string
+          enum: [pending, paid, failed, processing, shipped, delivered, cancelled]
+        paymentMethod:
+          type: string
+          enum: [mpesa, card, cash]
+        delivery:
+          $ref: "#/components/schemas/DeliveryInfo"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, storeId, phone, items, totalKes, status, paymentMethod, createdAt, updatedAt]
+
+    NewOrder:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: Customer phone number (M-Pesa number)
+          minLength: 9
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+              quantity:
+                type: integer
+                minimum: 1
+            required: [productId, quantity]
+          minItems: 1
+        paymentMethod:
+          type: string
+          enum: [mpesa, card, cash]
+          default: mpesa
+      required: [phone, items]
+
+    # ─── Customer Schemas ───────────────────────────────────────────────────────
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        storeId:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        hasPassword:
+          type: boolean
+          description: Whether the customer has set a password (for boutique accounts)
+        orderCount:
+          type: integer
+        totalSpentKes:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, storeId, phone, hasPassword, orderCount, totalSpentKes, createdAt]
+
+    CustomerLookup:
+      type: object
+      properties:
+        phone:
+          type: string
+          minLength: 9
+        password:
+          type: string
+          nullable: true
+          description: Optional — used for boutique store login
+      required: [phone]
+
+    UpdateCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+          minLength: 6
